@@ -11,12 +11,18 @@
 # include <readline/history.h>
 # include <curses.h>
 # include <term.h>
+# include <errno.h>
+# include <string.h>
+# include <limits.h>
 
 typedef struct s_minishell
 {
-	char	**envp;
+	t_list	*env_list;
 	char	**path;
 }	t_minishell;
+
+int		init_minishell(t_minishell *minishell, char **envp);
+void	clean_up(t_minishell *minishell);
 
 // when flag is false, echo() print with newline.
 void	ft_echo(const char *str, t_bool flag);
@@ -24,7 +30,7 @@ void	ft_echo(const char *str, t_bool flag);
 void	ft_pwd(void); //??? opendir, readdir, closedir
 void	ft_export(const char *env_var);
 void	ft_unset(const char *env_var_key);
-void	ft_env(void);
+void	ft_env(t_minishell *minishell);
 void	ft_exit(void);
 
 #endif
