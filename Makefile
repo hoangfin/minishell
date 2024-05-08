@@ -19,7 +19,8 @@ SOURCES :=	main.c \
 			ft_export.c \
 			ft_pwd.c \
 			ft_unset.c \
-			init_minishell.c
+			init_minishell.c \
+			clean_up.c
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 
