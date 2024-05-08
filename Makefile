@@ -4,7 +4,8 @@ BUILD_DIR := build
 LIBFT_DIR := libft
 
 VPATH :=	src \
-			src/builtin
+			src/builtin \
+			src/initialization
 
 LIBFT := $(LIBFT_DIR)/libft.a
 
@@ -17,7 +18,8 @@ SOURCES :=	main.c \
 			ft_exit.c \
 			ft_export.c \
 			ft_pwd.c \
-			ft_unset.c
+			ft_unset.c \
+			init_minishell.c
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 
