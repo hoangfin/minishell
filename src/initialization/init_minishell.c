@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 14:36:12 by mito              #+#    #+#             */
-/*   Updated: 2024/05/08 23:52:27 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/09 12:04:35 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,20 @@
 
 static int	init_env_list(t_minishell *minishell, char **envp)
 {
-	t_node *node;
+	char	*env_var;
+	t_node	*node;
 
 	minishell->env_list = ft_list(0);
 	if (minishell->env_list == NULL)
 		return (-1);
 	while (envp != NULL && *envp != NULL)
 	{
-		node = ft_list_node(*envp);
-		if (node == NULL)
+		env_var = ft_strdup(*envp);
+		if (env_var == NULL)
 			return (-1);
+		node = ft_list_node(env_var);
+		if (node == NULL)
+			return (free(env_var), -1);
 		ft_list_push(minishell->env_list, node);
 		envp++;
 	}
