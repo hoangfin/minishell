@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:51:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/08 22:36:50 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/09 12:04:56 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 void	clean_up(t_minishell *minishell)
 {
-	ft_list_clear(&minishell->env_list, NULL);
+	ft_list_clear(&minishell->env_list, free);
 }
