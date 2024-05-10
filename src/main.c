@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/08 15:07:24 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/09 01:06:30 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,29 @@
 int main(int argc, char **argv, char **envp)
 {
 	t_minishell	minishell;
-	char		buf[1024];
-	ssize_t		bytes_read;
+	char		*line;
 
+	(void)argc;
+	(void)argv;
 	if (init_minishell(&minishell, envp) < 0)
 		return (EXIT_FAILURE);
-	ft_env(&minishell);
-	// while (1)
-	// {
-	// 	//Do something here
-	// 	write(STDOUT_FILENO, "minishell > ", 12);
-	// 	bytes_read = read(STDIN_FILENO, buf, 1024);
-	// 	printf("Just behind read in while loop\n");
-	// }
+	while (1)
+	{
+		line = readline("minishell> ");
+		if (line == NULL)
+			break ;
+		// if (bytes_read <= 0)
+		// {
+		// 	printf("bytes_read <= 0\n");
+		// 	break ;
+		// }
+		// if (ft_strncmp(buf, "sleep", 5) == 0)
+		// 	sleep(5);
+		// if (buf[bytes_read - 1] != '\n')
+		// 	write(1, "\n", 1);
+		// printf("bytes_read = %ld\n", bytes_read);
+		// write(1, buf, bytes_read);
+	}
+	clean_up(&minishell);
 	return (EXIT_SUCCESS);
 }

@@ -1,5 +1,10 @@
 NAME := minishell
 
+RED := \033[0;31m
+GREEN := \033[0;32m
+YELLOW := \033[0;33m
+RESET := \033[0m
+
 BUILD_DIR := build
 LIBFT_DIR := libft
 
@@ -10,7 +15,7 @@ VPATH :=	src \
 LIBFT := $(LIBFT_DIR)/libft.a
 
 CC := cc
-CFLAG := -Wall -Wextra -I$(LIBFT_DIR)
+CFLAG := -g -Wall -Wextra -I$(LIBFT_DIR) -I/usr/include
 
 SOURCES :=	main.c \
 			ft_echo.c \
@@ -19,30 +24,32 @@ SOURCES :=	main.c \
 			ft_export.c \
 			ft_pwd.c \
 			ft_unset.c \
-			init_minishell.c
+			init_minishell.c \
+			clean_up.c
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
-
-$(info OBJECTS = $(OBJECTS))
 
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
-	$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -o $@
+	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
+	@echo "$(YELLOW)$@$(RESET) created."
 
 $(BUILD_DIR):
 	@mkdir -p $@
 	@echo "Compiling ..."
 
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
-	@echo "libft.a has been created."
+	@$(MAKE) -C $(LIBFT_DIR) --silent
+	@echo "$(YELLOW)$(LIBFT)$(RESET) created."
 
 $(BUILD_DIR)/%.o: %.c
-	$(CC) $(CFLAG) -c $< -o $@
+	@$(CC) $(CFLAG) -c $< -o $@
 
 fclean:
-	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@$(MAKE) -C $(LIBFT_DIR) fclean --silent
 	@echo "$(LIBFT) deleted."
 	@rm -rf $(BUILD_DIR)
+	@rm -f $(NAME)
+	@echo "$(NAME) deleted."
 

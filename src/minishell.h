@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/08 23:50:46 by hoatran          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -19,6 +31,7 @@ typedef struct s_minishell
 {
 	t_list	*env_list;
 	char	**path;
+	int		exit_status;
 }	t_minishell;
 
 int		init_minishell(t_minishell *minishell, char **envp);
