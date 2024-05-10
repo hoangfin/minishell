@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/08 23:50:46 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/10 22:58:35 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,7 @@ void	ft_export(const char *env_var);
 void	ft_unset(const char *env_var_key);
 void	ft_env(t_minishell *minishell);
 void	ft_exit(void);
+
+int		add_signal_handler(int signum, sig_t handler);
 
 #endif
