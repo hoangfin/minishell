@@ -25,9 +25,9 @@ int		init_minishell(t_minishell *minishell, char **envp);
 void	clean_up(t_minishell *minishell);
 
 // when flag is false, echo() print with newline.
-void	ft_echo(const char *str, t_bool flag);
+int		ft_echo(const char **str, t_bool flag);
 // ◦ cd with only a relative or absolute path
-void	ft_pwd(void); //??? opendir, readdir, closedir
+int		ft_pwd(void);
 void	ft_export(const char *env_var);
 void	ft_unset(const char *env_var_key);
 void	ft_env(t_minishell *minishell);
