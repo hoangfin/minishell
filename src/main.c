@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/10 23:07:08 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/11 18:10:43 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,12 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell> ");
 		if (line == NULL)
 			break ;
+		if (*line != '\0')
+			add_history(line);
 		// minishell.exit_status = exe_cmd(line, minishell);
 		free(line);
 	}
+	rl_clear_history();
 	clean_up(&minishell);
 	return (EXIT_SUCCESS);
 }
