@@ -10,12 +10,13 @@ LIBFT_DIR := libft
 
 VPATH :=	src \
 			src/builtin \
-			src/initialization
+			src/initialization \
+			src/signal
 
 LIBFT := $(LIBFT_DIR)/libft.a
 
 CC := cc
-CFLAG := -g -Wall -Wextra -I$(LIBFT_DIR) -I/usr/include
+CFLAG := -g -Wall -Wextra -I$(LIBFT_DIR)
 
 SOURCES :=	main.c \
 			ft_echo.c \
@@ -25,13 +26,15 @@ SOURCES :=	main.c \
 			ft_pwd.c \
 			ft_unset.c \
 			init_minishell.c \
-			clean_up.c
+			clean_up.c \
+			add_signal_handler.c
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
+#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
 	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
 	@echo "$(YELLOW)$@$(RESET) created."
 
@@ -48,8 +51,8 @@ $(BUILD_DIR)/%.o: %.c
 
 fclean:
 	@$(MAKE) -C $(LIBFT_DIR) fclean --silent
-	@echo "$(LIBFT) deleted."
+	@echo "$(RED)$(LIBFT)$(RESET) deleted."
 	@rm -rf $(BUILD_DIR)
 	@rm -f $(NAME)
-	@echo "$(NAME) deleted."
+	@echo "$(RED)$(NAME)$(RESET) deleted."
 
