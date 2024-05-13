@@ -10,8 +10,9 @@ LIBFT_DIR := libft
 
 VPATH :=	src \
 			src/builtin \
-			src/initialization \
-			src/signal
+			src/command \
+			src/signal \
+			src/minishell
 
 LIBFT := $(LIBFT_DIR)/libft.a
 

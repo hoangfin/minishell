@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:24:04 by mito              #+#    #+#             */
-/*   Updated: 2024/05/10 16:46:26 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/13 14:20:38 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "builtin.h"
 
-int	ft_echo(const char **str, t_bool flag)
+int	ft_echo(t_command cmd)
 {
 	int i;
-	
-	i = 0;	
+
+	i = 0;
 	while (str[i] != NULL)
 	{
 		if (ft_putstr_fd(str[i], 1) < 0)
@@ -29,7 +29,7 @@ int	ft_echo(const char **str, t_bool flag)
 	if (flag == false)
 	{
 		if (ft_putchar_fd('\n', 1) < 0)
-			return (-1);		
+			return (-1);
 	}
 	return (0);
 }

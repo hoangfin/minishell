@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:17:05 by mito              #+#    #+#             */
-/*   Updated: 2024/05/10 16:59:38 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/13 14:33:32 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "builtin.h"
 
 int	ft_pwd(void)
 {
 	char	buffer[PATH_MAX];
-	
+
 	if (getcwd(buffer, sizeof(buffer)) == NULL)
 		return (-1);
 	if (printf("%s\n", buffer) < 0)
