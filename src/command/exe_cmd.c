@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_signal_handler.c                               :+:      :+:    :+:   */
+/*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/09 12:18:59 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/13 01:35:13 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/13 01:30:39 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_signal.h"
+#include "command.h"
 
-int	add_signal_handler(int signum, sig_t handler)
+int	exe_cmd(t_command cmd)
 {
-	struct sigaction	sa;
+	char	*temp;
 
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	return (sigaction(signum, &sa, NULL));
+	temp = cmd_line;
+	while (*temp != '\0' && *temp != '&' && *temp != '|')
+		temp++;
+	exe_cmd(temp, minishell);
 }

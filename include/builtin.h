@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_signal_handler.c                               :+:      :+:    :+:   */
+/*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/09 12:18:59 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/13 01:35:13 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/12 17:36:34 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/12 21:24:31 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_signal.h"
+#ifndef BUILTIN_H
+# define BUILTIN_H
 
-int	add_signal_handler(int signum, sig_t handler)
-{
-	struct sigaction	sa;
+# include "command.h"
 
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	return (sigaction(signum, &sa, NULL));
-}
+void	ft_echo(t_command *cmd);
+void	ft_cd(t_command *cmd);
+void	ft_pwd(t_command *cmd);
+void	ft_export(t_command *cmd, t_list *env_list);
+void	ft_unset(t_command *cmd, t_list *env_list);
+void	ft_env(t_list *env_list);
+void	ft_exit(void);
+
+#endif

@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_signal_handler.c                               :+:      :+:    :+:   */
+/*   minishell_signal.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/09 12:18:59 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/13 01:35:13 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/13 01:24:46 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/13 01:34:45 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_signal.h"
+#ifndef MINISHELL_SIGNAL_H
+# define MINISHELL_SIGNAL_H
 
-int	add_signal_handler(int signum, sig_t handler)
-{
-	struct sigaction	sa;
+#include <signal.h>
 
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	return (sigaction(signum, &sa, NULL));
-}
+int	add_signal_handler(int signum, sig_t handler);
+
+# endif

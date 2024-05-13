@@ -6,11 +6,13 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/11 18:10:43 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/13 01:32:48 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 static void	handle_sigint(int signum)
 {
@@ -42,7 +44,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		if (*line != '\0')
 			add_history(line);
-		// minishell.exit_status = exe_cmd(line, minishell);
+		minishell.exit_status = exe_cmd(line, minishell);
 		free(line);
 	}
 	rl_clear_history();

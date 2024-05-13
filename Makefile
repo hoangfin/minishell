@@ -16,7 +16,7 @@ VPATH :=	src \
 LIBFT := $(LIBFT_DIR)/libft.a
 
 CC := cc
-CFLAG := -g -Wall -Wextra -I$(LIBFT_DIR)
+CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
 
 SOURCES :=	main.c \
 			ft_echo.c \
