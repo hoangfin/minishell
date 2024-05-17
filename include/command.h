@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 17:18:49 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/13 01:31:12 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/15 16:36:50 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ typedef struct s_command_line
 
 t_command	*parse_command(char *cmd_str);
 int			exe_cmd(t_command cmd);
+// size_t		count_arguments(t_command *cmd);
 
 #endif
