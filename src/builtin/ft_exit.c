@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:26:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/15 15:47:30 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/19 23:57:22 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_str_digit(char *str)
 	return (1);
 }
 
-int	ft_exit(t_command *cmd)
+int	ft_exit(t_command *cmd, int last_exit_status)
 {
 	int exit_code;
 	int i;

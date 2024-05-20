@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   delete_io.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/08 15:06:36 by mito              #+#    #+#             */
-/*   Updated: 2024/05/19 23:49:44 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/14 12:02:45 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/19 21:09:58 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "io.h"
+#include <stdlib.h>
 
-static void	print(t_node *node, size_t i)
+void	delete_io(void *io)
 {
-	char	*env_var;
-
-	env_var = (char *)node->data;
-	(void)i;
-	printf("%s\n", env_var);
-}
-
-void	ft_env(t_command *cmd, t_list *env_list)
-{
-	ft_list_foreach(env_list, print);
+	if (io == NULL)
+		return ;
+	free(((t_io *)io)->token);
+	free(io);
 }

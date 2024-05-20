@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   io.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/08 15:06:36 by mito              #+#    #+#             */
-/*   Updated: 2024/05/19 23:49:44 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/14 11:58:46 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/19 12:48:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#ifndef IO_H
+# define IO_H
 
-static void	print(t_node *node, size_t i)
+typedef enum e_redir_type
 {
-	char	*env_var;
+	REDIR_NO,
+	REDIR_INPUT,
+	REDIR_HEREDOC,
+	REDIR_OUTPUT,
+	REDIR_APPEND,
+}	t_redir_type;
 
-	env_var = (char *)node->data;
-	(void)i;
-	printf("%s\n", env_var);
-}
-
-void	ft_env(t_command *cmd, t_list *env_list)
+typedef struct s_io
 {
-	ft_list_foreach(env_list, print);
-}
+	char			*token;
+	t_redir_type	redi_type;
+}	t_io;
+
+t_io	*new_io(const char *str, int redir_symbol);
+void	delete_io(void *io);
+
+#endif

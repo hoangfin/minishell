@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   is_builtin_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/08 15:06:36 by mito              #+#    #+#             */
-/*   Updated: 2024/05/19 23:49:44 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/19 23:05:46 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/19 23:17:28 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "utils.h"
 
-static void	print(t_node *node, size_t i)
+t_bool	is_builtin_cmd(const char *str)
 {
-	char	*env_var;
+	int			i;
+	const char	*builtin_cmds[] = {
+		"cd", "echo", "env", "exit", "export", "pwd", "unset"
+	};
 
-	env_var = (char *)node->data;
-	(void)i;
-	printf("%s\n", env_var);
-}
-
-void	ft_env(t_command *cmd, t_list *env_list)
-{
-	ft_list_foreach(env_list, print);
+	i = 0;
+	while (i < 7)
+	{
+		if (ft_strcmp(str, builtin_cmds[i]) == 0)
+			return (true);
+		i++;
+	}
+	return (false);
 }

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:17:05 by mito              #+#    #+#             */
-/*   Updated: 2024/05/13 15:37:25 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/20 00:24:17 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include <limits.h>
 
-int	ft_pwd(void)
+int	ft_pwd(t_command *cmd)
 {
 	char	buffer[PATH_MAX];
 

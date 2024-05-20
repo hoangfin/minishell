@@ -6,10 +6,11 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:18:59 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/13 01:35:13 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/20 00:27:04 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stddef.h>
 #include "minishell_signal.h"
 
 int	add_signal_handler(int signum, sig_t handler)

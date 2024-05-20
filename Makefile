@@ -11,8 +11,10 @@ LIBFT_DIR := libft
 VPATH :=	src \
 			src/builtin \
 			src/command \
+			src/io \
+			src/minishell \
 			src/signal \
-			src/minishell
+			src/utils \
 
 LIBFT := $(LIBFT_DIR)/libft.a
 
@@ -21,14 +23,28 @@ CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
 
 SOURCES :=	main.c \
 			ft_echo.c \
-			ft_env.c \
 			ft_exit.c \
 			ft_export.c \
 			ft_pwd.c \
 			ft_unset.c \
+			exe_builtin.c \
+			\
 			init_minishell.c \
 			clean_up.c \
-			add_signal_handler.c
+			add_signal_handler.c \
+			is_builtin_cmd.c \
+			\
+			count_arguments.c \
+			delete_cmd.c \
+			exe_cmd.c \
+			new_cmd.c \
+			parse_cmd.c \
+			\
+			delete_io.c \
+			new_io.c
+#			ft_cd.c
+#			ft_env.c
+
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 

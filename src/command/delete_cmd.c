@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   delete_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/08 15:06:36 by mito              #+#    #+#             */
-/*   Updated: 2024/05/19 23:49:44 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/13 22:26:51 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/19 21:08:16 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "command.h"
 
-static void	print(t_node *node, size_t i)
+void	delete_cmd(void *cmd)
 {
-	char	*env_var;
+	t_command	*cmd_ptr;
 
-	env_var = (char *)node->data;
-	(void)i;
-	printf("%s\n", env_var);
-}
-
-void	ft_env(t_command *cmd, t_list *env_list)
-{
-	ft_list_foreach(env_list, print);
+	cmd_ptr = (t_command *)cmd;
+	if (cmd_ptr == NULL)
+		return ;
+	ft_del_str_arr(&cmd_ptr->argv);
+	ft_list_clear(&cmd_ptr->input_list, delete_io);
+	ft_list_clear(&cmd_ptr->output_list, delete_io);
 }

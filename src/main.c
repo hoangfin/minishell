@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/14 16:27:38 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/20 00:26:26 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "command.h"
+#include "minishell_signal.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -44,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		if (*line != '\0')
 			add_history(line);
-		minishell.exit_status = exe_cmd(line, minishell);
+		minishell.exit_status = exe_cmd(line, &minishell);
 		free(line);
 	}
 	rl_clear_history();
