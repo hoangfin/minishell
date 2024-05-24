@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/20 00:27:37 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/22 23:34:54 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,27 @@
 #include <stdio.h>
 #include "builtin.h"
 
-// cmd1 && (cmd2 || cmd3)
-// cmd1 && cmd2 || cmd3
-// (cmd1 && (cmd2 || cmd3)) || (cmd4 && cmd5) && cmd6
-// (cmd1 && cmd2) || (cmd3 && cmd4) || cmd5 && cmd6
 
-// static char	*get_log_op(const char *str)
-// {
-// 	int	depth;
 
-// 	depth = 0;
-// 	while (*str != '\0')
-// 	{
-// 		if (*str == '(')
-// 			depth++;
-// 		if (*str == ')')
-// 			depth--;
-// 		if (*str == '&' && *(str + 1) == '&' && depth == 0)
-// 			return ((char *)str);
-// 		if (*str == '|' && *(str + 1) == '|' && depth == 0)
-// 			return ((char *)str);
-// 		str++;
-// 	}
-// 	return (NULL);
-// }
+static char	*get_log_op(const char *str)
+{
+	int	depth;
+
+	depth = 0;
+	while (*str != '\0')
+	{
+		if (*str == '(')
+			depth++;
+		if (*str == ')')
+			depth--;
+		if (*str == '&' && *(str + 1) == '&' && depth == 0)
+			return ((char *)str);
+		if (*str == '|' && *(str + 1) == '|' && depth == 0)
+			return ((char *)str);
+		str++;
+	}
+	return (NULL);
+}
 
 static int	handle_task(const char *str, t_minishell *minishell)
 {
@@ -59,10 +56,37 @@ static int	handle_task(const char *str, t_minishell *minishell)
 	return (0);
 }
 
-int	exe_cmd(const char *str, t_minishell *minishell)
-{
-	return (handle_task(str, minishell));
-}
+// cmd1 && (cmd2 || cmd3)
+// cmd1 && cmd2 || cmd3
+// (cmd1 && (cmd2 || cmd3)) || (cmd4 && cmd5) && cmd6
+// (cmd1 && cmd2) || (cmd3 && cmd4) || cmd5 && cmd6
+// int	exe_cmd(const char *str, t_minishell *minishell)
+// {
+// 	char	*log_op;
+// 	char	*sub_str;
+// 	int		exit_status;
+
+// 	log_op = get_log_op(str);
+// 	if (log_op == NULL)
+// 	{
+// 		// Trim one level of () in str
+// 		log_op = get_log_op(str);
+// 	}
+// 	if (log_op != NULL)
+// 	{
+// 		sub_str = ft_substr(str, 0, log_op - str);
+// 		// Trim one level of () in sub_str
+// 		exit_status = exe_cmd(sub_str, minishell);
+// 		free(sub_str);
+// 	}
+// 	else
+// 	{
+
+// 		exit_status = exe_cmd(str, minishell);
+// 	}
+
+// 	return (handle_task(str, minishell));
+// }
 
 // int main(void)
 // {

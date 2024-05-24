@@ -30,6 +30,9 @@ SOURCES :=	main.c \
 			exe_builtin.c \
 			\
 			init_minishell.c \
+			resolve_env.c \
+			set_exit_status.c \
+			expand.c \
 			clean_up.c \
 			add_signal_handler.c \
 			is_builtin_cmd.c \
@@ -51,8 +54,8 @@ OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
-#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
-	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
+	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
+#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
 	@echo "$(YELLOW)$@$(RESET) created."
 
 $(BUILD_DIR):
