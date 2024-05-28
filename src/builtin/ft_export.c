@@ -3,29 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 14:40:25 by mito              #+#    #+#             */
-/*   Updated: 2024/05/16 16:30:00 by mito             ###   ########.fr       */
+/*   Created: 2024/05/22 11:21:12 by mito              #+#    #+#             */
+/*   Updated: 2024/05/27 19:20:45 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "utils.h"
 
-// if it already exists, it overwrite
-// variable name can contain _
-// if it contains other char: not a valid identifier
+static int print_export_list(t_list *export_list)
+{
+	char	*eq_sign;
+	t_node	*node;
 
-t_bool is_key_exist(t_node *node, void *data) // data = cmd->argv[i], node is element of env_list
+	node = export_list->head;
+	while (node != NULL)
+	{
+		if (write(1, "declare -x ", 11) < 0)
+			return (1);
+		eq_sign = ft_strchr((const char *)node->data, '=');
+		if (eq_sign == NULL)
+			printf("%s\n", (const char *)node->data);
+		else
+		{
+			if (write(1, node->data, eq_sign - (char *)node->data + 1) < 0)
+				return (1);
+			if (printf("\"%s\"\n", eq_sign + 1) < 0)
+				return (1);
+		}
+		node = node->next;
+	}
+	return (0);
+}
+
+static int	handle_key_validation(const char *str)
+{
+	char	*eq_ptr;
+	char	*export_key;
+
+	eq_ptr = ft_strchr(str, '=');
+	if (eq_ptr == NULL)
+	{
+		if (!is_valid_env_key(str))
+		{
+			ft_fprintf(2,
+				"minishell: export: `%s': not a valid identifier\n", str);
+			return (1);
+		}
+	}
+	export_key = ft_substr(str, 0, eq_ptr - str);
+	if (export_key == NULL)
+		return (perror("minishell: ft_substr()\n"), 1);
+	if (!is_valid_env_key(export_key))
+	{
+		ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", str);
+		free(export_key);
+		return (1);
+	}
+	free(export_key);
+	return (0);
+}
+
+static t_bool	is_key_exist(t_node *node, void *data)
 {
 	const char	*ev_node = (const char *)node->data;
 	const char	*en_data = (char *)data;
+	char		*env_node_eq_ptr;
+	char		*en_data_eq_ptr;
 
-	char *env_node_eq_ptr;
-	char *en_data_eq_ptr;
 	env_node_eq_ptr = ft_strchr(ev_node, '=');
 	en_data_eq_ptr = ft_strchr(en_data, '=');
-
 	if (
 		(env_node_eq_ptr - ev_node) == (en_data_eq_ptr - en_data)
 		&& ft_strncmp(ev_node, en_data, (env_node_eq_ptr - ev_node)) == 0
@@ -35,36 +84,92 @@ t_bool is_key_exist(t_node *node, void *data) // data = cmd->argv[i], node is el
 		return (false);
 }
 
-static int	add_node(t_list *env_list, const char *str)
+static int	add_node(t_list *env_list, t_list *export_list, const char *str)
 {
 	char	*cmd_dup;
-	t_node	*node;
 
-	cmd_dup = ft_strdup(str);
+	cmd_dup = ft_strdup(str); // create address 0x100 with value of str
 	if (cmd_dup == NULL)
 		return (-1);
-	node = ft_list_node(cmd_dup);
-	if (node == NULL)
+	if (ft_list_push(export_list, cmd_dup) < 0)
 	{
 		free(cmd_dup);
 		return (-1);
 	}
-	ft_list_push(env_list, node);
+	if (ft_strchr(str, '=') != NULL)
+	{
+		cmd_dup = ft_strdup(str); // create address 0x200 with value of str and cmd_dup --> 0x200 now but export_list->tail->data still --> 0x100
+		if (cmd_dup == NULL)
+			return (-1);
+		if (ft_list_push(env_list, cmd_dup) < 0)
+		{
+			free(cmd_dup);
+			return (-1);
+		}
+	}
 	return (0);
 }
 
-int		ft_export(t_command *cmd, t_list *env_list)
+// int	ft_export(t_command *cmd, t_list *env_list)
+// {
+// 	int		i;
+// 	t_node	*node;
+// 	int		exit_status;
+
+// 	i = 1;
+// 	exit_status = 0;
+// 	while (cmd->argv[i] != NULL)
+// 	{
+// 		if (handle_key_validation(cmd->argv[i]) == 1)
+// 		{
+// 			exit_status = 1;
+// 			i++;
+// 			continue ;
+// 		}
+// 		node = ft_list_find(env_list, cmd->argv[i], is_key_exist);
+// 		if (node == NULL)
+// 			add_node(env_list, cmd->argv[i]);
+// 		else
+// 		{
+// 			free(node->data);
+// 			node->data = ft_strdup(cmd->argv[i]);
+// 		}
+// 		i++;
+// 	}
+// 	return (exit_status);
+// }
+
+
+// to implement export
+
+//declare -x TERM_PROGRAM="iTerm.app"
+//TERM_PROGRAM=
+//iTerm.app
+
+
+
+int	ft_export(t_command *cmd, t_list *env_list, t_list *export_list)
 {
 	int		i;
 	t_node	*node;
-	char	*cmd_dup;
+	int		exit_status;
 
 	i = 1;
+	exit_status = 0;
+
+	if (cmd->argv[1] == NULL) // when the input was only "export"
+		return (print_export_list(export_list));
 	while (cmd->argv[i] != NULL)
 	{
+		if (handle_key_validation(cmd->argv[i]) == 1)
+		{
+			exit_status = 1;
+			i++;
+			continue ;
+		}
 		node = ft_list_find(env_list, cmd->argv[i], is_key_exist);
 		if (node == NULL)
-			add_node(env_list, cmd->argv[i]);
+			add_node(env_list, export_list, cmd->argv[i]);
 		else
 		{
 			free(node->data);
@@ -72,31 +177,5 @@ int		ft_export(t_command *cmd, t_list *env_list)
 		}
 		i++;
 	}
-	return (0);
+	return (exit_status);
 }
-
-static void	print(t_node *node, size_t index)
-{
-	(void)index;
-	printf("%s\n", (char *)node->data);
-}
-// int main(void) {
-// 	t_list *env_list = ft_list(0);
-// 	ft_list_push(env_list, ft_list_node(ft_strdup("ABC=hello")));
-// 	ft_list_push(env_list, ft_list_node(ft_strdup("VSCODE_NONCE=46b9be33-9a93-4467-b759-f67dae90c639")));
-// 	ft_list_push(env_list, ft_list_node(ft_strdup("VSCODE_INJECTION=1")));
-// 	ft_list_push(env_list, ft_list_node(ft_strdup("LANG=en_US.UTF-8")));
-// 	ft_list_push(env_list, ft_list_node(ft_strdup("COLORTERM=truecolor")));
-// 	ft_list_push(env_list, ft_list_node(ft_strdup("HIVE=42")));
-
-// 	ft_list_foreach(env_list, print);
-// 	t_command cmd;
-// 	cmd.argv = malloc(sizeof(char *) * 3);
-// 	cmd.argv[0] = "export";
-// 	cmd.argv[1] = "HIVEE=hi";
-// 	cmd.argv[2] = NULL;
-// 	ft_export(&cmd, env_list);
-// 	printf("\nAfter ft_export\n");
-// 	ft_list_foreach(env_list, print);
-// 	free(cmd.argv);
-// }

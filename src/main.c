@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/20 00:26:26 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/24 16:37:47 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		if (*line != '\0')
 			add_history(line);
+		expand(&line, &minishell);
 		minishell.exit_status = exe_cmd(line, &minishell);
 		free(line);
 	}

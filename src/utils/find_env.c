@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   find_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/08 15:06:36 by mito              #+#    #+#             */
-/*   Updated: 2024/05/20 16:53:23 by mito             ###   ########.fr       */
+/*   Created: 2024/05/24 16:19:26 by mito              #+#    #+#             */
+/*   Updated: 2024/05/24 16:36:42 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "utils.h"
 
-int	ft_env(t_command *cmd, t_list *env_list)
+const char	*find_env(const char *key, t_list *env_list)
 {
 	t_node	*node;
+	char	*ptr;
+	size_t	key_length;
 
-	if (cmd->argv[1] != NULL)
-	{
-		ft_fprintf(
-			2, "%s: %s: %s\n", cmd->argv[0],
-			cmd->argv[1], "No such file or directory"
-		);
-		return (127);
-	}
+	key_length = ft_strlen(key);
 	node = env_list->head;
 	while (node != NULL)
 	{
-		if (printf("%s\n", (char *)node->data) < 0)
-			return (1);
+		ptr = ft_strchr(node->data, '=');
+		if (
+			key_length == (size_t)(ptr - (char *)node->data)
+			&& ft_strncmp(key, node->data, key_length) == 0
+		)
+			return (ptr + 1);
 		node = node->next;
 	}
-	return (0);
+	return (NULL);
 }

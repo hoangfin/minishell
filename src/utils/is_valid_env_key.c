@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   is_valid_env_key.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/27 17:59:45 by mito             ###   ########.fr       */
+/*   Created: 2024/05/22 15:49:31 by mito              #+#    #+#             */
+/*   Updated: 2024/05/24 15:53:43 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "utils.h"
 
-# include "libft.h"
+static t_bool	has_valid_characters(const char *str)
+{
+	while (*str != '\0')
+	{
+		if (!ft_isalnum(*str) && *str != '_')
+			return (false);
+		str++;
+	}
+	return (true);
+}
 
-t_bool		is_builtin_cmd(const char *str);
-t_bool		is_valid_env_key(const char *str);
-const char	*find_env(const char *key, t_list *env_list);
-int			update_env(const char *key, const char *value, t_list *env_list);
-t_list		*clone_env_list(t_list *src_list);
-
-#endif
+t_bool	is_valid_env_key(const char *str)
+{
+	if (
+		ft_isdigit(*str)
+		|| *str == '\0'
+		|| ft_has_space(str)
+		|| !has_valid_characters(str)
+	)
+		return (false);
+	return (true);
+}

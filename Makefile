@@ -22,8 +22,10 @@ CC := cc
 CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
 
 SOURCES :=	main.c \
+			ft_cd.c \
 			ft_echo.c \
 			ft_exit.c \
+			ft_env.c \
 			ft_export.c \
 			ft_pwd.c \
 			ft_unset.c \
@@ -35,7 +37,12 @@ SOURCES :=	main.c \
 			expand.c \
 			clean_up.c \
 			add_signal_handler.c \
+			\
+			clone_env_list.c \
 			is_builtin_cmd.c \
+			is_valid_env_key.c \
+			find_env.c \
+			update_env.c \
 			\
 			count_arguments.c \
 			delete_cmd.c \
@@ -45,8 +52,6 @@ SOURCES :=	main.c \
 			\
 			delete_io.c \
 			new_io.c
-#			ft_cd.c
-#			ft_env.c
 
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)

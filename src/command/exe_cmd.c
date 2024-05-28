@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/22 23:34:54 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/27 17:15:33 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int	handle_task(const char *str, t_minishell *minishell)
 		return (exe_builtin(
 			((t_command *)cmd_list->head->data),
 			minishell->env_list,
+			minishell->export_list,
 			minishell->exit_status
 		));
 	return (0);
@@ -60,33 +61,33 @@ static int	handle_task(const char *str, t_minishell *minishell)
 // cmd1 && cmd2 || cmd3
 // (cmd1 && (cmd2 || cmd3)) || (cmd4 && cmd5) && cmd6
 // (cmd1 && cmd2) || (cmd3 && cmd4) || cmd5 && cmd6
-// int	exe_cmd(const char *str, t_minishell *minishell)
-// {
-// 	char	*log_op;
-// 	char	*sub_str;
-// 	int		exit_status;
+int	exe_cmd(const char *str, t_minishell *minishell)
+{
+	// char	*log_op;
+	// char	*sub_str;
+	// int		exit_status;
 
-// 	log_op = get_log_op(str);
-// 	if (log_op == NULL)
-// 	{
-// 		// Trim one level of () in str
-// 		log_op = get_log_op(str);
-// 	}
-// 	if (log_op != NULL)
-// 	{
-// 		sub_str = ft_substr(str, 0, log_op - str);
-// 		// Trim one level of () in sub_str
-// 		exit_status = exe_cmd(sub_str, minishell);
-// 		free(sub_str);
-// 	}
-// 	else
-// 	{
+	// log_op = get_log_op(str);
+	// if (log_op == NULL)
+	// {
+	// 	// Trim one level of () in str
+	// 	log_op = get_log_op(str);
+	// }
+	// if (log_op != NULL)
+	// {
+	// 	sub_str = ft_substr(str, 0, log_op - str);
+	// 	// Trim one level of () in sub_str
+	// 	exit_status = exe_cmd(sub_str, minishell);
+	// 	free(sub_str);
+	// }
+	// else
+	// {
 
-// 		exit_status = exe_cmd(str, minishell);
-// 	}
+	// 	exit_status = exe_cmd(str, minishell);
+	// }
+	return (handle_task(str, minishell));
+}
 
-// 	return (handle_task(str, minishell));
-// }
 
 // int main(void)
 // {

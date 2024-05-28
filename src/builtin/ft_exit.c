@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:26:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/19 23:57:22 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/21 18:08:54 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "command.h"
 
 static int	is_str_digit(char *str)
 {
@@ -26,35 +27,26 @@ static int	is_str_digit(char *str)
 	return (1);
 }
 
+static int	print_exit(const char *arg, const char *err_msg, int exit_code)
+{
+	ft_fprintf(STDERR_FILENO, "minishell: exit: %s%s\n", arg, err_msg);
+	return (exit_code);
+}
+
 int	ft_exit(t_command *cmd, int last_exit_status)
 {
-	int exit_code;
-	int i;
+	int		exit_code;
+	t_bool	overflow;
 
-	exit_code = 1;
-	i = 0;
-	ft_putendl_fd("exit", STDERR_FILENO);
-	if (count_arguments(cmd) == 1) // when it is only "exit"
-		exit_code = 0;
-	else if (count_arguments(cmd) == 2)
-	{
-		if (!(is_str_digit(cmd->argv[1]))) // if it contains non-numeric char
-		{
-			ft_fprintf(STDERR_FILENO, "%s%s\n", cmd->argv[1], ": numeric argument required");
-			exit_code = 255;
-		}
-		else
-			exit_code = ft_atoi(cmd->argv[1], false); // true or false?
-	}
-	else // if there are more than 1 args
-	{
-		if (is_str_digit(cmd->argv[1])) // check if the first arg contains non-numeric chars
-		{
-			ft_fprintf(STDERR_FILENO, "%s%s\n", cmd->argv[1], ": numeric argument required");
-			exit_code = 255;
-		}
-		else
-			ft_fprintf(STDERR_FILENO, "%s%s\n", cmd->argv[0], ": too many arguments");
-	}
-	return (exit_code);
+	overflow = false;
+	if (cmd->argv[1] == NULL)
+		return (last_exit_status);
+	if (!is_str_digit(cmd->argv[1]))
+		return (print_exit(cmd->argv[1], ": numeric argument required", 255));
+	exit_code = ft_atol(cmd->argv[1], &overflow);
+	if (overflow)
+		return (print_exit(cmd->argv[1], ": numeric argument required", 255));
+	if (count_arguments(cmd) > 2)
+		return (print_exit(cmd->argv[1], ": too many arguments", 1));
+	return (exit_code % 256);
 }

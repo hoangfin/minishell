@@ -1,16 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 10:48:28 by mito              #+#    #+#             */
-/*   Updated: 2024/05/27 18:19:28 by mito             ###   ########.fr       */
+/*   Created: 2024/05/24 17:33:35 by mito              #+#    #+#             */
+/*   Updated: 2024/05/24 18:22:19 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "utils.h"
 
 static t_bool is_key_exist(t_node *node, void *data)
@@ -31,30 +30,18 @@ static t_bool is_key_exist(t_node *node, void *data)
 		return (false);
 }
 
-int		ft_unset(t_command *cmd, t_list *env_list, t_list *export_list)
+int	update_env(const char *key, const char *value, t_list *env_list)
 {
-	int i;
-	int	exit_status;
+	t_node	*node;
+	char	*new_env;
 
-	i = 1;
-	exit_status = 0;
-	while (cmd->argv[i] != NULL)
-	{
-		if (!is_valid_env_key(cmd->argv[i]))
-		{
-			ft_fprintf(
-				2,
-				"minishell: unset: `%s': not a valid identifier\n",
-				cmd->argv[i]
-			);
-			exit_status = 1;
-		}
-		else
-		{
-			ft_list_remove(env_list, cmd->argv[i], is_key_exist, free);
-			ft_list_remove(export_list, cmd->argv[i], is_key_exist, free);
-		}
-		i++;
-	}
-	return (exit_status);
+	node = ft_list_find(env_list, key, is_key_exist);
+	if (node == NULL)
+		return (0);
+	new_env = ft_join_strings(3, key, "=", value);
+	if (new_env == NULL)
+		return (-1);
+	free(node->data);
+	node->data = new_env;
+	return (0);
 }
