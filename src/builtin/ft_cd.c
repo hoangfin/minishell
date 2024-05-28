@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 15:02:39 by mito              #+#    #+#             */
-/*   Updated: 2024/05/27 14:22:54 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/28 23:43:07 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
+#include <errno.h>
 #include "builtin.h"
 #include "utils.h"
 
 static void	update_pwd(const char *current_path, t_list *env_list)
 {
 	const char	*pwd;
-	const char	*old_pwd;
 
 	pwd = find_env("PWD", env_list);
 	if (pwd != NULL)
@@ -27,7 +28,6 @@ static void	update_pwd(const char *current_path, t_list *env_list)
 static int go_home(t_list *env_list)
 {
 	const char	*home_path;
-	const char	*pwd;
 
 	home_path = find_env("HOME", env_list);
 	if (chdir(home_path) == -1)

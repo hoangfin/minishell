@@ -6,11 +6,12 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:44:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/19 14:52:47 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/27 12:58:33 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
+#include "io.h"
 
 static int	extract(char *str, int c, char **result)
 {
@@ -94,6 +95,23 @@ static int	init_cmd(t_command *cmd, const char *str)
 	return (0);
 }
 
+static t_bool	is_builtin_cmd(const char *str)
+{
+	int			i;
+	const char	*builtin_cmds[] = {
+		"cd", "echo", "env", "exit", "export", "pwd", "unset"
+	};
+
+	i = 0;
+	while (i < 7)
+	{
+		if (ft_strcmp(str, builtin_cmds[i]) == 0)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
 t_command	*new_cmd(const char *str)
 {
 	t_command	*cmd;
@@ -112,5 +130,6 @@ t_command	*new_cmd(const char *str)
 		delete_cmd(cmd);
 		return (NULL);
 	}
+	cmd->is_builtin = is_builtin_cmd(cmd->argv[0]);
 	return (cmd);
 }

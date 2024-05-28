@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/24 16:37:47 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/28 23:41:36 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "minishell.h"
-#include "command.h"
 #include "minishell_signal.h"
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -28,7 +28,6 @@ static void	handle_sigint(int signum)
 int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	minishell;
-	char		*line;
 
 	(void)argc;
 	(void)argv;
@@ -39,18 +38,7 @@ int	main(int argc, char **argv, char **envp)
 		return (perror("error"), EXIT_FAILURE);
 	if (init_minishell(&minishell, envp) < 0)
 		return (EXIT_FAILURE);
-	while (1)
-	{
-		line = readline("minishell> ");
-		if (line == NULL)
-			break ;
-		if (*line != '\0')
-			add_history(line);
-		expand(&line, &minishell);
-		minishell.exit_status = exe_cmd(line, &minishell);
-		free(line);
-	}
-	rl_clear_history();
-	clean_up(&minishell);
+	start_minishell(&minishell);
+	delete_minishell(&minishell);
 	return (EXIT_SUCCESS);
 }

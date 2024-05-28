@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   delete_cmd.c                                       :+:      :+:    :+:   */
+/*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 22:26:51 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/25 12:30:47 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/25 12:03:55 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/28 23:53:59 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "command.h"
-#include "io.h"
+#ifndef EXECUTION_H
+# define EXECUTION_H
 
-void	delete_cmd(void *cmd)
-{
-	t_command	*cmd_ptr;
+# include "minishell.h"
+# include "command.h"
 
-	cmd_ptr = (t_command *)cmd;
-	if (cmd_ptr == NULL)
-		return ;
-	ft_del_str_arr(&cmd_ptr->argv);
-	ft_list_clear(&cmd_ptr->input_list, delete_io);
-	ft_list_clear(&cmd_ptr->output_list, delete_io);
-}
+int	execute(const char *str, t_minishell *minishell);
+int	run(const char *str, t_minishell *minishell);
+int	run_on_current_process(t_command *cmd, t_minishell *minishell);
+int	run_builtin(t_command *cmd, t_minishell *minishell);
+int	run_on_sub_process(t_list *cmd_list, t_minishell *minishell);
+
+#endif
+

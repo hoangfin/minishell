@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   delete_cmd.c                                       :+:      :+:    :+:   */
+/*   find_logical_op.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 22:26:51 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/25 12:30:47 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/25 13:28:06 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/25 14:49:49 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "command.h"
-#include "io.h"
+#include <stddef.h>
 
-void	delete_cmd(void *cmd)
+const char	*find_logical_op(const char *str)
 {
-	t_command	*cmd_ptr;
+	int	depth;
 
-	cmd_ptr = (t_command *)cmd;
-	if (cmd_ptr == NULL)
-		return ;
-	ft_del_str_arr(&cmd_ptr->argv);
-	ft_list_clear(&cmd_ptr->input_list, delete_io);
-	ft_list_clear(&cmd_ptr->output_list, delete_io);
+	depth = 0;
+	while (*str != '\0')
+	{
+		if (*str == '(')
+			depth++;
+		if (*str == ')')
+			depth--;
+		if (*str == '&' && *(str + 1) == '&' && depth == 0)
+			return (str);
+		if (*str == '|' && *(str + 1) == '|' && depth == 0)
+			return (str);
+		str++;
+	}
+	return (NULL);
 }

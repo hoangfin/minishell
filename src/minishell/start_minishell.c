@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_builtin_cmd.c                                   :+:      :+:    :+:   */
+/*   start_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/19 23:05:46 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/19 23:17:28 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/25 17:30:23 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/25 17:36:10 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "minishell.h"
+#include "execution.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
-t_bool	is_builtin_cmd(const char *str)
+void	start_minishell(t_minishell *minishell)
 {
-	int			i;
-	const char	*builtin_cmds[] = {
-		"cd", "echo", "env", "exit", "export", "pwd", "unset"
-	};
+	char	*line;
 
-	i = 0;
-	while (i < 7)
+	while (1)
 	{
-		if (ft_strcmp(str, builtin_cmds[i]) == 0)
-			return (true);
-		i++;
+		line = readline("minishell> ");
+		if (line == NULL)
+			break ;
+		if (*line == '\0')
+			continue ;
+		add_history(line);
+		expand(&line, minishell);
+		minishell->exit_status = execute(line, minishell);
+		free(line);
 	}
-	return (false);
+	rl_clear_history();
 }

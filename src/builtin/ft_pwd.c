@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:17:05 by mito              #+#    #+#             */
-/*   Updated: 2024/05/20 16:08:12 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/28 23:43:57 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "builtin.h"
 
-int	ft_pwd(t_command *cmd)
+int	ft_pwd(void)
 {
 	char	buffer[1024];
 

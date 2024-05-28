@@ -15,6 +15,7 @@ VPATH :=	src \
 			src/minishell \
 			src/signal \
 			src/utils \
+			src/execution
 
 LIBFT := $(LIBFT_DIR)/libft.a
 
@@ -29,29 +30,36 @@ SOURCES :=	main.c \
 			ft_export.c \
 			ft_pwd.c \
 			ft_unset.c \
-			exe_builtin.c \
 			\
+			delete_minishell.c \
+			expand.c \
 			init_minishell.c \
 			resolve_env.c \
 			set_exit_status.c \
-			expand.c \
-			clean_up.c \
+			start_minishell.c \
+			\
 			add_signal_handler.c \
 			\
 			clone_env_list.c \
-			is_builtin_cmd.c \
 			is_valid_env_key.c \
 			find_env.c \
 			update_env.c \
+			find_logical_op.c \
+			find_param_exp.c \
+			ungroup.c \
 			\
 			count_arguments.c \
 			delete_cmd.c \
-			exe_cmd.c \
 			new_cmd.c \
 			parse_cmd.c \
 			\
 			delete_io.c \
-			new_io.c
+			new_io.c \
+			\
+			execute.c \
+			run.c \
+			run_builtin.c \
+			run_on_current_process.c
 
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
@@ -59,8 +67,8 @@ OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
-	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
-#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
+#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
+	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
 	@echo "$(YELLOW)$@$(RESET) created."
 
 $(BUILD_DIR):

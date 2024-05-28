@@ -1,26 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   delete_cmd.c                                       :+:      :+:    :+:   */
+/*   ungroup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 22:26:51 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/25 12:30:47 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/25 15:02:11 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/25 15:51:10 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "command.h"
-#include "io.h"
-
-void	delete_cmd(void *cmd)
+void	ungroup(char *str)
 {
-	t_command	*cmd_ptr;
+	int	i;
+	int	j;
+	int	depth;
 
-	cmd_ptr = (t_command *)cmd;
-	if (cmd_ptr == NULL)
-		return ;
-	ft_del_str_arr(&cmd_ptr->argv);
-	ft_list_clear(&cmd_ptr->input_list, delete_io);
-	ft_list_clear(&cmd_ptr->output_list, delete_io);
+	i = 0;
+	j = 0;
+	depth = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '(')
+		{
+			if (depth != 0)
+				str[j++] = str[i];
+			depth++;
+		}
+		else if (str[i] == ')')
+		{
+			depth--;
+			if (depth != 0)
+				str[j++] = str[i];
+		}
+		else
+			str[j++] = str[i];
+		i++;
+	}
+	str[j] = '\0';
 }

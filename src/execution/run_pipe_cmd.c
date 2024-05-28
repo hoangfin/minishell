@@ -1,36 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   run_on_sub_process.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/08 15:06:36 by mito              #+#    #+#             */
-/*   Updated: 2024/05/28 23:39:11 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/26 21:12:53 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/26 22:16:18 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "builtin.h"
+#include "execution.h"
+#include <sys/wait.h>
+#include <errno.h>
 
-int	ft_env(t_command *cmd, t_list *env_list)
+int	run_on_sub_process(t_list *cmd_list, t_minishell *minishell)
 {
+	pid_t	*pid;
 	t_node	*node;
+	int		wstatus;
 
-	if (cmd->argv[1] != NULL)
-	{
-		ft_fprintf(
-			2, "%s: %s: %s\n", cmd->argv[0],
-			cmd->argv[1], "No such file or directory"
-		);
-		return (127);
-	}
-	node = env_list->head;
+	node = cmd_list->head;
 	while (node != NULL)
 	{
-		if (printf("%s\n", (char *)node->data) < 0)
-			return (1);
+		pid = fork();
+		if (pid == 0)
+			run_command(node->data, minishell);
 		node = node->next;
 	}
-	return (0);
+	while (1)
+	{
+		if (wait(&wstatus) == -1 && errno == ECHILD)
+			break ;
+		if (w)
+	}
+	return ()
 }

@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:21:12 by mito              #+#    #+#             */
-/*   Updated: 2024/05/27 19:20:45 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/28 23:39:36 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "builtin.h"
 #include "utils.h"
 
