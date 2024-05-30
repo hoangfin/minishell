@@ -6,16 +6,17 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 15:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/28 23:53:37 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/30 22:13:22 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+#include "constants.h"
 #include "execution.h"
 #include "builtin.h"
 #include "io.h"
+#include "utils.h"
 
 // static void	handle_execve_error(t_pipex *pipex, char *cmd_name)
 // {
@@ -97,31 +98,15 @@
 // 	return (-1);
 // }
 
-static int	set_output(t_command *cmd)
+static int	handle_error(const char *err_src, const char *err_msg)
 {
-	t_node	*node;
-	t_io	*io;
-	int		fd;
-
-	node = cmd->output_list->head;
-	while (node != NULL)
-	{
-		io = (t_io *)node->data;
-		if (io->redi_type == REDIR_OUTPUT)
-			fd = open(io->token, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		else if (io->redi_type == REDIR_APPEND)
-			fd = open(io->token, O_RDWR | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
-		{
-			ft_fprintf(2, "minishell: %s: %s\n", io->token, strerror(errno));
-			return (-1);
-		}
-		if (dup2(fd, STDOUT_FILENO) < 0)
-			return (ft_fprintf(2, "minishell: dup2: %s\n", strerror(errno)), -1);
-		if (close(fd) < 0)
-			return (ft_fprintf(2, "minishell: close: %s\n", strerror(errno)), -1);
-		node = node->next;
-	}
+	ft_fprintf(\
+		STDERR_FILENO, \
+		"minishell: %s: %s\n", \
+		err_src, \
+		err_msg \
+	);
+	return (1);
 }
 
 int	run_on_current_process(t_command *cmd, t_minishell *minishell)
@@ -131,22 +116,17 @@ int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 	int			exit_status;
 
 	if (stdin < 0 || stdout < 0)
-	{
-		ft_fprintf(2, "minishell: dup: %s\n", strerror(errno));
-		return (1);
-	}
-	if (set_output(cmd) < 0)
+		return (handle_error("dup", strerror(errno)));
+	if (
+		redirect_input(cmd->input_list) < 0
+		|| redirect_output(cmd->output_list) < 0
+	)
 		return (1);
 	exit_status = run_builtin(cmd, minishell);
+	unlink(HERE_DOC_TEMP_FILE);
 	if (dup2(stdin, STDIN_FILENO) < 0 || dup2(stdout, STDOUT_FILENO) < 0)
-	{
-		ft_fprintf(2, "minishell: dup2: %s\n", strerror(errno));
-		return (1);
-	}
+		return (handle_error("dup2", strerror(errno)));
 	if (close(stdin) < 0 || close(stdout) < 0)
-	{
-		ft_fprintf(2, "minishell: close: %s\n", strerror(errno));
-		return (1);
-	}
+		return (handle_error("close", strerror(errno)));
 	return (exit_status);
 }

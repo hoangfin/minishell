@@ -38,8 +38,6 @@ SOURCES :=	main.c \
 			set_exit_status.c \
 			start_minishell.c \
 			\
-			add_signal_handler.c \
-			\
 			clone_env_list.c \
 			is_valid_env_key.c \
 			find_env.c \
@@ -47,6 +45,8 @@ SOURCES :=	main.c \
 			find_logical_op.c \
 			find_param_exp.c \
 			ungroup.c \
+			redirect_input.c \
+			redirect_output.c \
 			\
 			count_arguments.c \
 			delete_cmd.c \

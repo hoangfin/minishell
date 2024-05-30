@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 11:56:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/19 10:27:11 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/29 20:29:55 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_io	*new_io(const char *str, int redir_symbol)
 	token = get_token(str);
 	if (token == NULL)
 		return (NULL);
-	io = (t_io *)malloc(sizeof(t_io));
+	io = (t_io *)ft_calloc(1, sizeof(t_io));
 	if (io == NULL)
 	{
 		free(token);

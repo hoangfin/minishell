@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:33:35 by mito              #+#    #+#             */
-/*   Updated: 2024/05/24 18:22:19 by mito             ###   ########.fr       */
+/*   Updated: 2024/05/30 14:31:13 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	update_env(const char *key, const char *value, t_list *env_list)
 	t_node	*node;
 	char	*new_env;
 
-	node = ft_list_find(env_list, key, is_key_exist);
+	node = ft_list_find(env_list, (void *)key, is_key_exist);
 	if (node == NULL)
 		return (0);
 	new_env = ft_join_strings(3, key, "=", value);

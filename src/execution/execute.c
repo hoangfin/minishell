@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/26 18:49:46 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/30 14:29:07 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@
 // (cmd1 && cmd2) || (cmd3 && cmd4) || cmd5 && cmd6
 
 /**
- * 
+ *
 */
 int	execute(const char *str, t_minishell *minishell)
 {
-	char	*logical_op;
-	char	*sub_str;
-	int		exit_status;
+	const char	*logical_op;
+	char		*sub_str;
+	int			exit_status;
 
 	logical_op = find_logical_op(str);
 	if (logical_op == NULL)
 	{
-		ungroup(str);
+		ungroup((char *)str);
 		logical_op = find_logical_op(str);
 	}
 	if (logical_op == NULL)

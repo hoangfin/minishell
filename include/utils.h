@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/28 23:19:42 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/29 22:47:26 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@ t_list		*clone_env_list(t_list *src_list);
 const char	*find_logical_op(const char *str);
 const char	*find_param_exp(const char *str);
 void		ungroup(char *str);
+int			redirect_input(t_list *input_list);
+int			redirect_output(t_list *output_list);
 
 #endif

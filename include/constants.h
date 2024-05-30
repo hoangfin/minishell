@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_signal.h                                 :+:      :+:    :+:   */
+/*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 01:24:46 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/13 01:34:45 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/30 21:40:31 by hoatran           #+#    #+#             */
+/*   Updated: 2024/05/30 21:54:02 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_SIGNAL_H
-# define MINISHELL_SIGNAL_H
+#ifndef CONSTANTS_H
+# define CONSTANTS_H
 
-#include <signal.h>
+# define HERE_DOC_PROMPT "heredoc> "
+# define HERE_DOC_TEMP_FILE ".heredoc"
 
-int	add_signal_handler(int signum, sig_t handler);
-
-# endif
+#endif
