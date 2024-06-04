@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   delete_cmd.c                                       :+:      :+:    :+:   */
+/*   get_envp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 22:26:51 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/04 20:05:12 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/01 22:30:11 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/02 22:23:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "command.h"
-#include "io.h"
+#include "utils.h"
 
-void	delete_cmd(void *cmd)
+char *const	*get_envp(t_list *env_list)
 {
-	t_command	*cmd_ptr;
+	char	**envp;
+	size_t	i;
+	t_node	*node;
 
-	cmd_ptr = (t_command *)cmd;
-	if (cmd_ptr == NULL)
-		return ;
-	ft_del_str_arr(&cmd_ptr->argv);
-	ft_list_clear(&cmd_ptr->input_list, delete_io);
-	ft_list_clear(&cmd_ptr->output_list, delete_io);
-	free(cmd);
+	if (env_list == NULL || env_list->length == 0)
+		return (NULL);
+	envp = (char **)ft_calloc(env_list->length + 1, sizeof(char *));
+	if (envp == NULL)
+		return (NULL);
+	i = 0;
+	node = env_list->head;
+	while (node != NULL)
+	{
+		envp[i++] = (char *)node->data;
+		node = node->next;
+	}
+	return ((char *const *)envp);
 }

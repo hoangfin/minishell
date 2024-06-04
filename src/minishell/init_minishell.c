@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 14:36:12 by mito              #+#    #+#             */
-/*   Updated: 2024/05/28 23:38:37 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/05/31 23:11:23 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	init_minishell(t_minishell *minishell, char **envp)
 	minishell->export_list = clone_env_list(minishell->env_list);
 	if (minishell->export_list == NULL)
 		return (delete_minishell(minishell), -1);
-	minishell->cmd_list = NULL;
 	set_exit_status(0, minishell);
 	return (0);
 }

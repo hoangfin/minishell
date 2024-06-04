@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   find_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:19:26 by mito              #+#    #+#             */
-/*   Updated: 2024/05/24 16:36:42 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/01 22:49:31 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
+/**
+ * The `find_env()` returns value (string part after `=` sign) of environment
+ * variable that is identified by `key` string. If no matching key is found,
+ * NULL is returned.
+ *
+*/
 const char	*find_env(const char *key, t_list *env_list)
 {
 	t_node	*node;

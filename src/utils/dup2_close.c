@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.h                                          :+:      :+:    :+:   */
+/*   dup2_close.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/12 17:18:49 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/31 15:33:03 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/03 12:15:05 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/03 12:18:48 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMAND_H
-# define COMMAND_H
+#include <unistd.h>
+#include <stdio.h>
 
-# include "libft.h"
-
-typedef struct s_command
+int	dup2_close(int oldfd, int newfd)
 {
-	char	**argv;
-	t_list	*input_list;
-	t_list	*output_list;
-	t_bool	is_builtin;
-}	t_command;
-
-t_command	*new_cmd(const char *str);
-void		delete_cmd(void *cmd);
-size_t		count_arguments(t_command *cmd);
-
-#endif
+	if (dup2(oldfd, newfd) < 0)
+	{
+		perror("minishell: dup2");
+		return (-1);
+	}
+	if (close(oldfd) < 0)
+	{
+		perror("minishell: close");
+		return (-1);
+	}
+	return (0);
+}

@@ -15,7 +15,7 @@ VPATH :=	src \
 			src/minishell \
 			src/signal \
 			src/utils \
-			src/execution
+			src/executor
 
 LIBFT := $(LIBFT_DIR)/libft.a
 
@@ -25,41 +25,48 @@ CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
 SOURCES :=	main.c \
 			ft_cd.c \
 			ft_echo.c \
-			ft_exit.c \
 			ft_env.c \
+			ft_exit.c \
 			ft_export.c \
 			ft_pwd.c \
 			ft_unset.c \
 			\
+			delete_executor.c \
 			delete_minishell.c \
+			execute_command.c \
+			execute.c \
 			expand.c \
 			init_minishell.c \
+			new_executor.c \
 			resolve_env.c \
+			run_executor.c \
 			set_exit_status.c \
 			start_minishell.c \
 			\
 			clone_env_list.c \
-			is_valid_env_key.c \
+			close_pipes.c \
+			count_str_array.c \
+			dup2_close.c \
 			find_env.c \
-			update_env.c \
 			find_logical_op.c \
 			find_param_exp.c \
-			ungroup.c \
+			get_envp.c \
+			get_path.c \
+			is_directory.c \
+			is_valid_env_key.c \
+			parse_cmd_list.c \
 			redirect_input.c \
 			redirect_output.c \
+			ungroup.c \
+			update_env.c \
+			wait_all.c \
 			\
 			count_arguments.c \
 			delete_cmd.c \
 			new_cmd.c \
-			parse_cmd.c \
 			\
 			delete_io.c \
-			new_io.c \
-			\
-			execute.c \
-			run.c \
-			run_builtin.c \
-			run_on_current_process.c
+			new_io.c
 
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)

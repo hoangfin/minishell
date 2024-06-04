@@ -19,3 +19,8 @@ exit 42Tokyo
 exit 42 41 40
 exit 42 hello
 exit hello 42
+
+
+echo hello | sleep 10 (Press ctrl + C then echo $? to test exit status code return)
+sleep 10 | echo hello (Press ctrl + C then echo $? to test exit status code return)
+

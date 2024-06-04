@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.h                                          :+:      :+:    :+:   */
+/*   delete_executor.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/12 17:18:49 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/31 15:33:03 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/31 20:09:53 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/04 10:34:30 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMAND_H
-# define COMMAND_H
+#include "minishell.h"
+#include "command.h"
 
-# include "libft.h"
-
-typedef struct s_command
+void	delete_executor(void *executor_ptr)
 {
-	char	**argv;
-	t_list	*input_list;
-	t_list	*output_list;
-	t_bool	is_builtin;
-}	t_command;
+	t_executor	*ex;
 
-t_command	*new_cmd(const char *str);
-void		delete_cmd(void *cmd);
-size_t		count_arguments(t_command *cmd);
-
-#endif
+	ex = (t_executor *)executor_ptr;
+	if (ex == NULL)
+		return ;
+	if (ex->cmd_list != NULL)
+		ft_list_clear(&ex->cmd_list, delete_cmd);
+	free(ex->pids);
+	if (ex->pipes != NULL)
+		ft_array_delete(ex->pipes, sizeof(int *), ex->num_of_pipes, free);
+	free(ex);
+}

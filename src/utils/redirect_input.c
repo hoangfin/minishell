@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 20:10:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/30 22:01:42 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/03 18:03:59 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,18 @@ static int	heredoc(const char *delimiter)
 	return (fd);
 }
 
-int	redirect_input(t_list *input_list)
+/**
+ * Redirect STDIN_FILENO to the last file descriptor in the provided
+ * linked list.
+ *
+ * @param input_list The pointer to a linked list in which each
+ * 					 list node data is a `t_io *` pointer.
+ *
+ * @returns	On success, `0` is returned. On error, -1 is returned, and
+ * 			`errno` is set to indicate the error.
+ *
+*/
+int	redirect_input(t_list *input_list, int pipedes)
 {
 	t_node	*node;
 	t_io	*io;
@@ -120,11 +131,14 @@ int	redirect_input(t_list *input_list)
 			fd = heredoc(io->token);
 		if (fd < 0)
 			return (handle_error(io->token, strerror(errno)));
-		if (dup2(fd, STDIN_FILENO) < 0)
-			return (handle_error("dup2", strerror(errno)));
-		if (close(fd) < 0)
-			return (handle_error("close", strerror(errno)));
+		if (dup2_close(fd, STDIN_FILENO) < 0)
+			return (-1);
 		node = node->next;
+	}
+	if (pipedes >= 0)
+	{
+		if (dup2_close(pipedes, STDIN_FILENO) < 0)
+			return (-1);
 	}
 	return (0);
 }

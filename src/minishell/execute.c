@@ -6,12 +6,26 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/30 14:29:07 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/04 15:27:52 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include <stdio.h>
+#include "minishell.h"
 #include "utils.h"
+
+static int	run(const char *str, t_minishell *minishell)
+{
+	int	exit_status;
+
+	minishell->executor = new_executor(str);
+	if (minishell->executor == NULL)
+		return (perror("minishell: malloc"), 1);
+	exit_status = run_executor(minishell->executor, minishell);
+	delete_executor(minishell->executor);
+	minishell->executor = NULL;
+	return (exit_status);
+}
 
 // cmd1 && (cmd2 || cmd3)
 // cmd1 && cmd2 || cmd3

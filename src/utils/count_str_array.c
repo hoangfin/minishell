@@ -1,38 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_on_sub_process.c                               :+:      :+:    :+:   */
+/*   count_str_array.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 21:12:53 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/26 22:16:18 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/02 22:53:10 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/02 22:59:25 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
-#include <sys/wait.h>
-#include <errno.h>
+#include "utils.h"
 
-int	run_on_sub_process(t_list *cmd_list, t_minishell *minishell)
+size_t	count_str_array(const char **str_array)
 {
-	pid_t	*pid;
-	t_node	*node;
-	int		wstatus;
+	int	i;
 
-	node = cmd_list->head;
-	while (node != NULL)
-	{
-		pid = fork();
-		if (pid == 0)
-			run_command(node->data, minishell);
-		node = node->next;
-	}
-	while (1)
-	{
-		if (wait(&wstatus) == -1 && errno == ECHILD)
-			break ;
-		if (w)
-	}
-	return ()
+	i = 0;
+	while (str_array[i])
+		i++;
+	return (i);
 }

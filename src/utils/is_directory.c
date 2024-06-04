@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.h                                          :+:      :+:    :+:   */
+/*   is_directory.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/12 17:18:49 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/31 15:33:03 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/01 21:54:00 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/01 22:28:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMAND_H
-# define COMMAND_H
+#include <sys/stat.h>
+#include "utils.h"
 
-# include "libft.h"
-
-typedef struct s_command
+t_bool	is_directory(const char *pathname)
 {
-	char	**argv;
-	t_list	*input_list;
-	t_list	*output_list;
-	t_bool	is_builtin;
-}	t_command;
+	struct stat statbuff;
 
-t_command	*new_cmd(const char *str);
-void		delete_cmd(void *cmd);
-size_t		count_arguments(t_command *cmd);
-
-#endif
+	if (stat(pathname, &statbuff) == -1)
+		return (false);
+	return (S_ISDIR(statbuff.st_mode));
+}

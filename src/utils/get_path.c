@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.h                                        :+:      :+:    :+:   */
+/*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/25 12:03:55 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/28 23:53:59 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/01 22:30:11 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/02 22:23:05 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-# define EXECUTION_H
+#include "utils.h"
 
-# include "minishell.h"
-# include "command.h"
+const char	**get_path(t_list *env_list)
+{
+	const char	*path_env_value;
 
-int	execute(const char *str, t_minishell *minishell);
-int	run(const char *str, t_minishell *minishell);
-int	run_on_current_process(t_command *cmd, t_minishell *minishell);
-int	run_builtin(t_command *cmd, t_minishell *minishell);
-int	run_on_sub_process(t_list *cmd_list, t_minishell *minishell);
-
-#endif
-
+	path_env_value = find_env("PATH", env_list);
+	if (path_env_value == NULL)
+		return (NULL);
+	return ((const char **)ft_split(path_env_value, ':'));
+}

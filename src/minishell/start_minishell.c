@@ -6,17 +6,15 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:30:23 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/30 18:35:34 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/01 12:20:41 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <errno.h>
+#include <stdio.h>
 #include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "minishell.h"
-#include "execution.h"
 
 static void	handle_sigint(int signum)
 {
@@ -43,7 +41,7 @@ static int	install_signal_handlers(void)
 		|| sigaction(SIGQUIT, &sigquit_sa, NULL) < 0
 	)
 	{
-		ft_fprintf(2, "minishell: sigaction: %s\n", strerror(errno));
+		perror("minishell: sigaction");
 		return (-1);
 	}
 	return (0);

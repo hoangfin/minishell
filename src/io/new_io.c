@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 11:56:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/29 20:29:55 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/02 14:40:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,6 @@ static t_redir_type	get_redir_type(const char *str, int redir_symbol)
 	return (rd);
 }
 
-static void	trim_token(char *token)
-{
-	int		i;
-	int		j;
-	char	quote;
-
-	i = 0;
-	j = 0;
-	quote = 0;
-	while (token[i] != '\0')
-	{
-		if (token[i] == '\'' || token[i] == '"')
-		{
-			if (quote == 0)
-				quote = token[i];
-			else if (quote == token[i])
-				quote = 0;
-			else
-				token[j++] = token[i];
-		}
-		else
-			token[j++] = token[i];
-		i++;
-	}
-	token[j] = '\0';
-}
-
 static char	*get_token(const char *str)
 {
 	const char	*start;
@@ -91,7 +64,7 @@ static char	*get_token(const char *str)
 	token = ft_substr(start, 0, str - start);
 	if (token == NULL)
 		return (NULL);
-	trim_token(token);
+	ft_remove_quote_pair(token);
 	return (token);
 }
 
