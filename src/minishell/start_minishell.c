@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:30:23 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/01 12:20:41 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/05 15:26:06 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,13 @@ void	start_minishell(t_minishell *minishell)
 			break ;
 		if (*line == '\0')
 			continue ;
-		// printf("after readline() %s\n", line);
 		add_history(line);
+		if (validate_input(line) != 0)
+		{
+			free(line);
+			set_exit_status(2, minishell);
+			continue ;
+		}
 		expand(&line, minishell);
 		set_exit_status(execute(line, minishell), minishell);
 		free(line);

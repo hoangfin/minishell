@@ -15,6 +15,7 @@ VPATH :=	src \
 			src/minishell \
 			src/signal \
 			src/utils \
+			src/validation \
 			src/executor
 
 LIBFT := $(LIBFT_DIR)/libft.a
@@ -66,16 +67,21 @@ SOURCES :=	main.c \
 			new_cmd.c \
 			\
 			delete_io.c \
-			new_io.c
-
+			new_io.c \
+			\
+			validate_arrow.c \
+			validate_input.c \
+			validate_quotes.c \
+			validate_vertical_bar.c \
+			validate_ampersand.c
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
-#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
-	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
+	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
+#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
 	@echo "$(YELLOW)$@$(RESET) created."
 
 $(BUILD_DIR):
@@ -95,4 +101,3 @@ fclean:
 	@rm -rf $(BUILD_DIR)
 	@rm -f $(NAME)
 	@echo "$(RED)$(NAME)$(RESET) deleted."
-

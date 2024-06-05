@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constants.h                                        :+:      :+:    :+:   */
+/*   validation.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/30 21:40:31 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/03 22:13:55 by hoatran          ###   ########.fr       */
+/*   Created: 2024/05/17 14:47:04 by mito              #+#    #+#             */
+/*   Updated: 2024/06/05 14:56:35 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONSTANTS_H
-# define CONSTANTS_H
+#ifndef VALIDATION_H
+# define VALIDATION_H
 
-# define HERE_DOC_PROMPT "heredoc> "
-# define HERE_DOC_TEMP_FILE ".heredoc"
-# define ERROR_SYNTAX "minishell: syntax error near unexpected token"
+int	validate_input(char *str);
+int	validate_quotes_closed(char *str);
+int	has_valid_arrow(const char *str);
+int	has_valid_vertical_bar(const char *str);
+int	has_valid_ampersand(const char *str);
+
 
 #endif
