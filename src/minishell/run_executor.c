@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/04 21:38:52 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/06 15:38:40 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 
 	if (stdin < 0 || stdout < 0)
 		return (perror("minishell: dup"), 1);
+	if (ft_strcmp(cmd->argv[0], "exit") == 0)
+		ft_printf("exit\n");
 	if (
 		redirect_input(cmd->input_list, -1) < 0
 		|| redirect_output(cmd->output_list, -1) < 0

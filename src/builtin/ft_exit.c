@@ -6,12 +6,13 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:26:20 by mito              #+#    #+#             */
-/*   Updated: 2024/05/28 23:45:56 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/06 16:00:36 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "command.h"
+#include "minishell.h"
 
 static int	is_str_digit(char *str)
 {
@@ -27,26 +28,34 @@ static int	is_str_digit(char *str)
 	return (1);
 }
 
-static int	print_exit(const char *arg, const char *err_msg, int exit_code)
+static void	print_exit(
+	t_minishell *minishell,
+	const char *arg,
+	const char *err_msg,
+	int exit_code
+)
 {
-	ft_fprintf(STDERR_FILENO, "minishell: exit: %s%s\n", arg, err_msg);
-	return (exit_code);
+	ft_fprintf(STDERR_FILENO, "minishell: exit: %s: %s\n", arg, err_msg);
+	delete_minishell(minishell);
+	exit(exit_code);
 }
 
-int	ft_exit(t_command *cmd, int last_exit_status)
+int	ft_exit(t_command *cmd, void *minishell)
 {
-	int		exit_code;
-	t_bool	overflow;
+	const t_minishell	*mns = (t_minishell *)minishell;
+	int					exit_code;
+	t_bool				overflow;
 
 	overflow = false;
 	if (cmd->argv[1] == NULL)
-		return (last_exit_status);
+		return (mns->exit_status);
 	if (!is_str_digit(cmd->argv[1]))
-		return (print_exit(cmd->argv[1], ": numeric argument required", 255));
+		print_exit(minishell, cmd->argv[1], "numeric argument required", 255);
 	exit_code = ft_atol(cmd->argv[1], &overflow);
 	if (overflow)
-		return (print_exit(cmd->argv[1], ": numeric argument required", 255));
+		print_exit(minishell, cmd->argv[1], "numeric argument required", 255);
 	if (count_arguments(cmd) > 2)
-		return (print_exit(cmd->argv[1], ": too many arguments", 1));
-	return (exit_code % 256);
+		return (ft_fprintf(2, "minishell: exit: too many arguments\n"), 1);
+	delete_minishell(minishell);
+	exit(exit_code % 256);
 }
