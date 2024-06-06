@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 20:10:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/03 18:04:55 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/06 21:36:07 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,30 @@
 #include "utils.h"
 #include "io.h"
 
-static int	handle_error(const char *err_src, const char *err_msg)
+static int	redirect_stdout(t_list *output_list)
 {
-	ft_fprintf(\
-		STDERR_FILENO, \
-		"minishell: %s: %s\n", \
-		err_src, \
-		err_msg \
-	);
-	return (-1);
+	t_node	*node;
+	t_io	*io;
+	int		fd;
+
+	node = output_list->head;
+	while (node != NULL)
+	{
+		io = (t_io *)node->data;
+		if (io->redi_type == REDIR_OUTPUT)
+			fd = open(io->token, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		else if (io->redi_type == REDIR_APPEND)
+			fd = open(io->token, O_RDWR | O_CREAT | O_APPEND, 0644);
+		if (fd < 0)
+		{
+			ft_fprintf(2, "minishell: %s: %s\n", io->token, strerror(errno));
+			return (-1);
+		}
+		if (dup2_close(fd, STDOUT_FILENO) < 0)
+			return (-1);
+		node = node->next;
+	}
+	return (0);
 }
 
 /**
@@ -40,28 +55,20 @@ static int	handle_error(const char *err_src, const char *err_msg)
 */
 int	redirect_output(t_list *output_list, int pipedes)
 {
-	t_node	*node;
-	t_io	*io;
-	int		fd;
-
-	node = output_list->head;
-	while (node != NULL)
+	if (output_list->length == 0)
 	{
-		io = (t_io *)node->data;
-		if (io->redi_type == REDIR_OUTPUT)
-			fd = open(io->token, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		else if (io->redi_type == REDIR_APPEND)
-			fd = open(io->token, O_RDWR | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
-			return (handle_error(io->token, strerror(errno)));
-		if (dup2_close(fd, STDOUT_FILENO) < 0)
+		if (pipedes < 0)
+			return (0);
+		if (dup2_close(pipedes, STDOUT_FILENO) < 0)
 			return (-1);
-		node = node->next;
+		return (0);
 	}
 	if (pipedes >= 0)
 	{
-		if (dup2_close(pipedes, STDOUT_FILENO) < 0)
+		if (close(pipedes) < 0)
 			return (-1);
 	}
+	if (redirect_stdout(output_list) < 0)
+		return (-1);
 	return (0);
 }
