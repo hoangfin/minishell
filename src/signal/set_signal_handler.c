@@ -1,46 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ungroup.c                                          :+:      :+:    :+:   */
+/*   set_signal_handler.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/25 15:02:11 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/07 15:11:35 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/05 22:21:23 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/07 14:03:04 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static void	init(int *i, int *j, int *depth)
-{
-	*i = 0;
-	*j = 0;
-	*depth = 0;
-}
+#include <stddef.h>
+#include <stdio.h>
+#include "minishell_signal.h"
 
-void	ungroup(char *str)
+int	set_signal_handler(int signum, void (*handler)(int))
 {
-	int	i;
-	int	j;
-	int	depth;
+	struct sigaction	sa;
 
-	init(&i, &j, &depth);
-	while (str[i] != '\0')
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = handler;
+	sa.sa_flags = 0;
+	if (sigaction(signum, &sa, NULL) < 0)
 	{
-		if (str[i] == '(')
-		{
-			if (depth != 0)
-				str[j++] = str[i];
-			depth++;
-		}
-		else if (str[i] == ')')
-		{
-			depth--;
-			if (depth != 0)
-				str[j++] = str[i];
-		}
-		else
-			str[j++] = str[i];
-		i++;
+		perror("minishell: sigaction");
+		return (-1);
 	}
-	str[j] = '\0';
+	return (0);
 }

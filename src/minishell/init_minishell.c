@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 14:36:12 by mito              #+#    #+#             */
-/*   Updated: 2024/05/31 23:11:23 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/07 14:59:45 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static int	init_env_list(t_minishell *minishell, char **envp)
 
 int	init_minishell(t_minishell *minishell, char **envp)
 {
-
-	if(init_env_list(minishell, envp) < 0)
+	if (init_env_list(minishell, envp) < 0)
 	{
 		delete_minishell(minishell);
 		return (-1);

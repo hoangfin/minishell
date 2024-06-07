@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 20:10:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/06 21:55:50 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/07 14:40:35 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,7 @@
 #include "io.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-
-static int	handle_error(const char *err_src, const char *err_msg)
-{
-	ft_fprintf(\
-		STDERR_FILENO, \
-		"minishell: %s: %s\n", \
-		err_src, \
-		err_msg \
-	);
-	return (-1);
-}
+#include "minishell_signal.h"
 
 static int	prompt_heredoc(int fd, const char *delimiter)
 {
@@ -37,7 +27,7 @@ static int	prompt_heredoc(int fd, const char *delimiter)
 
 	while (1)
 	{
-		write(STDOUT_FILENO, HERE_DOC_PROMPT, 9);
+		write(STDOUT_FILENO, "> ", 2);
 		bytes_read = read(STDIN_FILENO, buf, 1023);
 		if (bytes_read <= 0)
 			break ;
@@ -50,46 +40,22 @@ static int	prompt_heredoc(int fd, const char *delimiter)
 		write(fd, buf, ft_strlen(buf));
 	}
 	if (bytes_read < 0)
-		return (handle_error("read", strerror(errno)));
-	// {
-	// 	if (errno != EINTR)
-	// 		ft_fprintf(2, "minishell: read: %s\n", strerror(errno));
-	// 	return (-1);
-	// }
+		return (-1);
 	return (0);
 }
-
-// static int	install_signal_handlers(void)
-// {
-// 	struct sigaction	sigint_sa;
-// 	struct sigaction	sigquit_sa;
-
-// 	sigemptyset(&sigint_sa.sa_mask);
-// 	sigint_sa.sa_handler = SIG_DFL;
-// 	sigint_sa.sa_flags = 0;
-// 	sigemptyset(&sigquit_sa.sa_mask);
-// 	sigquit_sa.sa_handler = SIG_DFL;
-// 	sigquit_sa.sa_flags = 0;
-// 	if (
-// 		sigaction(SIGINT, &sigint_sa, NULL) < 0
-// 		|| sigaction(SIGQUIT, &sigquit_sa, NULL) < 0
-// 	)
-// 	{
-// 		ft_fprintf(2, "minishell: sigaction: %s\n", strerror(errno));
-// 		return (-1);
-// 	}
-// 	return (0);
-// }
 
 static int	heredoc(const char *delimiter)
 {
 	int	fd;
 
-	// if (install_signal_handlers() < 0)
-	// 	return (handle_error("sigaction", strerror(errno)));
+	if (
+		set_signal_handler(SIGINT, newline_handler) < 0
+		|| set_signal_handler(SIGQUIT, SIG_IGN) < 0
+	)
+		return (-1);
 	fd = open(HERE_DOC_TEMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		return (handle_error("open", strerror(errno)));
+		return (-1);
 	if (prompt_heredoc(fd, delimiter) < 0)
 	{
 		close(fd);
@@ -97,10 +63,10 @@ static int	heredoc(const char *delimiter)
 		return (-1);
 	}
 	if (close(fd) < 0)
-		return (handle_error("close", strerror(errno)));
+		return (-1);
 	fd = open(HERE_DOC_TEMP_FILE, O_RDONLY);
 	if (fd < 0)
-		return (handle_error("open", strerror(errno)));
+		return (-1);
 	return (fd);
 }
 
@@ -121,7 +87,10 @@ static int	redirect_stdin(t_list *input_list)
 		if (fd < 0)
 		{
 			if (errno != EINTR)
-				return (handle_error(io->token, strerror(errno)));
+				ft_fprintf(
+					2, "minishell: %s: %s\n", io->token, strerror(errno) \
+				);
+			return (-1);
 		}
 		if (dup2_close(fd, STDIN_FILENO) < 0)
 			return (-1);

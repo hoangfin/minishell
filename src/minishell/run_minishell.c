@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_minishell.c                                  :+:      :+:    :+:   */
+/*   run_minishell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:30:23 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/05 15:26:06 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/07 14:50:33 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "minishell.h"
+#include "minishell_signal.h"
+#include "validation.h"
 
-static void	handle_sigint(int signum)
+static void	sigint_handler(int signum)
 {
 	(void)signum;
-	ft_printf("\n");
+	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -27,34 +28,22 @@ static void	handle_sigint(int signum)
 
 static int	install_signal_handlers(void)
 {
-	struct sigaction	sigint_sa;
-	struct sigaction	sigquit_sa;
-
-	sigemptyset(&sigint_sa.sa_mask);
-	sigint_sa.sa_handler = handle_sigint;
-	sigint_sa.sa_flags = 0;
-	sigemptyset(&sigquit_sa.sa_mask);
-	sigquit_sa.sa_handler = SIG_IGN;
-	sigquit_sa.sa_flags = 0;
 	if (
-		sigaction(SIGINT, &sigint_sa, NULL) < 0
-		|| sigaction(SIGQUIT, &sigquit_sa, NULL) < 0
+		set_signal_handler(SIGINT, sigint_handler) < 0
+		|| set_signal_handler(SIGQUIT, SIG_IGN) < 0
 	)
-	{
-		perror("minishell: sigaction");
 		return (-1);
-	}
 	return (0);
 }
 
-void	start_minishell(t_minishell *minishell)
+int	run_minishell(t_minishell *minishell)
 {
 	char	*line;
 
 	while (1)
 	{
 		if (install_signal_handlers() < 0)
-			break ;
+			return (-1);
 		line = readline("minishell> ");
 		if (line == NULL)
 			break ;
@@ -72,4 +61,5 @@ void	start_minishell(t_minishell *minishell)
 		free(line);
 	}
 	rl_clear_history();
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:26:28 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/06 13:30:31 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/07 14:58:33 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,11 @@ static int	execute_builtin(t_command *cmd, t_minishell *minishell)
 	return (0);
 }
 
-static int	execve_with_path(t_command *cmd, const char **path, char *const *envp)
+static int	execve_with_path(
+	t_command *cmd,
+	const char **path,
+	char *const *envp
+)
 {
 	char	*cmd_path;
 	int		status;
@@ -64,16 +68,15 @@ static int	execve_with_path(t_command *cmd, const char **path, char *const *envp
 
 static int	ft_execve(t_command *cmd, const char **path, char *const *envp)
 {
-	if (is_directory(cmd->argv[0]))
-	{
-		ft_fprintf(2, "minishell: %s: Is a directory", cmd->argv[0]);
-		return (126);
-	}
-	if (ft_strchr(cmd->argv[0], '/') != NULL || ft_has_spaces_only(cmd->argv[0]))
-		execve(cmd->argv[0], cmd->argv, envp);
+	const char	*cmd_name = cmd->argv[0];
+
+	if (is_directory(cmd_name))
+		return (ft_fprintf(2, "minishell: %s: Is a directory", cmd_name), 126);
+	if (ft_strchr(cmd_name, '/') != NULL || ft_has_spaces_only(cmd_name))
+		execve(cmd_name, cmd->argv, envp);
 	else
 		execve_with_path(cmd, path, envp);
-	ft_fprintf(2, "minishell: %s: ", cmd->argv[0]);
+	ft_fprintf(2, "minishell: %s: ", cmd_name);
 	if (errno == EACCES)
 		return (ft_fprintf(2, "%s\n", strerror(errno)), 126);
 	if (errno == ENOENT)
@@ -82,7 +85,7 @@ static int	ft_execve(t_command *cmd, const char **path, char *const *envp)
 			return (ft_fprintf(2, "%s\n", strerror(errno)), 127);
 		else
 		{
-			if (ft_strchr(cmd->argv[0], '/') != NULL)
+			if (ft_strchr(cmd_name, '/') != NULL)
 				return (ft_fprintf(2, "%s\n", strerror(errno)), 127);
 			else
 				return (ft_fprintf(2, "%s\n", "command not found"), 127);

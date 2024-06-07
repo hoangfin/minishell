@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/06 15:38:40 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/06 23:14:37 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "minishell.h"
 #include "constants.h"
 #include "utils.h"
+#include "minishell_signal.h"
 
 static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 {
@@ -48,6 +49,8 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 	int					pipedes_out;
 	int					exit_status;
 
+	if (reset_signals() < 0)
+		exit(1);
 	pipedes_in = INT_MIN;
 	pipedes_out = INT_MIN;
 	if (executor->pipes != NULL && i > 0)
@@ -108,6 +111,7 @@ int	run_executor(t_executor *executor, t_minishell *minishell)
 	t_command	*cmd;
 	int			exit_status;
 
+	set_signal_handler(SIGINT, SIG_IGN);
 	cmd = (t_command *)executor->cmd_list->head->data;
 	if (executor->cmd_list->length == 1 && executor->num_of_pids == 0)
 		return (run_on_current_process(cmd, minishell));

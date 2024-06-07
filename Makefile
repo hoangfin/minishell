@@ -21,7 +21,7 @@ VPATH :=	src \
 LIBFT := $(LIBFT_DIR)/libft.a
 
 CC := cc
-CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
+CFLAG := -g -fsanitize=address -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
 
 SOURCES :=	main.c \
 			ft_cd.c \
@@ -42,7 +42,7 @@ SOURCES :=	main.c \
 			resolve_env.c \
 			run_executor.c \
 			set_exit_status.c \
-			start_minishell.c \
+			run_minishell.c \
 			\
 			clone_env_list.c \
 			close_pipes.c \
@@ -73,7 +73,11 @@ SOURCES :=	main.c \
 			validate_input.c \
 			validate_quotes.c \
 			validate_vertical_bar.c \
-			validate_ampersand.c
+			validate_ampersand.c \
+			\
+			reset_signals.c \
+			set_signal_handler.c \
+			newline_handler.c
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 
@@ -101,3 +105,5 @@ fclean:
 	@rm -rf $(BUILD_DIR)
 	@rm -f $(NAME)
 	@echo "$(RED)$(NAME)$(RESET) deleted."
+
+re: fclean all

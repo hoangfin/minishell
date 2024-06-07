@@ -1,46 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ungroup.c                                          :+:      :+:    :+:   */
+/*   reset_signals.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/25 15:02:11 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/07 15:11:35 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/05 22:35:25 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/06 22:50:10 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static void	init(int *i, int *j, int *depth)
-{
-	*i = 0;
-	*j = 0;
-	*depth = 0;
-}
+#include <stdio.h>
+#include "minishell_signal.h"
 
-void	ungroup(char *str)
+/**
+ * Reset all signal handlers to default.
+*/
+int	reset_signals(void)
 {
-	int	i;
-	int	j;
-	int	depth;
+	const int			signums[] = {SIGINT, SIGQUIT};
+	struct sigaction	sa;
+	int					i;
 
-	init(&i, &j, &depth);
-	while (str[i] != '\0')
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
+	i = 0;
+	while (i < 2)
 	{
-		if (str[i] == '(')
+		if (sigaction(signums[i], &sa, NULL) < 0)
 		{
-			if (depth != 0)
-				str[j++] = str[i];
-			depth++;
+			perror("minishell: sigaction");
+			return (-1);
 		}
-		else if (str[i] == ')')
-		{
-			depth--;
-			if (depth != 0)
-				str[j++] = str[i];
-		}
-		else
-			str[j++] = str[i];
 		i++;
 	}
-	str[j] = '\0';
+	return (0);
 }

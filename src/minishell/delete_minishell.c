@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_minishell.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:51:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/05 15:19:03 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/07 14:53:48 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	delete_minishell(void *minishell_ptr)
 {
-	t_minishell	*minishell = (t_minishell *)minishell_ptr;
+	const t_minishell	*minishell = (t_minishell *)minishell_ptr;
 
 	if (minishell == NULL)
 		return ;

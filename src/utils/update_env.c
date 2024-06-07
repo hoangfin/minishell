@@ -6,13 +6,13 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:33:35 by mito              #+#    #+#             */
-/*   Updated: 2024/05/30 14:31:13 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/07 15:01:57 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-static t_bool is_key_exist(t_node *node, void *data)
+static t_bool	is_key_exist(t_node *node, void *data)
 {
 	const char	*ev_node = (const char *)node->data;
 	const char	*en_data = (const char *)data;

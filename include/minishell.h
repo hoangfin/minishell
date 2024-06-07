@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/02 20:04:54 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/05 23:29:08 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,18 @@ typedef struct s_minishell
 }	t_minishell;
 
 t_executor	*new_executor(const char *str);
-int			run_executor(t_executor *executor, t_minishell *minishell);
-void		delete_executor(void *executor_ptr);
 
-int			init_minishell(t_minishell *minishell, char **envp);
-int			execute(const char *str, t_minishell *minishell);
 int			execute_command(t_command *cmd, t_minishell *minishell);
+int			execute(const char *str, t_minishell *minishell);
 int			expand(char **str, t_minishell *minishell);
+int			init_minishell(t_minishell *minishell, char **envp);
+int			run_executor(t_executor *executor, t_minishell *minishell);
+int			run_minishell(t_minishell *minishell);
 
 const char	*resolve_env(const char *key, size_t n, t_minishell *minishell);
 
-void		start_minishell(t_minishell *minishell);
 void		set_exit_status(int exit_status, t_minishell *minishell);
 void		delete_minishell(void *minishell_ptr);
+void		delete_executor(void *executor_ptr);
 
 #endif
