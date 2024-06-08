@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 22:36:57 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/25 14:48:09 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/07 22:21:46 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	reduce(char **result, const char *str, t_minishell *minishell)
 	dollar = find_param_exp(str);
 	if (dollar == NULL)
 	{
-		if (ft_concat(result, str) < 0)
+		if (ft_concat(result, 1, str) < 0)
 			return (-1);
 		return (0);
 	}
@@ -35,7 +35,7 @@ static int	reduce(char **result, const char *str, t_minishell *minishell)
 	value = resolve_env(&dollar[1], i - 1, minishell);
 	if (value != NULL)
 	{
-		if (ft_concat(result, value) < 0)
+		if (ft_concat(result, 1, value) < 0)
 			return (-1);
 	}
 	return (reduce(result, &dollar[i], minishell));

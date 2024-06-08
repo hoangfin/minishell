@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:24:04 by mito              #+#    #+#             */
-/*   Updated: 2024/05/20 15:51:55 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/07 16:11:12 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	print(char **argv, int is_flag_on)
 	i = 0;
 	while (argv[i] != NULL)
 	{
+		if (replace_wildcard(&argv[i]) < 0)
+			return (1);
 		if (ft_putstr_fd(argv[i], 1) < 0)
 			return (1);
 		if (argv[i + 1] != NULL)

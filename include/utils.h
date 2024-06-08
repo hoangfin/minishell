@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/03 18:05:19 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/08 12:17:05 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int			close_pipes(int **pipes);
 int			wait_all(pid_t *pids, int number_of_pids);
 int			dup2_close(int oldfd, int newfd);
 size_t		count_str_array(const char **str_array);
+int			replace_wildcard(char **str);
 
 #endif

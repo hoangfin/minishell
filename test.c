@@ -1,59 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
 #include <string.h>
-#include <errno.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include <dirent.h>
 
-sig_atomic_t is_heredoc = 0;
+char* list_files_and_directories(const char* path) {
+    DIR *dir;
+    struct dirent *entry;
+    size_t size = 1024;
+    char *result = malloc(size);
+    if (!result) {
+        perror("malloc");
+        return NULL;
+    }
+    result[0] = '\0';  // Initialize the string
 
-
-void handle_sigint(int sig) {
-    is_heredoc = 0;
-}
-
-int main() {
-    struct sigaction sa;
-    sa.sa_handler = handle_sigint;
-    sa.sa_flags = 0; // No special flags
-    sigemptyset(&sa.sa_mask);
-
-    if (sigaction(SIGINT, &sa, NULL) == -1) {
-        perror("sigaction");
-        exit(EXIT_FAILURE);
+    dir = opendir(path);
+    if (dir == NULL) {
+        perror("opendir");
+        free(result);
+        return NULL;
     }
 
-    char buf[100];
-	char *line;
+    while ((entry = readdir(dir)) != NULL) {
+        size_t len = strlen(entry->d_name) + 2;  // +2 for space and null terminator
+        if (strlen(result) + len > size) {
+            size *= 2;
+            char *temp = realloc(result, size);
+            if (!temp) {
+                perror("realloc");
+                free(result);
+                closedir(dir);
+                return NULL;
+            }
+            result = temp;
+        }
+        strcat(result, entry->d_name);
+        strcat(result, " ");
+    }
+    closedir(dir);
+    return result;
+}
 
-	while (1)
-	{
-		line = readline("minishell> ");
-		if (line == NULL)
-			break ;
-		if (strncmp(line, "heredoc", 7) == 0)
-		{
-			is_heredoc = 1;
-			while (is_heredoc) {
-				write(1, "heredoc> ", 9);
-				ssize_t n = read(STDIN_FILENO, buf, sizeof(buf));
-				if (n == -1) {
-					if (errno == EINTR && !is_heredoc) {
-						// Interrupted by signal
-						printf("\n");
-						break ;
-					}
-					perror("read()");
-					exit(EXIT_FAILURE);
-				} else if (n > 0) {
-					buf[n] = '\0';
-					printf("Read: %s\n", buf);
-				}
-			}
-		}
-		free(line);
-	}
+int main(void) {
+    char *files = list_files_and_directories(".");
+    if (files) {
+        printf("Files and directories:\n%s\n", files);
+        free(files);
+    }
     return 0;
 }
