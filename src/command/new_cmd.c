@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:44:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/27 12:58:33 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/08 23:02:43 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ static t_bool	is_builtin_cmd(const char *str)
 	i = 0;
 	while (i < 7)
 	{
-		if (ft_strcmp(str, builtin_cmds[i]) == 0)
+		if (
+			ft_strcmp(str, builtin_cmds[i]) == 0
+			&& ft_strlen(str) == ft_strlen(builtin_cmds[i])
+		)
 			return (true);
 		i++;
 	}

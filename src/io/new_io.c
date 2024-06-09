@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 11:56:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/02 14:40:14 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/08 17:32:27 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ static char	*get_token(const char *str)
 		str++;
 	}
 	token = ft_substr(start, 0, str - start);
-	if (token == NULL)
-		return (NULL);
-	ft_remove_quote_pair(token);
 	return (token);
 }
 
@@ -88,5 +85,7 @@ t_io	*new_io(const char *str, int redir_symbol)
 	}
 	io->redi_type = rd;
 	io->token = token;
+	if (rd != REDIR_HEREDOC)
+		ft_remove_quote_pair(io->token);
 	return (io);
 }

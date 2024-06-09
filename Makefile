@@ -43,6 +43,9 @@ SOURCES :=	main.c \
 			run_executor.c \
 			set_exit_status.c \
 			run_minishell.c \
+			heredoc.c \
+			redirect_input.c \
+			redirect_output.c \
 			\
 			clone_env_list.c \
 			close_pipes.c \
@@ -56,8 +59,6 @@ SOURCES :=	main.c \
 			is_directory.c \
 			is_valid_env_key.c \
 			parse_cmd_list.c \
-			redirect_input.c \
-			redirect_output.c \
 			ungroup.c \
 			update_env.c \
 			wait_all.c \

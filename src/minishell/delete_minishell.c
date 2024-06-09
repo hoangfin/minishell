@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:51:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/07 14:53:48 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/09 17:59:47 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 void	delete_minishell(void *minishell_ptr)
 {
-	const t_minishell	*minishell = (t_minishell *)minishell_ptr;
+	t_minishell	*minishell;
 
+	minishell = (t_minishell *)minishell_ptr;
 	if (minishell == NULL)
 		return ;
 	if (minishell->env_list != NULL)

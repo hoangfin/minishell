@@ -6,71 +6,19 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 20:10:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/07 14:40:35 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/09 18:01:28 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+#include "minishell.h"
 #include "constants.h"
 #include "utils.h"
 #include "io.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "minishell_signal.h"
 
-static int	prompt_heredoc(int fd, const char *delimiter)
-{
-	char	buf[1024];
-	ssize_t	bytes_read;
-
-	while (1)
-	{
-		write(STDOUT_FILENO, "> ", 2);
-		bytes_read = read(STDIN_FILENO, buf, 1023);
-		if (bytes_read <= 0)
-			break ;
-		buf[bytes_read] = '\0';
-		if (
-			(size_t)bytes_read - 1 == ft_strlen(delimiter)
-			&& ft_strncmp(buf, delimiter, (size_t)bytes_read - 1) == 0
-		)
-			break ;
-		write(fd, buf, ft_strlen(buf));
-	}
-	if (bytes_read < 0)
-		return (-1);
-	return (0);
-}
-
-static int	heredoc(const char *delimiter)
-{
-	int	fd;
-
-	if (
-		set_signal_handler(SIGINT, newline_handler) < 0
-		|| set_signal_handler(SIGQUIT, SIG_IGN) < 0
-	)
-		return (-1);
-	fd = open(HERE_DOC_TEMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		return (-1);
-	if (prompt_heredoc(fd, delimiter) < 0)
-	{
-		close(fd);
-		unlink(HERE_DOC_TEMP_FILE);
-		return (-1);
-	}
-	if (close(fd) < 0)
-		return (-1);
-	fd = open(HERE_DOC_TEMP_FILE, O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	return (fd);
-}
-
-static int	redirect_stdin(t_list *input_list)
+static int	redirect_stdin(t_list *input_list, t_minishell *minishell)
 {
 	t_node	*node;
 	t_io	*io;
@@ -83,7 +31,7 @@ static int	redirect_stdin(t_list *input_list)
 		if (io->redi_type == REDIR_INPUT)
 			fd = open(io->token, O_RDONLY);
 		else if (io->redi_type == REDIR_HEREDOC)
-			fd = heredoc(io->token);
+			fd = heredoc(io->token, minishell);
 		if (fd < 0)
 		{
 			if (errno != EINTR)
@@ -110,7 +58,7 @@ static int	redirect_stdin(t_list *input_list)
  * 			`errno` is set to indicate the error.
  *
 */
-int	redirect_input(t_list *input_list, int pipedes)
+int	redirect_input(t_list *input_list, int pipedes, t_minishell *minishell)
 {
 	if (input_list->length == 0)
 	{
@@ -125,7 +73,7 @@ int	redirect_input(t_list *input_list, int pipedes)
 		if (close(pipedes) < 0)
 			return (-1);
 	}
-	if (redirect_stdin(input_list) < 0)
+	if (redirect_stdin(input_list, minishell) < 0)
 		return (-1);
 	return (0);
 }

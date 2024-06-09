@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/06 23:14:37 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/09 18:03:03 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		ft_printf("exit\n");
 	if (
-		redirect_input(cmd->input_list, -1) < 0
+		redirect_input(cmd->input_list, -1, minishell) < 0
 		|| redirect_output(cmd->output_list, -1) < 0
 	)
 		return (1);
@@ -50,7 +50,10 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 	int					exit_status;
 
 	if (reset_signals() < 0)
+	{
+		delete_minishell(minishell);
 		exit(1);
+	}
 	pipedes_in = INT_MIN;
 	pipedes_out = INT_MIN;
 	if (executor->pipes != NULL && i > 0)
@@ -61,7 +64,7 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 		return (perror("minishell: dup"), 1);
 	close_pipes(executor->pipes);
 	if (
-		redirect_input(cmd->input_list, pipedes_in) < 0
+		redirect_input(cmd->input_list, pipedes_in, minishell) < 0
 		|| redirect_output(cmd->output_list, pipedes_out) < 0
 	)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/08 12:17:05 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/09 16:34:42 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ const char	*find_param_exp(const char *str);
 char *const	*get_envp(t_list *env_list);
 const char	**get_path(t_list *env_list);
 void		ungroup(char *str);
-int			redirect_input(t_list *input_list, int pipedes);
-int			redirect_output(t_list *output_list, int pipedes);
 int			close_pipes(int **pipes);
 int			wait_all(pid_t *pids, int number_of_pids);
 int			dup2_close(int oldfd, int newfd);
