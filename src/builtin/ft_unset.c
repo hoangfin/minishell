@@ -6,32 +6,14 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 10:48:28 by mito              #+#    #+#             */
-/*   Updated: 2024/05/27 18:19:28 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/10 15:38:41 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "utils.h"
 
-static t_bool is_key_exist(t_node *node, void *data)
-{
-	const char	*ev_node = (const char *)node->data;
-	const char	*en_data = (const char *)data;
-	char		*env_node_eq_ptr;
-	int			i;
-
-	env_node_eq_ptr = ft_strchr(ev_node, '=');
-	i = ft_strlen(en_data);
-	if (
-		((env_node_eq_ptr - ev_node) == i)
-		&& ft_strncmp(ev_node, en_data, i) == 0
-	)
-		return (true);
-	else
-		return (false);
-}
-
-int		ft_unset(t_command *cmd, t_list *env_list, t_list *export_list)
+int	ft_unset(t_command *cmd, t_list *env_list, t_list *export_list)
 {
 	int i;
 	int	exit_status;

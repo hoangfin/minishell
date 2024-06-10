@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_directory.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:54:00 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/01 22:28:14 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/10 15:42:48 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_bool	is_directory(const char *pathname)
 {
-	struct stat statbuff;
+	struct stat	statbuff;
 
 	if (stat(pathname, &statbuff) == -1)
 		return (false);

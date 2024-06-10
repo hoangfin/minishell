@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/09 16:34:42 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/10 15:26:18 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,7 @@ int			wait_all(pid_t *pids, int number_of_pids);
 int			dup2_close(int oldfd, int newfd);
 size_t		count_str_array(const char **str_array);
 int			replace_wildcard(char **str);
+int 		print_export_list(t_list *export_list);
+t_bool		is_key_exist(t_node *node, void *data);
 
 #endif

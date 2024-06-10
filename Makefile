@@ -57,8 +57,10 @@ SOURCES :=	main.c \
 			get_envp.c \
 			get_path.c \
 			is_directory.c \
+			is_key_exist.c \
 			is_valid_env_key.c \
 			parse_cmd_list.c \
+			print_export_list.c \
 			ungroup.c \
 			update_env.c \
 			wait_all.c \
@@ -86,8 +88,8 @@ OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
-#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
-	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
+	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
+#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
 	@echo "$(YELLOW)$@$(RESET) created."
 
 $(BUILD_DIR):

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_wildcard.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:55:01 by mito              #+#    #+#             */
-/*   Updated: 2024/06/08 16:20:59 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/10 15:43:11 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static t_bool	is_match(const char *glob_pattern, const char *filename)
 	return (is_match(next + 1, match + (next - glob_pattern)));
 }
 
-static int concat(char **result, const char *str)
+static int	concat(char **result, const char *str)
 {
 	if (*result == NULL)
 	{

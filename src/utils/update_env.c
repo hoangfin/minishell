@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:33:35 by mito              #+#    #+#             */
-/*   Updated: 2024/06/07 15:01:57 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/10 15:36:43 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-static t_bool	is_key_exist(t_node *node, void *data)
-{
-	const char	*ev_node = (const char *)node->data;
-	const char	*en_data = (const char *)data;
-	char		*env_node_eq_ptr;
-	int			i;
-
-	env_node_eq_ptr = ft_strchr(ev_node, '=');
-	i = ft_strlen(en_data);
-	if (
-		((env_node_eq_ptr - ev_node) == i)
-		&& ft_strncmp(ev_node, en_data, i) == 0
-	)
-		return (true);
-	else
-		return (false);
-}
 
 int	update_env(const char *key, const char *value, t_list *env_list)
 {
