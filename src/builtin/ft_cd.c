@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 15:02:39 by mito              #+#    #+#             */
-/*   Updated: 2024/05/28 23:43:07 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/11 17:25:44 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,28 @@
 #include "builtin.h"
 #include "utils.h"
 
-static void	update_pwd(const char *current_path, t_list *env_list)
+static int	update_pwd(const char *current_path, t_list *list)
 {
 	const char	*pwd;
+	const char	*old_pwd;
+	char		*temp;
 
-	pwd = find_env("PWD", env_list);
+	pwd = find_env("PWD", list);
 	if (pwd != NULL)
-		update_env("OLDPWD", pwd, env_list);
-	update_env("PWD", current_path, env_list);
+	{
+		old_pwd = find_env("OLDPWD", list);
+		if (old_pwd == NULL)
+		{
+			temp = ft_join_strings(2, "OLDPWD=", pwd);
+			if (temp == NULL)
+				return (-1);
+			if (ft_list_push(list, temp) < 0)
+				return (free(temp), -1);
+		}
+		update_env("OLDPWD", pwd, list);
+	}
+	update_env("PWD", current_path, list);
+	return (0);
 }
 
 static int go_home(t_list *env_list)
@@ -35,7 +49,7 @@ static int go_home(t_list *env_list)
 	update_pwd(home_path, env_list);
 	return (0);
 }
-int ft_cd(t_command *cmd, t_list *env_list)
+int ft_cd(t_command *cmd, t_list *env_list, t_list *export_list)
 {
 	char	buffer[1024];
 
@@ -60,6 +74,7 @@ int ft_cd(t_command *cmd, t_list *env_list)
 	if (getcwd(buffer, sizeof(buffer)) == NULL)
 		return (1);
 	update_pwd(buffer, env_list);
+	update_pwd(buffer, export_list);
     return (0);
 }
 

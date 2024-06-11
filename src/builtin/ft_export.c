@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:21:12 by mito              #+#    #+#             */
-/*   Updated: 2024/06/11 15:38:51 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/11 16:31:02 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ int	ft_export(t_command *cmd, t_list *env_list, t_list *export_list)
 		return (print_export_list(export_list));
 	while (cmd->argv[i] != NULL)
 	{
+		if (is_underscore_var(cmd->argv[i]) == 1)
+		{
+			i++;
+			continue ;
+		}
 		if (handle_key_validation(cmd->argv[i]) == 1)
 		{
 			exit_status = 1;

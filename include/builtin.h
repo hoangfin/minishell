@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 17:36:34 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/06 13:30:18 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/11 17:16:29 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "command.h"
 
 int	ft_echo(t_command *cmd);
-int	ft_cd(t_command *cmd, t_list *env_list);
+int ft_cd(t_command *cmd, t_list *env_list, t_list *export_list);
 int	ft_pwd(void);
 int	ft_export(t_command *cmd, t_list *env_list, t_list *export_list);
 int	ft_unset(t_command *cmd, t_list *env_list, t_list *export_list);

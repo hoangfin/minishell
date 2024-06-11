@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:26:28 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/07 14:58:33 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/11 17:16:06 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	execute_builtin(t_command *cmd, t_minishell *minishell)
 	const char	*cmd_name = cmd->argv[0];
 
 	if (ft_strcmp(cmd_name, "cd") == 0)
-		return (ft_cd(cmd, minishell->env_list));
+		return (ft_cd(cmd, minishell->env_list, minishell->export_list));
 	if (ft_strcmp(cmd_name, "echo") == 0)
 		return (ft_echo(cmd));
 	if (ft_strcmp(cmd_name, "env") == 0)

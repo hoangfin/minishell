@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_minishell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 14:36:12 by mito              #+#    #+#             */
-/*   Updated: 2024/06/07 14:59:45 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/11 17:09:00 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ static int	init_env_list(t_minishell *minishell, char **envp)
 		return (-1);
 	while (envp != NULL && *envp != NULL)
 	{
+		if (ft_strncmp(*envp, "OLDPWD", 6) == 0)
+		{
+			envp++;
+			continue ;
+		}
 		env_var = ft_strdup(*envp);
 		if (env_var == NULL)
 			return (-1);
@@ -37,6 +42,8 @@ static int	init_env_list(t_minishell *minishell, char **envp)
 
 int	init_minishell(t_minishell *minishell, char **envp)
 {
+	char	*temp;
+
 	if (init_env_list(minishell, envp) < 0)
 	{
 		delete_minishell(minishell);
@@ -45,6 +52,15 @@ int	init_minishell(t_minishell *minishell, char **envp)
 	minishell->export_list = clone_env_list(minishell->env_list);
 	if (minishell->export_list == NULL)
 		return (delete_minishell(minishell), -1);
+	temp = ft_strdup("OLDPWD");
+	if (temp == NULL)
+		return (delete_minishell(minishell), -1);
+	if (ft_list_push(minishell->export_list, ft_strdup("OLDPWD")) < 0)
+	{
+		free(temp);
+		delete_minishell(minishell);
+		return (-1);
+	}
 	set_exit_status(0, minishell);
 	return (0);
 }

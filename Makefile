@@ -65,6 +65,7 @@ SOURCES :=	main.c \
 			update_env.c \
 			wait_all.c \
 			replace_wildcard.c \
+			is_underscore_var.c \
 			\
 			count_arguments.c \
 			delete_cmd.c \

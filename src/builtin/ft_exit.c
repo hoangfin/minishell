@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:26:20 by mito              #+#    #+#             */
-/*   Updated: 2024/06/06 16:00:36 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/11 16:47:33 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ int	ft_exit(t_command *cmd, void *minishell)
 
 	overflow = false;
 	if (cmd->argv[1] == NULL)
-		return (mns->exit_status);
+	{
+		delete_minishell(minishell);
+		exit(mns->exit_status);
+	}
 	if (!is_str_digit(cmd->argv[1]))
 		print_exit(minishell, cmd->argv[1], "numeric argument required", 255);
 	exit_code = ft_atol(cmd->argv[1], &overflow);
