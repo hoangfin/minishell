@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 20:10:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/06 21:36:07 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/11 15:36:10 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	redirect_stdout(t_list *output_list)
 	t_io	*io;
 	int		fd;
 
+	fd = INT_MIN;
 	node = output_list->head;
 	while (node != NULL)
 	{
@@ -30,15 +31,17 @@ static int	redirect_stdout(t_list *output_list)
 			fd = open(io->token, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		else if (io->redi_type == REDIR_APPEND)
 			fd = open(io->token, O_RDWR | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
+		if (fd == -1)
 		{
 			ft_fprintf(2, "minishell: %s: %s\n", io->token, strerror(errno));
 			return (-1);
 		}
-		if (dup2_close(fd, STDOUT_FILENO) < 0)
-			return (-1);
 		node = node->next;
 	}
+	if (fd == INT_MIN)
+		return (0);
+	if (dup2_close(fd, STDOUT_FILENO) < 0)
+		return (-1);
 	return (0);
 }
 

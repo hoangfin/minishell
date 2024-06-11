@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:21:12 by mito              #+#    #+#             */
-/*   Updated: 2024/06/10 15:34:15 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/11 15:38:51 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	update(
 	env_list_node->data = ft_strdup(env_var);
 	if (env_list_node->data == NULL)
 		return (-1);
-	node = ft_list_find(export_list, env_var, is_key_exist);
+	node = ft_list_find(export_list, (void *)env_var, is_key_exist);
 	if (node != NULL)
 	{
 		free(node->data);
@@ -101,7 +101,7 @@ static int	set_env_var(
 {
 	t_node	*node;
 
-	node = ft_list_find(env_list, env_var, is_key_exist);
+	node = ft_list_find(env_list, (void *)env_var, is_key_exist);
 	if (node == NULL)
 	{
 		if (add_node(env_list, export_list, env_var) < 0)
