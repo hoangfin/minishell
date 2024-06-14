@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_arrow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 21:40:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/05 14:57:27 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/14 00:32:34 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "constants.h"
 #include "libft.h"
 
-static const char	*get_next(const char *str)
+static char	*get_next(const char *str)
 {
 	if (*(str + 1) == *str)
 		str++;
@@ -37,15 +37,42 @@ static const char	*get_next(const char *str)
 	}
 	while (*str != '\0' && !ft_isspace(*str))
 		str++;
-	return (str);
+	return ((char *)str);
 }
+
+// int	has_valid_arrow(const char *str)
+// {
+// 	const char	*next;
+
+// 	while (*str != '\0' && *str != '>' && *str != '<')
+// 		str++;
+// 	if (*str == '\0')
+// 		return (0);
+// 	next = get_next(str);
+// 	if (next == NULL)
+// 		return (2);
+// 	return (has_valid_arrow(next));
+// }
 
 int	has_valid_arrow(const char *str)
 {
-	const char	*next;
+	char	quote;
+	char	*next;
 
-	while (*str != '\0' && *str != '>' && *str != '<')
+	quote = 0;
+	while (*str != '\0')
+	{
+		if (*str == '\'' || *str == '"')
+		{
+			if (quote == 0)
+				quote = *str;
+			else if (quote == *str)
+				quote = 0;
+		}
+		if ((*str == '>' || *str == '<') && quote == 0)
+			break ;
 		str++;
+	}
 	if (*str == '\0')
 		return (0);
 	next = get_next(str);

@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 15:27:14 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/04 00:04:56 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/14 16:26:27 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,6 @@ t_executor	*new_executor(const char *str)
 		init_pipes(executor, executor->cmd_list->length - 1) < 0
 		|| init_pids(executor, executor->cmd_list) < 0
 	)
-	{
-		close_pipes(executor->pipes);
-		delete_executor(executor);
-		return (NULL);
-	}
+		return (delete_executor(executor), NULL);
 	return (executor);
 }

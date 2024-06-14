@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_minishell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 14:36:12 by mito              #+#    #+#             */
-/*   Updated: 2024/06/11 17:09:00 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/11 21:49:53 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	init_minishell(t_minishell *minishell, char **envp)
 	temp = ft_strdup("OLDPWD");
 	if (temp == NULL)
 		return (delete_minishell(minishell), -1);
-	if (ft_list_push(minishell->export_list, ft_strdup("OLDPWD")) < 0)
+	if (ft_list_push(minishell->export_list, temp) < 0)
 	{
 		free(temp);
 		delete_minishell(minishell);

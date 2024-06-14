@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_logical_op.c                                  :+:      :+:    :+:   */
+/*   find_symbol.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/25 13:28:06 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/13 00:19:52 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/12 20:28:32 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/12 23:52:16 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "utils.h"
 
-char	*find_logical_op(const char *str)
+char	*find_symbol(const char *str, const char *symbol)
 {
 	char	quote;
-	int		depth;
+	size_t	sym_len;
 
+	if (str == NULL || *str == '\0')
+		return (NULL);
 	quote = 0;
-	depth = 0;
+	sym_len = ft_strlen(symbol);
 	while (*str != '\0')
 	{
 		if (*str == '"' || *str == '\'')
@@ -28,13 +30,11 @@ char	*find_logical_op(const char *str)
 			else if (quote == *str)
 				quote = 0;
 		}
-		if (*str == '(' && quote == 0)
-			depth++;
-		if (*str == ')' && quote == 0)
-			depth--;
-		if (*str == '&' && *(str + 1) == '&' && depth == 0 && quote == 0)
-			return ((char *)str);
-		if (*str == '|' && *(str + 1) == '|' && depth == 0 && quote == 0)
+		if (
+			*str == *symbol
+			&& ft_strncmp(str, symbol, sym_len) == 0
+			&& quote == 0
+		)
 			return ((char *)str);
 		str++;
 	}

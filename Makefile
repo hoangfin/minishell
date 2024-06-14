@@ -21,7 +21,7 @@ VPATH :=	src \
 LIBFT := $(LIBFT_DIR)/libft.a
 
 CC := cc
-CFLAG := -g -fsanitize=address -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
+CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
 
 SOURCES :=	main.c \
 			ft_cd.c \
@@ -32,10 +32,12 @@ SOURCES :=	main.c \
 			ft_pwd.c \
 			ft_unset.c \
 			\
+			close_pipes.c \
 			delete_executor.c \
 			delete_minishell.c \
 			execute_command.c \
 			execute.c \
+			exit_on_error.c \
 			expand.c \
 			init_minishell.c \
 			new_executor.c \
@@ -48,14 +50,15 @@ SOURCES :=	main.c \
 			redirect_output.c \
 			\
 			clone_env_list.c \
-			close_pipes.c \
 			count_str_array.c \
 			dup2_close.c \
 			find_env.c \
 			find_logical_op.c \
-			find_param_exp.c \
+			find_redirect_op.c \
+			find_symbol.c \
 			get_envp.c \
 			get_path.c \
+			is_delimiter.c \
 			is_directory.c \
 			is_key_exist.c \
 			is_valid_env_key.c \

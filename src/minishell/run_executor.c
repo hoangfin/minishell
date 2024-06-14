@@ -6,11 +6,12 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/09 18:03:03 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/14 19:55:43 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/wait.h>
 #include <errno.h>
 #include "minishell.h"
@@ -34,7 +35,8 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 	)
 		return (1);
 	exit_status = execute_command(cmd, minishell);
-	unlink(HERE_DOC_TEMP_FILE);
+	if (access(HERE_DOC_TEMP_FILE, F_OK) != -1)
+		unlink(HERE_DOC_TEMP_FILE);
 	if (dup2_close(stdin, STDIN_FILENO) < 0)
 		return (1);
 	if (dup2_close(stdout, STDOUT_FILENO) < 0)
@@ -50,10 +52,7 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 	int					exit_status;
 
 	if (reset_signals() < 0)
-	{
-		delete_minishell(minishell);
-		exit(1);
-	}
+		exit_on_error(NULL, NULL, minishell, 1);
 	pipedes_in = INT_MIN;
 	pipedes_out = INT_MIN;
 	if (executor->pipes != NULL && i > 0)
@@ -61,13 +60,13 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 	if (executor->pipes != NULL && i < executor->num_of_pids - 1)
 		pipedes_out = dup(executor->pipes[i][1]);
 	if (pipedes_in == -1 || pipedes_out == -1)
-		return (perror("minishell: dup"), 1);
-	close_pipes(executor->pipes);
+		exit_on_error("dup", strerror(errno), minishell, 1);
+	close_pipes(minishell->executor);
 	if (
 		redirect_input(cmd->input_list, pipedes_in, minishell) < 0
 		|| redirect_output(cmd->output_list, pipedes_out) < 0
 	)
-		return (1);
+		exit_on_error(NULL, NULL, minishell, 1);
 	exit_status = execute_command(cmd, minishell);
 	delete_minishell(minishell);
 	exit(exit_status);
@@ -85,7 +84,7 @@ static int	start_workers(t_executor *executor, t_minishell *minishell)
 		if (executor->pids[i] < 0)
 		{
 			perror("minishell: fork");
-			close_pipes(executor->pipes);
+			close_pipes(executor);
 			wait_all(executor->pids, executor->num_of_pids);
 			return (-1);
 		}
@@ -94,7 +93,7 @@ static int	start_workers(t_executor *executor, t_minishell *minishell)
 		node = node->next;
 		i++;
 	}
-	if (close_pipes(executor->pipes) < 0)
+	if (close_pipes(executor) < 0)
 		return (-1);
 	return (0);
 }
@@ -116,7 +115,7 @@ int	run_executor(t_executor *executor, t_minishell *minishell)
 
 	set_signal_handler(SIGINT, SIG_IGN);
 	cmd = (t_command *)executor->cmd_list->head->data;
-	if (executor->cmd_list->length == 1 && executor->num_of_pids == 0)
+	if (executor->num_of_pids == 0)
 		return (run_on_current_process(cmd, minishell));
 	if (start_workers(executor, minishell) < 0)
 		return (1);

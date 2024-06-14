@@ -6,68 +6,30 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:44:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/08 23:02:43 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/12 17:10:10 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include "io.h"
+#include "utils.h"
 
-static int	extract(char *str, int c, char **result)
+static int	init_list(t_list *list, char *str, int redirect_op)
 {
-	char	*c_ptr;
-
-	*result = NULL;
-	while (*str != '\0' && *str != c)
-		str++;
-	if (*str == '\0')
-		return (0);
-	c_ptr = str;
-	while (*str != '\0' && (*str == c || ft_isspace(*str)))
-		str++;
-	if (*str == '\0')
-		return (0);
-	while (*str != '\0' && !ft_isspace(*str))
-	{
-		if (*str == '\'' || *str == '"')
-			str = ft_strchr(str + 1, *str);
-		if (str == NULL)
-			return (0);
-		str++;
-	}
-	*result = ft_substr(c_ptr, 0, str - c_ptr);
-	if (*result == NULL)
-		return (-1);
-	ft_memset(c_ptr, ' ', str - c_ptr);
-	return (0);
-}
-
-static int	init_list(t_list *list, char *str, int c)
-{
-	char	*result;
+	char	*start;
+	char	*end;
 	t_io	*io;
 
-	while (1)
-	{
-		if (extract(str, c, &result) < 0)
-			return (-1);
-		if (result == NULL)
-			return (0);
-		io = new_io(result, c);
-		if (io == NULL)
-		{
-			free(result);
-			return (-1);
-		}
-		if (ft_list_push(list, io) < 0)
-		{
-			free(result);
-			delete_io(io);
-			return (-1);
-		}
-		free(result);
-	}
-	return (0);
+	find_redirect_op(str, redirect_op, &start, &end);
+	if (start == NULL || end == NULL)
+		return (0);
+	io = new_io(start, redirect_op);
+	if (io == NULL)
+		return (-1);
+	if (ft_list_push(list, io) < 0)
+		return (delete_io(io), -1);
+	ft_memset(start, ' ', end - start);
+	return (init_list(list, str, redirect_op));
 }
 
 static int	init_cmd(t_command *cmd, const char *str)

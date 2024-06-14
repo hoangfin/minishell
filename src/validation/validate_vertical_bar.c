@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   validate_vertical_bar.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 10:47:09 by mito              #+#    #+#             */
-/*   Updated: 2024/06/05 15:09:50 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/14 13:18:52 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "validation.h"
 #include "constants.h"
 #include "libft.h"
+#include "utils.h"
 
 static const char	*get_next(const char *str, int count)
 {
@@ -42,15 +43,29 @@ static const char	*get_next(const char *str, int count)
 	return (str);
 }
 
+// int	has_valid_vertical_bar(const char *str)
+// {
+// 	const char	*next;
+
+// 	while (*str != '\0' && *str != '|')
+// 		str++;
+// 	if (*str == '\0')
+// 		return (0);
+// 	next = get_next(str, 1);
+// 	if (next == NULL)
+// 		return (2);
+// 	return (has_valid_vertical_bar(next));
+// }
+
 int	has_valid_vertical_bar(const char *str)
 {
+	const char	*symbol;
 	const char	*next;
 
-	while (*str != '\0' && *str != '|')
-		str++;
-	if (*str == '\0')
+	symbol = find_symbol(str, "|");
+	if (symbol == NULL)
 		return (0);
-	next = get_next(str, 1);
+	next = get_next(symbol, 1);
 	if (next == NULL)
 		return (2);
 	return (has_valid_vertical_bar(next));

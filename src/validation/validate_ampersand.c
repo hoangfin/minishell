@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   validate_ampersand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 13:13:02 by mito              #+#    #+#             */
-/*   Updated: 2024/06/05 14:37:13 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/14 13:21:09 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "validation.h"
 #include "constants.h"
 #include "libft.h"
+#include "utils.h"
 
 static const char	*get_next(const char *str)
 {
@@ -30,15 +31,29 @@ static const char	*get_next(const char *str)
 	return (str);
 }
 
+// int	has_valid_ampersand(const char *str)
+// {
+// 	const char	*next;
+
+// 	while (*str != '\0' && *str != '&')
+// 		str++;
+// 	if (*str == '\0')
+// 		return (0);
+// 	next = get_next(str);
+// 	if (next == NULL)
+// 		return (2);
+// 	return (has_valid_arrow(next));
+// }
+
 int	has_valid_ampersand(const char *str)
 {
+	const char	*symbol;
 	const char	*next;
 
-	while (*str != '\0' && *str != '&')
-		str++;
-	if (*str == '\0')
+	symbol = find_symbol(str, "&");
+	if (symbol == NULL)
 		return (0);
-	next = get_next(str);
+	next = get_next(symbol);
 	if (next == NULL)
 		return (2);
 	return (has_valid_arrow(next));
