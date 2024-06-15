@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 22:36:57 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/13 23:32:58 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 22:35:57 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	update_result(char **result, char *substr, char *env_value)
 	return (0);
 }
 
-static char	*resolve(const char **dollar, t_minishell *mns)
+static char	*resolve(const char **dollar, char quote, t_minishell *mns)
 {
 	const char	*start = *dollar;
 
@@ -40,13 +40,15 @@ static char	*resolve(const char **dollar, t_minishell *mns)
 		(*dollar)++;
 		return (mns->exit_status_str);
 	}
-	if (
-		**dollar == '\0'
-		|| **dollar == '\''
-		|| **dollar == '"'
-		|| ft_isspace(**dollar)
-	)
+	if (**dollar == '\0' || ft_isspace(**dollar))
 		return ("$");
+	if (**dollar == '\'' || **dollar == '"')
+	{
+		if (quote == '"')
+			return ("$");
+		else
+			return ("");
+	}
 	while (
 		**dollar != '\0'
 		&& **dollar != '"'
@@ -84,7 +86,7 @@ static int	get_result(char **result, const char *str, t_minishell *minishell)
 			&& !is_delimiter(str, end))
 		{
 			substr = ft_substr(start, 0, end - start);
-			env_value = resolve(&end, minishell);
+			env_value = resolve(&end, quote, minishell);
 			if (update_result(result, substr, env_value) < 0)
 				return (-1);
 			start = end;

@@ -2,6 +2,10 @@ echo h"ello" world
 echo "Hello World" > abc"'def'"1234.txt
 echo "Hello World" > 123'"def"'456.txt
 echo "Hello World" > 42'"def"'"'xyz'"42.txt
+echo $"" abc
+echo $'' abc
+echo "$''" abc
+echo '$""' abc
 cat < input1.txt < input2.txt
 cat <t"est-cases.txt"
 cat <t"est-cases".txt
