@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/14 16:07:50 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 17:36:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ size_t		count_str_array(const char **str_array);
 int			replace_wildcard(char **str);
 int			print_export_list(t_list *export_list);
 int			is_underscore_var(char *cmd_arg);
-void		find_redirect_op(\
-				const char *str, \
-				int redirect_op, \
-				char **start, \
-				char **end \
-			);
+void		find_redirect_op(const char *str, char **start, char **end);
 
 #endif

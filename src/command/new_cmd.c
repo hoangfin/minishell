@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:44:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/12 17:10:10 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 17:37:40 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 #include "io.h"
 #include "utils.h"
 
-static int	init_list(t_list *list, char *str, int redirect_op)
+static int	init_io_list(t_list *list, char *str)
 {
 	char	*start;
 	char	*end;
 	t_io	*io;
 
-	find_redirect_op(str, redirect_op, &start, &end);
+	find_redirect_op(str, &start, &end);
 	if (start == NULL || end == NULL)
 		return (0);
-	io = new_io(start, redirect_op);
+	io = new_io(start, *start);
 	if (io == NULL)
 		return (-1);
 	if (ft_list_push(list, io) < 0)
 		return (delete_io(io), -1);
 	ft_memset(start, ' ', end - start);
-	return (init_list(list, str, redirect_op));
+	return (init_io_list(list, str));
 }
 
 static int	init_cmd(t_command *cmd, const char *str)
@@ -39,10 +39,7 @@ static int	init_cmd(t_command *cmd, const char *str)
 	str_dup = ft_strdup(str);
 	if (str_dup == NULL)
 		return (-1);
-	if (
-		init_list(cmd->input_list, str_dup, '<') < 0
-		|| init_list(cmd->output_list, str_dup, '>') < 0
-	)
+	if (init_io_list(cmd->io_list, str_dup) < 0)
 	{
 		free(str_dup);
 		return (-1);
@@ -84,13 +81,8 @@ t_command	*new_cmd(const char *str)
 	cmd = (t_command *)ft_calloc(1, sizeof(t_command));
 	if (cmd == NULL)
 		return (NULL);
-	cmd->input_list = ft_list(0);
-	cmd->output_list = ft_list(0);
-	if (
-		cmd->input_list == NULL
-		|| cmd->output_list == NULL
-		|| init_cmd(cmd, str) < 0
-	)
+	cmd->io_list = ft_list(0);
+	if (cmd->io_list == NULL || init_cmd(cmd, str) < 0)
 	{
 		delete_cmd(cmd);
 		return (NULL);

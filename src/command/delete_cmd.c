@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 22:26:51 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/04 20:05:12 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 16:35:11 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	delete_cmd(void *cmd)
 	if (cmd_ptr == NULL)
 		return ;
 	ft_del_str_arr(&cmd_ptr->argv);
-	ft_list_clear(&cmd_ptr->input_list, delete_io);
-	ft_list_clear(&cmd_ptr->output_list, delete_io);
+	ft_list_clear(&cmd_ptr->io_list, delete_io);
 	free(cmd);
 }

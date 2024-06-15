@@ -6,13 +6,13 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:37:37 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/12 16:18:00 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 17:34:05 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-static char	*get_operator(const char *str, int redirect_op)
+static char	*get_operator(const char *str)
 {
 	char	quote;
 
@@ -26,7 +26,7 @@ static char	*get_operator(const char *str, int redirect_op)
 			else if (quote == *str)
 				quote = 0;
 		}
-		if (*str == redirect_op && quote == 0)
+		if ((*str == '<' || *str == '>') && quote == 0)
 			return ((char *)str);
 		str++;
 	}
@@ -37,20 +37,15 @@ static char	*get_operator(const char *str, int redirect_op)
  * Return redirection operator `<` or `>` in the given string, skipping all
  * operators that are inside `'` or `"`.
 */
-void	find_redirect_op(
-	const char *str,
-	int redirect_op,
-	char **start,
-	char **end
-)
+void	find_redirect_op(const char *str, char **start, char **end)
 {
 	*start = NULL;
 	*end = NULL;
-	*start = get_operator(str, redirect_op);
+	*start = get_operator(str);
 	if (*start == NULL)
 		return ;
 	*end = *start;
-	while (**end != '\0' && (**end == redirect_op || ft_isspace(**end)))
+	while (**end != '\0' && (**end == **start || ft_isspace(**end)))
 		(*end)++;
 	if (**end == '\0')
 		return ;

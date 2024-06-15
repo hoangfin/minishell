@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/14 16:36:18 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 17:45:37 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ int			execute(const char *str, t_minishell *minishell);
 int			expand(char **str, t_minishell *minishell);
 int			heredoc(char *delimiter, t_minishell *minishell);
 int			init_minishell(t_minishell *minishell, char **envp);
-int			redirect_input(\
-				t_list *input_list, \
-				int pipedes, \
+
+int			redirect(\
+				t_list *io_list, \
+				int pipe_r, \
+				int pipe_w, \
 				t_minishell *minishell \
 			);
-int			redirect_output(t_list *output_list, int pipedes);
+
 int			run_executor(t_executor *executor, t_minishell *minishell);
 int			run_minishell(t_minishell *minishell);
 

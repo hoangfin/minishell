@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 17:18:49 by hoatran           #+#    #+#             */
-/*   Updated: 2024/05/31 15:33:03 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 16:34:52 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 typedef struct s_command
 {
 	char	**argv;
-	t_list	*input_list;
-	t_list	*output_list;
+	t_list	*io_list;
 	t_bool	is_builtin;
 }	t_command;
 

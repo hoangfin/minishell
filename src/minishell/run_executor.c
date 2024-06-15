@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/14 19:55:43 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/15 17:42:26 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 		return (perror("minishell: dup"), 1);
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		ft_printf("exit\n");
-	if (
-		redirect_input(cmd->input_list, -1, minishell) < 0
-		|| redirect_output(cmd->output_list, -1) < 0
-	)
+	if (redirect(cmd->io_list, INT_MIN, INT_MIN, minishell) < 0)
 		return (1);
 	exit_status = execute_command(cmd, minishell);
 	if (access(HERE_DOC_TEMP_FILE, F_OK) != -1)
@@ -47,25 +44,22 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 {
 	const t_executor	*executor = minishell->executor;
-	int					pipedes_in;
-	int					pipedes_out;
+	int					pipe_r;
+	int					pipe_w;
 	int					exit_status;
 
 	if (reset_signals() < 0)
 		exit_on_error(NULL, NULL, minishell, 1);
-	pipedes_in = INT_MIN;
-	pipedes_out = INT_MIN;
+	pipe_r = INT_MIN;
+	pipe_w = INT_MIN;
 	if (executor->pipes != NULL && i > 0)
-		pipedes_in = dup(executor->pipes[i - 1][0]);
+		pipe_r = dup(executor->pipes[i - 1][0]);
 	if (executor->pipes != NULL && i < executor->num_of_pids - 1)
-		pipedes_out = dup(executor->pipes[i][1]);
-	if (pipedes_in == -1 || pipedes_out == -1)
+		pipe_w = dup(executor->pipes[i][1]);
+	if (pipe_r == -1 || pipe_w == -1)
 		exit_on_error("dup", strerror(errno), minishell, 1);
 	close_pipes(minishell->executor);
-	if (
-		redirect_input(cmd->input_list, pipedes_in, minishell) < 0
-		|| redirect_output(cmd->output_list, pipedes_out) < 0
-	)
+	if (redirect(cmd->io_list, pipe_r, pipe_w, minishell) < 0)
 		exit_on_error(NULL, NULL, minishell, 1);
 	exit_status = execute_command(cmd, minishell);
 	delete_minishell(minishell);

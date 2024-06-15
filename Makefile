@@ -46,8 +46,7 @@ SOURCES :=	main.c \
 			set_exit_status.c \
 			run_minishell.c \
 			heredoc.c \
-			redirect_input.c \
-			redirect_output.c \
+			redirect.c \
 			\
 			clone_env_list.c \
 			count_str_array.c \
