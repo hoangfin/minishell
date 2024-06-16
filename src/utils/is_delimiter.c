@@ -6,13 +6,13 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 21:08:45 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/13 21:09:11 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/16 13:41:43 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-t_bool	is_delimiter(const char *str, const char *dollar)
+t_bool	is_delimiter(const char *str, const char *symbol)
 {
 	char	*start;
 	char	*end;
@@ -27,7 +27,7 @@ t_bool	is_delimiter(const char *str, const char *dollar)
 		return (false);
 	while (*end != '\0' && !ft_isspace(*end))
 		end++;
-	if (dollar > start && dollar < end)
+	if (symbol > start && symbol < end)
 		return (true);
-	return (is_delimiter(end, dollar));
+	return (is_delimiter(end, symbol));
 }

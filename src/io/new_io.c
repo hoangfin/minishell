@@ -6,12 +6,13 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 11:56:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/08 17:32:27 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/16 19:42:38 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "io.h"
 #include "libft.h"
+#include "utils.h"
 
 static t_redir_type	get_redir_type(const char *str, int redir_symbol)
 {
@@ -65,27 +66,31 @@ static char	*get_token(const char *str)
 	return (token);
 }
 
+static int	expand_token(t_redir_type type, char **token)
+{
+	if (type == REDIR_HEREDOC)
+		return (0);
+	if (expand_wildcard(token) < 0)
+		return (-1);
+	return (0);
+}
+
 t_io	*new_io(const char *str, int redir_symbol)
 {
-	t_redir_type	rd;
-	char			*token;
-	t_io			*io;
+	t_io	*io;
 
-	rd = get_redir_type(str, redir_symbol);
-	if (rd == REDIR_NO)
-		return (NULL);
-	token = get_token(str);
-	if (token == NULL)
-		return (NULL);
 	io = (t_io *)ft_calloc(1, sizeof(t_io));
 	if (io == NULL)
-	{
-		free(token);
 		return (NULL);
-	}
-	io->redi_type = rd;
-	io->token = token;
-	if (rd != REDIR_HEREDOC)
+	io->redi_type = get_redir_type(str, redir_symbol);
+	if (io->redi_type == REDIR_NO)
+		return (delete_io(io), NULL);
+	io->token = get_token(str);
+	if (io->token == NULL)
+		return (delete_io(io), NULL);
+	if (expand_token(io->redi_type, &io->token) < 0)
+		return (delete_io(io), NULL);
+	if (io->redi_type != REDIR_HEREDOC)
 		ft_remove_quote_pair(io->token);
 	return (io);
 }

@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 14:36:12 by mito              #+#    #+#             */
-/*   Updated: 2024/06/11 21:49:53 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/16 19:09:43 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,35 @@ static int	init_env_list(t_minishell *minishell, char **envp)
 	return (0);
 }
 
-int	init_minishell(t_minishell *minishell, char **envp)
+static int	init_export_list(t_minishell *minishell)
 {
-	char	*temp;
+	char	*oldpwd;
 
-	if (init_env_list(minishell, envp) < 0)
-	{
-		delete_minishell(minishell);
-		return (-1);
-	}
 	minishell->export_list = clone_env_list(minishell->env_list);
 	if (minishell->export_list == NULL)
-		return (delete_minishell(minishell), -1);
-	temp = ft_strdup("OLDPWD");
-	if (temp == NULL)
-		return (delete_minishell(minishell), -1);
-	if (ft_list_push(minishell->export_list, temp) < 0)
+		return (-1);
+	oldpwd = ft_strdup("OLDPWD");
+	if (oldpwd == NULL)
+		return (-1);
+	if (ft_list_push(minishell->export_list, oldpwd) < 0)
 	{
-		free(temp);
+		free(oldpwd);
+		return (-1);
+	}
+	return (0);
+}
+
+int	init_minishell(t_minishell *minishell, char **envp)
+{
+	minishell->stdin = dup(STDIN_FILENO);
+	minishell->stdout = dup(STDOUT_FILENO);
+	if (
+		minishell->stdin < 0
+		|| minishell->stdout < 0
+		|| init_env_list(minishell, envp) < 0
+		|| init_export_list(minishell) < 0
+	)
+	{
 		delete_minishell(minishell);
 		return (-1);
 	}

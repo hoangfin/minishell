@@ -6,12 +6,11 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:51:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/09 17:59:47 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/16 19:12:34 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "command.h"
 
 void	delete_minishell(void *minishell_ptr)
 {
@@ -26,4 +25,8 @@ void	delete_minishell(void *minishell_ptr)
 		ft_list_clear(&minishell->export_list, free);
 	if (minishell->executor != NULL)
 		delete_executor(minishell->executor);
+	if (minishell->stdin >= 0)
+		close(minishell->stdin);
+	if (minishell->stdout >= 0)
+		close(minishell->stdout);
 }

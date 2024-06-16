@@ -6,12 +6,11 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:24:04 by mito              #+#    #+#             */
-/*   Updated: 2024/06/09 18:00:13 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/16 15:24:40 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "utils.h"
 
 static t_bool	is_flag(const char *str)
 {
@@ -34,8 +33,6 @@ static int	print(char **argv, int is_flag_on)
 	i = 0;
 	while (argv[i] != NULL)
 	{
-		if (replace_wildcard(&argv[i]) < 0)
-			return (1);
 		if (ft_putstr_fd(argv[i], 1) < 0)
 			return (1);
 		if (argv[i + 1] != NULL)

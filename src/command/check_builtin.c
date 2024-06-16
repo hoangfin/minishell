@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.h                                          :+:      :+:    :+:   */
+/*   check_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/12 17:18:49 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 15:51:32 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/16 12:37:52 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/16 13:37:19 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMAND_H
-# define COMMAND_H
+#include "command.h"
 
-# include "libft.h"
-
-typedef struct s_command
+t_bool	check_builtin(const char *cmd)
 {
-	char	**argv;
-	t_list	*io_list;
-	t_bool	is_builtin;
-}	t_command;
+	int			i;
+	const char	*cmds[] = {
+		"cd", "echo", "env", "exit", "export", "pwd", "unset", NULL
+	};
 
-t_command	*new_cmd(const char *str);
-void		delete_cmd(void *cmd);
-size_t		count_arguments(t_command *cmd);
-t_bool		check_builtin(const char *cmd);
-t_bool		check_wildcard(const char *cmd);
-char		**parse_cmd(const char *cmd);
-
-#endif
+	i = 0;
+	while (cmds[i] != NULL)
+	{
+		if (ft_strcmp(cmd, cmds[i]) == 0)
+			return (true);
+		i++;
+	}
+	return (false);
+}

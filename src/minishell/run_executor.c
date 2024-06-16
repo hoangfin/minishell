@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/15 17:42:26 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/16 18:13:27 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@
 
 static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 {
-	const int	stdin = dup(STDIN_FILENO);
-	const int	stdout = dup(STDOUT_FILENO);
-	int			exit_status;
+	int	exit_status;
 
-	if (stdin < 0 || stdout < 0)
-		return (perror("minishell: dup"), 1);
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		ft_printf("exit\n");
 	if (redirect(cmd->io_list, INT_MIN, INT_MIN, minishell) < 0)
@@ -34,9 +30,9 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 	exit_status = execute_command(cmd, minishell);
 	if (access(HERE_DOC_TEMP_FILE, F_OK) != -1)
 		unlink(HERE_DOC_TEMP_FILE);
-	if (dup2_close(stdin, STDIN_FILENO) < 0)
+	if (dup2(minishell->stdin, STDIN_FILENO) < 0)
 		return (1);
-	if (dup2_close(stdout, STDOUT_FILENO) < 0)
+	if (dup2(minishell->stdout, STDOUT_FILENO) < 0)
 		return (1);
 	return (exit_status);
 }

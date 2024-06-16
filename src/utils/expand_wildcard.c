@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   replace_wildcard.c                                 :+:      :+:    :+:   */
+/*   expand_wildcard.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:55:01 by mito              #+#    #+#             */
-/*   Updated: 2024/06/10 15:43:11 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/16 17:33:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,26 @@
 
 static t_bool	is_match(const char *glob_pattern, const char *filename)
 {
-	char	*next;
+	char	*wildcard;
 	char	*match;
+	size_t	bytes;
 
-	while (*glob_pattern != '\0' && *glob_pattern == '*')
-		glob_pattern++;
 	if (*glob_pattern == '\0')
 		return (true);
-	next = ft_strchr(glob_pattern, '*');
-	if (next == NULL)
+	wildcard = find_symbol(glob_pattern, "*");
+	if (wildcard == NULL)
 	{
-		match = ft_strnstr(filename, glob_pattern, ft_strlen(glob_pattern));
-		if (match == NULL)
-			return (false);
-		if (ft_strlen(match) == ft_strlen(glob_pattern))
+		if (ft_ends_with(filename, glob_pattern))
 			return (true);
 		return (false);
 	}
-	match = ft_strnstr(filename, glob_pattern, next - glob_pattern);
+	if (wildcard == glob_pattern)
+		return (is_match(wildcard + 1, filename));
+	bytes = wildcard - glob_pattern;
+	match = ft_strnstr(filename, glob_pattern, bytes);
 	if (match == NULL)
 		return (false);
-	return (is_match(next + 1, match + (next - glob_pattern)));
+	return (is_match(wildcard + 1, match + bytes));
 }
 
 static int	concat(char **result, const char *str)
@@ -75,7 +74,10 @@ static int	fill(char **result, DIR *dir, const char *glob_pattern)
 		entry = readdir(dir);
 		if (entry == NULL)
 			break ;
-		if (is_match(glob_pattern, entry->d_name))
+		if (
+			is_match(glob_pattern, entry->d_name)
+			&& !ft_starts_with(entry->d_name, ".")
+		)
 		{
 			if (concat(result, entry->d_name) < 0)
 				return (-1);
@@ -121,17 +123,17 @@ static int	get_match(char **result, const char *glob_pattern)
  * If no match content is found, this function does not update the given string.
  *
 */
-int	replace_wildcard(char **str)
+int	expand_wildcard(char **cmd_arg)
 {
 	char	*result;
 
-	if (ft_strchr(*str, '*') == NULL)
+	if (find_symbol(*cmd_arg, "*") == NULL)
 		return (0);
-	if (get_match(&result, *str) < 0)
+	if (get_match(&result, *cmd_arg) < 0)
 		return (-1);
 	if (result == NULL)
 		return (0);
-	free(*str);
-	*str = result;
+	free(*cmd_arg);
+	*cmd_arg = result;
 	return (0);
 }

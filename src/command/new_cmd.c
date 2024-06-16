@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:44:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/15 17:37:40 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/16 15:51:49 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,61 +32,40 @@ static int	init_io_list(t_list *list, char *str)
 	return (init_io_list(list, str));
 }
 
-static int	init_cmd(t_command *cmd, const char *str)
+static int	init_cmd(t_command *cmd, char *str)
 {
-	char	*str_dup;
-
-	str_dup = ft_strdup(str);
-	if (str_dup == NULL)
+	cmd->io_list = ft_list(0);
+	if (cmd->io_list == NULL)
 		return (-1);
-	if (init_io_list(cmd->io_list, str_dup) < 0)
-	{
-		free(str_dup);
+	if (init_io_list(cmd->io_list, str) < 0)
 		return (-1);
-	}
-	cmd->argv = ft_parse_cmd(str_dup);
+	cmd->argv = parse_cmd(str);
 	if (cmd->argv == NULL)
-	{
-		free(str_dup);
 		return (-1);
-	}
-	free(str_dup);
+	cmd->is_builtin = check_builtin(cmd->argv[0]);
 	return (0);
-}
-
-static t_bool	is_builtin_cmd(const char *str)
-{
-	int			i;
-	const char	*builtin_cmds[] = {
-		"cd", "echo", "env", "exit", "export", "pwd", "unset"
-	};
-
-	i = 0;
-	while (i < 7)
-	{
-		if (
-			ft_strcmp(str, builtin_cmds[i]) == 0
-			&& ft_strlen(str) == ft_strlen(builtin_cmds[i])
-		)
-			return (true);
-		i++;
-	}
-	return (false);
 }
 
 t_command	*new_cmd(const char *str)
 {
+	char		*dup_str;
 	t_command	*cmd;
 
+	dup_str = ft_strdup(str);
+	if (dup_str == NULL)
+		return (NULL);
 	cmd = (t_command *)ft_calloc(1, sizeof(t_command));
 	if (cmd == NULL)
-		return (NULL);
-	cmd->io_list = ft_list(0);
-	if (cmd->io_list == NULL || init_cmd(cmd, str) < 0)
 	{
+		free(dup_str);
+		return (NULL);
+	}
+	if (init_cmd(cmd, dup_str) < 0)
+	{
+		free(dup_str);
 		delete_cmd(cmd);
 		return (NULL);
 	}
-	cmd->is_builtin = is_builtin_cmd(cmd->argv[0]);
+	free(dup_str);
 	return (cmd);
 }

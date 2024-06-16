@@ -21,7 +21,7 @@ VPATH :=	src \
 LIBFT := $(LIBFT_DIR)/libft.a
 
 CC := cc
-CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
+CFLAG := -g -fsanitize=address -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
 
 SOURCES :=	main.c \
 			ft_cd.c \
@@ -51,6 +51,7 @@ SOURCES :=	main.c \
 			clone_env_list.c \
 			count_str_array.c \
 			dup2_close.c \
+			expand_wildcard.c \
 			find_env.c \
 			find_logical_op.c \
 			find_redirect_op.c \
@@ -66,12 +67,14 @@ SOURCES :=	main.c \
 			ungroup.c \
 			update_env.c \
 			wait_all.c \
-			replace_wildcard.c \
 			is_underscore_var.c \
 			\
+			check_builtin.c \
+			check_wildcard.c \
 			count_arguments.c \
 			delete_cmd.c \
 			new_cmd.c \
+			parse_cmd.c \
 			\
 			delete_io.c \
 			new_io.c \
@@ -91,8 +94,8 @@ OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
-	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
-#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
+#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
+	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
 	@echo "$(YELLOW)$@$(RESET) created."
 
 $(BUILD_DIR):
