@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:17:05 by mito              #+#    #+#             */
-/*   Updated: 2024/05/28 23:43:57 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/17 00:05:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,22 @@
 
 int	ft_pwd(void)
 {
-	char	buffer[1024];
+	static char	cwd[1024] = {'\0'};
+	char		buffer[1024];
 
 	if (getcwd(buffer, sizeof(buffer)) == NULL)
-		return (1);
-	if (printf("%s\n", buffer) < 0)
+	{
+		if (cwd[0] == '\0')
+			return (1);
+		else
+		{
+			if (printf("%s\n", cwd) < 0)
+				return (1);
+			return (0);
+		}
+	}
+	ft_memcpy(cwd, buffer, 1024);
+	if (printf("%s\n", cwd) < 0)
 		return (1);
 	return (0);
 }
