@@ -7,6 +7,7 @@ RESET := \033[0m
 
 BUILD_DIR := build
 LIBFT_DIR := libft
+READLINE_DIR := /usr/include
 
 VPATH :=	src \
 			src/builtin \
@@ -21,7 +22,7 @@ VPATH :=	src \
 LIBFT := $(LIBFT_DIR)/libft.a
 
 CC := cc
-CFLAG := -g -fsanitize=address -Wall -Wextra -Iinclude -I$(LIBFT_DIR)
+CFLAG := -g -Wall -Wextra -Iinclude -I$(LIBFT_DIR) -I$(READLINE_DIR)
 
 SOURCES :=	main.c \
 			ft_cd.c \
@@ -94,9 +95,8 @@ OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(BUILD_DIR) $(LIBFT) $(OBJECTS)
-#	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -L/Users/$(USER)/.brew/Cellar/readline/8.2.10/lib -lreadline -o $@
 	@$(CC) $(CFLAG) $(OBJECTS) $(LIBFT) -lreadline -o $@
-	@echo "$(YELLOW)$@$(RESET) created."
+	@echo -e "$(YELLOW)$@$(RESET) created."
 
 $(BUILD_DIR):
 	@mkdir -p $@
@@ -104,16 +104,16 @@ $(BUILD_DIR):
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --silent
-	@echo "$(YELLOW)$(LIBFT)$(RESET) created."
+	@echo -e "$(YELLOW)$(LIBFT)$(RESET) created."
 
 $(BUILD_DIR)/%.o: %.c
 	@$(CC) $(CFLAG) -c $< -o $@
 
 fclean:
 	@$(MAKE) -C $(LIBFT_DIR) fclean --silent
-	@echo "$(RED)$(LIBFT)$(RESET) deleted."
+	@echo -e "$(RED)$(LIBFT)$(RESET) deleted."
 	@rm -rf $(BUILD_DIR)
 	@rm -f $(NAME)
-	@echo "$(RED)$(NAME)$(RESET) deleted."
+	@echo -e "$(RED)$(NAME)$(RESET) deleted."
 
 re: fclean all
