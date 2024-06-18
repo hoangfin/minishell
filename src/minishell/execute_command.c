@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:26:28 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/12 13:45:26 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/18 19:44:01 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,15 @@ static int	execve_path(t_command *cmd, const char **path, char *const *envp)
 	if (path == NULL)
 	{
 		if (is_directory(cmd->argv[0]))
-			return (ft_fprintf(2, "minishell: %s: is a directory\n", cmd->argv[0]), 126);
+			return (ft_fprintf(2, "minishell: %s: is a directory\n", \
+				cmd->argv[0]), 126);
 		return (execve(cmd->argv[0], cmd->argv, envp));
 	}
 	while (*path != NULL)
 	{
 		cmd_path = ft_join_strings(3, *path, "/", cmd->argv[0]);
 		if (cmd_path == NULL)
-		{
-			ft_fprintf(2, "minishell: malloc: %s\n", strerror(errno));
-			return (-1);
-		}
+			return (perror("minishell"), -1);
 		if (access(cmd_path, X_OK) == 0)
 			status = execve(cmd_path, cmd->argv, envp);
 		free(cmd_path);
@@ -76,25 +74,23 @@ static int	ft_execve(t_command *cmd, const char **path, char *const *envp)
 	if (ft_strchr(cmd_name, '/') != NULL || ft_has_spaces_only(cmd_name))
 	{
 		if (is_directory(cmd_name))
-			return (ft_fprintf(2, "minishell: %s: is a directory\n", cmd_name), 126);
+			return (ft_fprintf(2, "minishell: %s: is a directory\n", \
+				cmd_name), 126);
 		execve(cmd_name, cmd->argv, envp);
 	}
 	else
 		execve_path(cmd, path, envp);
 	ft_fprintf(2, "minishell: %s: ", cmd_name);
-	if (errno == EACCES)
+	if (errno == EACCES || errno == ENOTDIR)
 		return (ft_fprintf(2, "%s\n", strerror(errno)), 126);
-	if (errno == ENOENT)
+	if (errno == ENOENT && path == NULL)
+		return (ft_fprintf(2, "%s\n", strerror(errno)), 127);
+	if (errno == ENOENT && path != NULL)
 	{
-		if (path == NULL)
+		if (ft_strchr(cmd_name, '/') != NULL)
 			return (ft_fprintf(2, "%s\n", strerror(errno)), 127);
 		else
-		{
-			if (ft_strchr(cmd_name, '/') != NULL)
-				return (ft_fprintf(2, "%s\n", strerror(errno)), 127);
-			else
-				return (ft_fprintf(2, "%s\n", "command not found"), 127);
-		}
+			return (ft_fprintf(2, "%s\n", "command not found"), 127);
 	}
 	return (ft_fprintf(2, "%s\n", strerror(errno)), 1);
 }
