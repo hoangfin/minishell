@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/06/14 22:14:19 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 13:55:50 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int	enable_echoctl(void)
 int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	minishell;
+	int			status;
 
 	(void)argc;
 	(void)argv;
@@ -72,8 +73,10 @@ int	main(int argc, char **argv, char **envp)
 		enable_echoctl();
 		return (EXIT_FAILURE);
 	}
+	status = minishell.exit_status;
 	delete_minishell(&minishell);
 	if (enable_echoctl() < 0)
 		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	write(STDOUT_FILENO, "exit\n", 5);
+	return (status);
 }

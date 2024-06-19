@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:26:20 by mito              #+#    #+#             */
-/*   Updated: 2024/06/12 13:56:42 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/19 14:20:32 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,37 +30,42 @@ static int	is_str_digit(char *str)
 	return (1);
 }
 
-static void	print_exit(
+static void	print_error(
 	t_minishell *minishell,
 	const char *arg,
-	const char *err_msg,
-	int exit_code
+	const char *err_msg
 )
 {
+	minishell->should_exit_program = true;
 	ft_fprintf(STDERR_FILENO, "minishell: exit: %s: %s\n", arg, err_msg);
-	delete_minishell(minishell);
-	exit(exit_code);
 }
 
 int	ft_exit(t_command *cmd, void *minishell)
 {
-	const t_minishell	*mns = (t_minishell *)minishell;
-	int					exit_code;
-	t_bool				overflow;
+	t_minishell	*mns;
+	int			exit_code;
+	t_bool		overflow;
 
+	mns = (t_minishell *)minishell;
 	overflow = false;
 	if (cmd->argv[1] == NULL)
 	{
-		delete_minishell(minishell);
-		exit(mns->exit_status);
+		mns->should_exit_program = true;
+		return (mns->exit_status);
 	}
 	if (!is_str_digit(cmd->argv[1]))
-		print_exit(minishell, cmd->argv[1], "numeric argument required", 255);
+	{
+		print_error(minishell, cmd->argv[1], "numeric argument required");
+		return (255);
+	}
 	exit_code = ft_atol(cmd->argv[1], &overflow);
 	if (overflow)
-		print_exit(minishell, cmd->argv[1], "numeric argument required", 255);
+	{
+		print_error(minishell, cmd->argv[1], "numeric argument required");
+		return (255);
+	}
 	if (count_arguments(cmd) > 2)
 		return (ft_fprintf(2, "minishell: exit: too many arguments\n"), 1);
-	delete_minishell(minishell);
-	exit(exit_code % 256);
+	mns->should_exit_program = true;
+	return (exit_code % 256);
 }

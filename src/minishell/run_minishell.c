@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:30:23 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/17 23:00:23 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 13:52:04 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	run_minishell(t_minishell *minishell)
 		}
 		set_exit_status(execute(line, minishell), minishell);
 		free(line);
+		if (minishell->should_exit_program == true)
+			break ;
 	}
 	rl_clear_history();
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 18:09:37 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 13:50:31 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_minishell
 	t_executor	*executor;
 	int			exit_status;
 	char		exit_status_str[sizeof(int) * 8 + 1];
+	t_bool		should_exit_program;
 	int			stdin;
 	int			stdout;
 }	t_minishell;

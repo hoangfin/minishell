@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 00:45:36 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 13:45:31 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 {
 	int	exit_status;
 
-	if (ft_strcmp(cmd->argv[0], "exit") == 0)
-		ft_printf("exit\n");
 	if (redirect(cmd->io_list, INT_MIN, INT_MIN, minishell) < 0)
 	{
 		if (errno == EINTR)
