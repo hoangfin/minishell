@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:26:20 by mito              #+#    #+#             */
-/*   Updated: 2024/06/19 14:20:32 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 16:23:01 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,14 @@ static void	print_error(
 
 int	ft_exit(t_command *cmd, void *minishell)
 {
-	t_minishell	*mns;
-	int			exit_code;
-	t_bool		overflow;
+	int		exit_code;
+	t_bool	overflow;
 
-	mns = (t_minishell *)minishell;
 	overflow = false;
 	if (cmd->argv[1] == NULL)
 	{
-		mns->should_exit_program = true;
-		return (mns->exit_status);
+		((t_minishell *)minishell)->should_exit_program = true;
+		return (((t_minishell *)minishell)->exit_status);
 	}
 	if (!is_str_digit(cmd->argv[1]))
 	{
@@ -66,6 +64,6 @@ int	ft_exit(t_command *cmd, void *minishell)
 	}
 	if (count_arguments(cmd) > 2)
 		return (ft_fprintf(2, "minishell: exit: too many arguments\n"), 1);
-	mns->should_exit_program = true;
+	((t_minishell *)minishell)->should_exit_program = true;
 	return (exit_code % 256);
 }

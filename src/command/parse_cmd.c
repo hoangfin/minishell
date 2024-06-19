@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 20:53:07 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 15:51:03 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 16:15:31 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static char	**split_cmd(char *cmd)
 	tokens = ft_split(cmd, ' ');
 	if (tokens != NULL)
 	{
+		ft_replace(tokens[0], ft_strlen(tokens[0]), "\x1F", ' ');
 		ft_remove_quote_pair(tokens[0]);
 		is_wildcard_supported = check_wildcard(tokens[0]);
 		i = 1;

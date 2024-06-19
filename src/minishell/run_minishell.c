@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:30:23 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 13:52:04 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 16:24:11 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	run_minishell(t_minishell *minishell)
 		line = readline("minishell> ");
 		if (line == NULL)
 			break ;
-		if (*line == '\0')
+		if (*line == '\0' || ft_has_spaces_only(line))
 		{
 			free(line);
 			continue ;
