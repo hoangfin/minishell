@@ -6,11 +6,12 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:49:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/09 17:56:54 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 02:06:03 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
+#include <errno.h>
 #include "minishell.h"
 #include "utils.h"
 #include "constants.h"
@@ -68,35 +69,33 @@ static int	heredoc_expand(char **str, t_minishell *minishell)
 	return (0);
 }
 
-static int	read_inputs(int fd, const char *delimiter, t_bool should_expand, t_minishell *minishell)
+static int	get_input(
+	int fd,
+	const char *delimiter,
+	t_minishell *minishell,
+	t_bool should_expand_dollar
+)
 {
 	char	*line;
-	size_t	length;
 
 	while (1)
 	{
-		write(STDOUT_FILENO, "> ", 2);
-		if (get_next_line(STDIN_FILENO, &line) < 0)
-			return (-1);
+		line = ft_readline("> ");
 		if (line == NULL)
-			return (0);
-		length = ft_strlen(line);
-		if (
-			(length - 1) == ft_strlen(delimiter)
-			&& ft_strncmp(line, delimiter, length - 1) == 0
-		)
-		{
-			free(line);
-			return (0);
-		}
-		if (should_expand == true)
+			break ;
+		if (ft_strcmp(line, delimiter) == 0)
+			return (free(line), 0);
+		if (should_expand_dollar == true)
 		{
 			if (heredoc_expand(&line, minishell) < 0)
 				return (free(line), -1);
 		}
-		write(fd, line, ft_strlen(line));
+		ft_fprintf(fd, "%s\n", line);
 		free(line);
 	}
+	if (errno)
+		return (-1);
+	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 
@@ -110,24 +109,19 @@ static int	read_inputs(int fd, const char *delimiter, t_bool should_expand, t_mi
 */
 int	heredoc(char *delimiter, t_minishell *minishell)
 {
-	t_bool	should_expand;
+	t_bool	should_expand_dollar;
 	int		fd;
 
-	should_expand = true;
-	if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
-	{
-		ft_remove_quote_pair(delimiter);
-		should_expand = false;
-	}
-	if (
-		set_signal_handler(SIGINT, newline_handler) < 0
-		|| set_signal_handler(SIGQUIT, SIG_IGN) < 0
-	)
+	if (set_signal_handler(SIGINT, sigint_handler_heredoc) < 0)
 		return (-1);
+	should_expand_dollar = true;
+	if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
+		should_expand_dollar = false;
+	ft_remove_quote_pair(delimiter);
 	fd = open(HERE_DOC_TEMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
-	if (read_inputs(fd, delimiter, should_expand, minishell) < 0)
+	if (get_input(fd, delimiter, minishell, should_expand_dollar) < 0)
 	{
 		close(fd);
 		unlink(HERE_DOC_TEMP_FILE);

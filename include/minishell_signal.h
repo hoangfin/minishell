@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 22:29:40 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/07 13:35:11 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/17 22:59:17 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <signal.h>
 
 int		set_signal_handler(int signum, void (*handler)(int));
+void	sigint_handler(int signum);
+void	sigint_handler_heredoc(int signum);
 int		reset_signals(void);
-
-void	newline_handler(int signum);
 
 #endif

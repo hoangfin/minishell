@@ -57,6 +57,7 @@ SOURCES :=	main.c \
 			find_logical_op.c \
 			find_redirect_op.c \
 			find_symbol.c \
+			ft_readline.c \
 			get_envp.c \
 			get_path.c \
 			is_delimiter.c \
@@ -88,7 +89,7 @@ SOURCES :=	main.c \
 			\
 			reset_signals.c \
 			set_signal_handler.c \
-			newline_handler.c
+			signal_handlers.c
 
 OBJECTS := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 

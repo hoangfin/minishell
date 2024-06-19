@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   newline_handler.c                                  :+:      :+:    :+:   */
+/*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 13:33:34 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/07 13:34:42 by hoatran          ###   ########.fr       */
+/*   Created: 2024/06/17 22:09:39 by hoatran           #+#    #+#             */
+/*   Updated: 2024/06/18 00:48:44 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <unistd.h>
+#include "minishell_signal.h"
 
-void	newline_handler(int signum)
+void	sigint_handler(int signum)
+{
+	(void)signum;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	sigint_handler_heredoc(int signum)
 {
 	(void)signum;
 	write(STDOUT_FILENO, "\n", 1);

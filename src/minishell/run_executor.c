@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 18:13:27 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 00:45:36 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		ft_printf("exit\n");
 	if (redirect(cmd->io_list, INT_MIN, INT_MIN, minishell) < 0)
+	{
+		if (errno == EINTR)
+			return (130);
 		return (1);
+	}
 	exit_status = execute_command(cmd, minishell);
 	if (access(HERE_DOC_TEMP_FILE, F_OK) != -1)
 		unlink(HERE_DOC_TEMP_FILE);
@@ -56,7 +60,11 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 		exit_on_error("dup", strerror(errno), minishell, 1);
 	close_pipes(minishell->executor);
 	if (redirect(cmd->io_list, pipe_r, pipe_w, minishell) < 0)
+	{
+		if (errno == EINTR)
+			exit_on_error(NULL, NULL, minishell, 130);
 		exit_on_error(NULL, NULL, minishell, 1);
+	}
 	exit_status = execute_command(cmd, minishell);
 	delete_minishell(minishell);
 	exit(exit_status);

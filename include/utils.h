@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 15:03:53 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/18 02:06:24 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ int			is_underscore_var(char *cmd_arg);
 size_t		count_str_array(const char **str_array);
 
 const char	*find_env(const char *key, t_list *env_list);
-char		*find_symbol(const char *str, const char *symbol);
-char		*find_logical_op(const char *str);
 char *const	*get_envp(t_list *env_list);
 const char	**get_path(t_list *env_list);
+
+char		*find_logical_op(const char *str);
+char		*find_symbol(const char *str, const char *symbol);
+char		*ft_readline(const char *prompt);
 
 void		ungroup(char *str);
 void		find_redirect_op(const char *str, char **start, char **end);
