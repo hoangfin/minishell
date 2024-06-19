@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:19:26 by mito              #+#    #+#             */
-/*   Updated: 2024/06/11 17:44:36 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/19 23:24:07 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
  * NULL is returned.
  *
 */
-const char	*find_env(const char *key, t_list *env_list)
+char	*find_env(const char *key, t_list *list)
 {
 	t_node	*node;
 	char	*ptr;
 	size_t	key_length;
 
 	key_length = ft_strlen(key);
-	node = env_list->head;
+	node = list->head;
 	while (node != NULL)
 	{
 		ptr = ft_strchr(node->data, '=');

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:31:20 by mito              #+#    #+#             */
-/*   Updated: 2024/06/19 13:55:50 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 17:30:13 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,5 @@ int	main(int argc, char **argv, char **envp)
 	delete_minishell(&minishell);
 	if (enable_echoctl() < 0)
 		return (EXIT_FAILURE);
-	write(STDOUT_FILENO, "exit\n", 5);
 	return (status);
 }

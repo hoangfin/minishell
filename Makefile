@@ -66,6 +66,7 @@ SOURCES :=	main.c \
 			is_valid_env_key.c \
 			parse_cmd_list.c \
 			print_export_list.c \
+			set_env.c \
 			ungroup.c \
 			update_env.c \
 			wait_all.c \

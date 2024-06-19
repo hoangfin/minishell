@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/18 02:06:24 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 23:58:14 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_list		*clone_env_list(t_list *src_list);
 t_list		*parse_cmd_list(const char *str);
 
 int			update_env(const char *key, const char *value, t_list *list);
+int			set_env(t_list *list, const char *key, const char *value);
 int			wait_all(pid_t *pids, int number_of_pids);
 int			dup2_close(int oldfd, int newfd);
 int			expand_wildcard(char **cmd_arg);
@@ -33,7 +34,7 @@ int			is_underscore_var(char *cmd_arg);
 
 size_t		count_str_array(const char **str_array);
 
-const char	*find_env(const char *key, t_list *env_list);
+char		*find_env(const char *key, t_list *list);
 char *const	*get_envp(t_list *env_list);
 const char	**get_path(t_list *env_list);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 13:45:31 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 17:31:17 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 			return (130);
 		return (1);
 	}
+	if (ft_strcmp(cmd->argv[0], "exit") == 0)
+		write(STDOUT_FILENO, "exit\n", 5);
 	exit_status = execute_command(cmd, minishell);
 	if (access(HERE_DOC_TEMP_FILE, F_OK) != -1)
 		unlink(HERE_DOC_TEMP_FILE);

@@ -6,14 +6,17 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 15:02:39 by mito              #+#    #+#             */
-/*   Updated: 2024/06/16 22:56:09 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 23:07:45 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include "builtin.h"
 #include "utils.h"
+#include "minishell.h"
+#include "constants.h"
 
 static int	update_pwd(const char *current_path, t_list *list)
 {
@@ -39,9 +42,9 @@ static int	update_pwd(const char *current_path, t_list *list)
 	return (0);
 }
 
-static int	go_home(t_list *env_list)
+static int	go_home(t_minishell *minishell)
 {
-	const char	*home_path = find_env("HOME", env_list);
+	const char	*home_path = find_env("HOME", minishell->env_list);
 
 	if (home_path == NULL)
 	{
@@ -55,31 +58,47 @@ static int	go_home(t_list *env_list)
 		);
 		return (-1);
 	}
-	update_pwd(home_path, env_list);
+	ft_strlcpy(minishell->cwd, home_path, PATH_MAX);
+	update_pwd(home_path, minishell->env_list);
+	update_pwd(home_path, minishell->export_list);
 	return (0);
 }
 
-int	ft_cd(t_command *cmd, t_list *env_list, t_list *export_list)
+static int	go_to_dir(const char *path, t_minishell *minishell)
 {
-	char	buffer[1024];
+	char	buffer[PATH_MAX];
 
+	if (chdir(path) == -1)
+	{
+		ft_fprintf(2, "minishell: cd: %s: %s\n", path, strerror(errno));
+		return (1);
+	}
+	if (getcwd(buffer, PATH_MAX) == NULL)
+	{
+		ft_fprintf(\
+			STDERR_FILENO, \
+			"%s: %s: %s\n", \
+			"minishell: cd: error retrieving current directory", \
+			"getcwd: cannot access parent directories", \
+			strerror(errno) \
+		);
+		return (1);
+	}
+	ft_strlcpy(minishell->cwd, buffer, PATH_MAX);
+	update_pwd(buffer, minishell->env_list);
+	update_pwd(buffer, minishell->export_list);
+	return (0);
+}
+
+int	ft_cd(t_command *cmd, void *minishell)
+{
 	if (cmd->argv[1] == NULL)
 	{
-		if (go_home(env_list) < 0)
+		if (go_home(minishell) < 0)
 			return (1);
 		return (0);
 	}
 	if (cmd->argv[1][0] == '\0')
 		return (0);
-	if (chdir(cmd->argv[1]) == -1)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: cd: %s: %s\n",
-			cmd->argv[1], strerror(errno));
-		return (1);
-	}
-	if (getcwd(buffer, sizeof(buffer)) == NULL)
-		return (1);
-	update_pwd(buffer, env_list);
-	update_pwd(buffer, export_list);
-	return (0);
+	return (go_to_dir(cmd->argv[1], minishell));
 }

@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:51:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 19:12:34 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 20:28:05 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ void	delete_minishell(void *minishell_ptr)
 		close(minishell->stdin);
 	if (minishell->stdout >= 0)
 		close(minishell->stdout);
+	free(minishell->cwd);
 }

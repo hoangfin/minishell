@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 13:50:31 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/19 17:37:47 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_minishell
 	int			exit_status;
 	char		exit_status_str[sizeof(int) * 8 + 1];
 	t_bool		should_exit_program;
+	char		*cwd;
 	int			stdin;
 	int			stdout;
 }	t_minishell;

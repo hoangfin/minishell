@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:26:28 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/18 19:44:01 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/19 20:36:51 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	execute_builtin(t_command *cmd, t_minishell *minishell)
 	const char	*cmd_name = cmd->argv[0];
 
 	if (ft_strcmp(cmd_name, "cd") == 0)
-		return (ft_cd(cmd, minishell->env_list, minishell->export_list));
+		return (ft_cd(cmd, minishell));
 	if (ft_strcmp(cmd_name, "echo") == 0)
 		return (ft_echo(cmd));
 	if (ft_strcmp(cmd_name, "env") == 0)
@@ -32,7 +32,7 @@ static int	execute_builtin(t_command *cmd, t_minishell *minishell)
 	if (ft_strcmp(cmd_name, "export") == 0)
 		return (ft_export(cmd, minishell->env_list, minishell->export_list));
 	if (ft_strcmp(cmd_name, "pwd") == 0)
-		return (ft_pwd());
+		return (ft_pwd(minishell));
 	if (ft_strcmp(cmd_name, "unset") == 0)
 		return (ft_unset(cmd, minishell->env_list, minishell->export_list));
 	return (0);
