@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:26:20 by mito              #+#    #+#             */
-/*   Updated: 2024/06/19 16:23:01 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/20 13:46:09 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ int	ft_exit(t_command *cmd, void *minishell)
 	if (!is_str_digit(cmd->argv[1]))
 	{
 		print_error(minishell, cmd->argv[1], "numeric argument required");
-		return (255);
+		return (2);
 	}
 	exit_code = ft_atol(cmd->argv[1], &overflow);
 	if (overflow)
 	{
 		print_error(minishell, cmd->argv[1], "numeric argument required");
-		return (255);
+		return (2);
 	}
 	if (count_arguments(cmd) > 2)
 		return (ft_fprintf(2, "minishell: exit: too many arguments\n"), 1);

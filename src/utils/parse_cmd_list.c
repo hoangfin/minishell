@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd_list.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 13:34:48 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/13 00:46:53 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/20 15:00:14 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_list	*parse_cmd_list(const char *str)
 
 	dup = ft_strdup(str);
 	if (dup == NULL)
-		return (perror("minishell: malloc") ,NULL);
+		return (perror("minishell: malloc"), NULL);
 	convert(dup);
 	splits = ft_split(dup, '|');
 	free(dup);

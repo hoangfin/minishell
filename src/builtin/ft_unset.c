@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 10:48:28 by mito              #+#    #+#             */
-/*   Updated: 2024/06/10 15:38:41 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/20 14:58:29 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	ft_unset(t_command *cmd, t_list *env_list, t_list *export_list)
 {
-	int i;
+	int	i;
 	int	exit_status;
 
 	i = 1;
@@ -28,7 +28,7 @@ int	ft_unset(t_command *cmd, t_list *env_list, t_list *export_list)
 				2,
 				"minishell: unset: `%s': not a valid identifier\n",
 				cmd->argv[i]
-			);
+				);
 			exit_status = 1;
 		}
 		else

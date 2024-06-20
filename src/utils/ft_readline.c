@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 02:03:55 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 00:34:59 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/20 15:02:36 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	double_size(char **line, size_t *size)
 static void	fill_line(char **line, size_t *size)
 {
 	size_t	pos;
-	ssize_t byte_read;
+	ssize_t	byte_read;
 
 	pos = 0;
 	while (1)

@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:33:35 by mito              #+#    #+#             */
-/*   Updated: 2024/06/11 18:18:26 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/20 15:01:52 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_bool	is_key_exist_v2(t_node *node, void *data)
 			return (true);
 		return (false);
 	}
-	return handle_equal_sign((char *)data, (char *)node->data);
+	return (handle_equal_sign((char *)data, (char *)node->data));
 }
 
 int	update_env(const char *key, const char *value, t_list *list)
