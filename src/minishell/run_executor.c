@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 17:31:17 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/20 17:13:39 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ int	run_executor(t_executor *executor, t_minishell *minishell)
 	cmd = (t_command *)executor->cmd_list->head->data;
 	if (executor->num_of_pids == 0)
 		return (run_on_current_process(cmd, minishell));
+	if (update_underscore_var(minishell) < 0)
+		return (1);
 	if (start_workers(executor, minishell) < 0)
 		return (1);
 	exit_status = wait_all(executor->pids, executor->num_of_pids);

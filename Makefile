@@ -71,6 +71,7 @@ SOURCES :=	main.c \
 			update_env.c \
 			wait_all.c \
 			is_underscore_var.c \
+			update_underscore_var.c \
 			\
 			check_builtin.c \
 			check_wildcard.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 23:58:14 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/20 16:53:21 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <sys/types.h>
 # include "libft.h"
+# include "minishell.h"
 
 t_bool		is_delimiter(const char *str, const char *symbol);
 t_bool		is_directory(const char *pathname);
@@ -31,6 +32,7 @@ int			dup2_close(int oldfd, int newfd);
 int			expand_wildcard(char **cmd_arg);
 int			print_export_list(t_list *export_list);
 int			is_underscore_var(char *cmd_arg);
+int			update_underscore_var(t_minishell *minishell);
 
 size_t		count_str_array(const char **str_array);
 
