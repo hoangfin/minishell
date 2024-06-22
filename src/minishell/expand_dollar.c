@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 22:36:57 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/20 17:10:55 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/21 14:12:51 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	get_result(char **result, const char *str, t_minishell *minishell)
 	return (0);
 }
 
-int	expand(char **str, t_minishell *minishell)
+int	expand_dollar(char **str, t_minishell *minishell)
 {
 	char	*result;
 

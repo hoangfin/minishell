@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 17:37:47 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/20 22:17:51 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ t_executor	*new_executor(const char *str);
 
 int			close_pipes(t_executor *executor);
 int			execute_command(t_command *cmd, t_minishell *minishell);
-int			execute(const char *str, t_minishell *minishell);
-int			expand(char **str, t_minishell *minishell);
+int			execute(char *str, t_minishell *minishell);
+int			expand_cmd(t_command *cmd, t_minishell *minishell);
+int			expand_dollar(char **str, t_minishell *minishell);
 int			heredoc(char *delimiter, t_minishell *minishell);
 int			init_minishell(t_minishell *minishell, char **envp);
 

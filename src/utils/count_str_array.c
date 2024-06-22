@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   count_str_array.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 22:53:10 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/17 19:03:51 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/20 13:09:17 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-size_t	count_str_array(const char **str_array)
+size_t	count_str_array(char **str_array)
 {
 	int	i;
 

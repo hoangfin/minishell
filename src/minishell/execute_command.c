@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:26:28 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/20 17:09:49 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/21 14:25:30 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,14 @@ static int	ft_execve(t_command *cmd, const char **path, char *const *envp)
 int	execute_command(t_command *cmd, t_minishell *minishell)
 {
 	char *const	*envp = get_envp(minishell->env_list);
-	const char	**path = get_path(minishell->env_list);
+	char		**path;
 	int			status;
 
+	path = get_path(minishell->env_list);
 	if (cmd->is_builtin)
 		status = execute_builtin(cmd, minishell);
 	else
-		status = ft_execve(cmd, path, envp);
+		status = ft_execve(cmd, (const char **)path, envp);
 	free((void *)envp);
 	ft_array_delete((void *)path, sizeof(char *), count_str_array(path), free);
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 11:56:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 19:42:38 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/20 00:19:07 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,6 @@ static char	*get_token(const char *str)
 	return (token);
 }
 
-static int	expand_token(t_redir_type type, char **token)
-{
-	if (type == REDIR_HEREDOC)
-		return (0);
-	if (expand_wildcard(token) < 0)
-		return (-1);
-	return (0);
-}
-
 t_io	*new_io(const char *str, int redir_symbol)
 {
 	t_io	*io;
@@ -88,9 +79,5 @@ t_io	*new_io(const char *str, int redir_symbol)
 	io->token = get_token(str);
 	if (io->token == NULL)
 		return (delete_io(io), NULL);
-	if (expand_token(io->redi_type, &io->token) < 0)
-		return (delete_io(io), NULL);
-	if (io->redi_type != REDIR_HEREDOC)
-		ft_remove_quote_pair(io->token);
 	return (io);
 }

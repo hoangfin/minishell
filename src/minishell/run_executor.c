@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/20 17:13:39 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/21 14:28:23 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,27 @@
 #include "utils.h"
 #include "minishell_signal.h"
 
+static int	dup_pipes(int **pipes, int pipe_rw[], int pro_idx, int pid_count)
+{
+	pipe_rw[0] = INT_MIN;
+	pipe_rw[1] = INT_MIN;
+	if (pipes != NULL && pro_idx > 0)
+		pipe_rw[0] = dup(pipes[pro_idx - 1][0]);
+	if (pipes != NULL && pro_idx < pid_count - 1)
+		pipe_rw[1] = dup(pipes[pro_idx][1]);
+	if (pipe_rw[0] == -1 || pipe_rw[1] == -1)
+		return (-1);
+	return (0);
+}
+
 static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 {
 	int	exit_status;
 
+	if (expand_cmd(cmd, minishell) < 0)
+		return (1);
+	if (cmd->argv[0] == NULL)
+		return (0);
 	if (redirect(cmd->io_list, INT_MIN, INT_MIN, minishell) < 0)
 	{
 		if (errno == EINTR)
@@ -44,22 +61,19 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 {
 	const t_executor	*executor = minishell->executor;
-	int					pipe_r;
-	int					pipe_w;
+	int					pipe_rw[2];
 	int					exit_status;
 
 	if (reset_signals() < 0)
 		exit_on_error(NULL, NULL, minishell, 1);
-	pipe_r = INT_MIN;
-	pipe_w = INT_MIN;
-	if (executor->pipes != NULL && i > 0)
-		pipe_r = dup(executor->pipes[i - 1][0]);
-	if (executor->pipes != NULL && i < executor->num_of_pids - 1)
-		pipe_w = dup(executor->pipes[i][1]);
-	if (pipe_r == -1 || pipe_w == -1)
+	if (dup_pipes(executor->pipes, pipe_rw, i, executor->num_of_pids) < 0)
 		exit_on_error("dup", strerror(errno), minishell, 1);
 	close_pipes(minishell->executor);
-	if (redirect(cmd->io_list, pipe_r, pipe_w, minishell) < 0)
+	if (expand_cmd(cmd, minishell) < 0)
+		return (1);
+	if (cmd->argv[0] == NULL)
+		exit(0);
+	if (redirect(cmd->io_list, pipe_rw[0], pipe_rw[1], minishell) < 0)
 	{
 		if (errno == EINTR)
 			exit_on_error(NULL, NULL, minishell, 130);

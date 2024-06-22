@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_minishell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:30:23 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/20 17:12:09 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/21 14:28:03 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,14 @@ int	run_minishell(t_minishell *minishell)
 		line = readline("minishell> ");
 		if (line == NULL)
 			break ;
-		if (*line == '\0' || ft_has_spaces_only(line))
+		if (*line != '\0' && !ft_has_spaces_only(line))
 		{
-			free(line);
-			continue ;
+			add_history(line);
+			if (validate_input(line) == 0)
+				set_exit_status(execute(line, minishell), minishell);
+			else
+				set_exit_status(2, minishell);
 		}
-		add_history(line);
-		if (validate_input(line) != 0)
-		{
-			free(line);
-			set_exit_status(2, minishell);
-			continue ;
-		}
-		expand(&line, minishell);
-		if (*line == '\0')
-		{
-			free(line);
-			continue ;
-		}
-		set_exit_status(execute(line, minishell), minishell);
 		free(line);
 		if (minishell->should_exit_program == true)
 			break ;

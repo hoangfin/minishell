@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 20:53:07 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 16:15:31 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/21 01:28:04 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,17 @@ static char	**split_cmd(char *cmd)
 {
 	char	**tokens;
 	int		i;
-	t_bool	is_wildcard_supported;
 
 	handle_quote(cmd);
 	ft_replace(cmd, ft_strlen(cmd), "\f\n\r\t\v", ' ');
 	tokens = ft_split(cmd, ' ');
 	if (tokens != NULL)
 	{
-		ft_replace(tokens[0], ft_strlen(tokens[0]), "\x1F", ' ');
-		ft_remove_quote_pair(tokens[0]);
-		is_wildcard_supported = check_wildcard(tokens[0]);
-		i = 1;
+		i = 0;
 		while (tokens[i] != NULL)
 		{
-			ft_trim(tokens[i], '\\');
 			ft_replace(tokens[i], ft_strlen(tokens[i]), "\x1F", ' ');
-			if (is_wildcard_supported)
-			{
-				if (expand_wildcard(&tokens[i]) < 0)
-					return (ft_del_str_arr(&tokens), NULL);
-			}
-			ft_remove_quote_pair(tokens[i]);
+			ft_trim(tokens[i], '\\');
 			i++;
 		}
 	}
@@ -87,14 +77,6 @@ char	**parse_cmd(const char *cmd)
 	dup = ft_strdup(cmd);
 	if (dup == NULL)
 		return (NULL);
-	if (*dup == '\0' || ft_has_spaces_only(dup))
-	{
-		tokens = (char **)ft_calloc(2, sizeof(char *));
-		if (tokens == NULL)
-			return (NULL);
-		tokens[0] = dup;
-		return (tokens);
-	}
 	tokens = split_cmd(dup);
 	free(dup);
 	if (tokens == NULL)

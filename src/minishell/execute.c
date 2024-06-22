@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/04 15:27:52 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/20 22:43:07 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,34 @@ static int	run(const char *str, t_minishell *minishell)
 	return (exit_status);
 }
 
-// cmd1 && (cmd2 || cmd3)
-// cmd1 && cmd2 || cmd3
-// (cmd1 && (cmd2 || cmd3)) || (cmd4 && cmd5) && cmd6
-// (cmd1 && cmd2) || (cmd3 && cmd4) || cmd5 && cmd6
-
-/**
- *
-*/
-int	execute(const char *str, t_minishell *minishell)
+static int	execute_next(int cur_exit_status, char *str, t_minishell *mns)
 {
-	const char	*logical_op;
-	char		*sub_str;
-	int			exit_status;
+	char	*logical_symbol;
+
+	if (cur_exit_status == 0)
+	{
+		if (ft_strncmp(str, "&&", 2) == 0)
+			return (execute(str + 2, mns));
+		logical_symbol = find_and_logical(str + 2);
+		if (logical_symbol != NULL)
+			return (execute(logical_symbol + 2, mns));
+	}
+	if (cur_exit_status != 0)
+	{
+		if (ft_strncmp(str, "||", 2) == 0)
+			return (execute(str + 2, mns));
+		logical_symbol = find_or_logical(str + 2);
+		if (logical_symbol != NULL)
+			return (execute(logical_symbol + 2, mns));
+	}
+	return (cur_exit_status);
+}
+
+int	execute(char *str, t_minishell *minishell)
+{
+	char	*logical_op;
+	char	*sub_str;
+	int		exit_status;
 
 	logical_op = find_logical_op(str);
 	if (logical_op == NULL)
@@ -54,9 +69,6 @@ int	execute(const char *str, t_minishell *minishell)
 		return (1);
 	exit_status = execute(sub_str, minishell);
 	free(sub_str);
-	if (exit_status == 0 && ft_strncmp(logical_op, "&&", 2) == 0)
-		exit_status = execute(logical_op + 2, minishell);
-	if (exit_status != 0 && ft_strncmp(logical_op, "||", 2) == 0)
-		exit_status = execute(logical_op + 2, minishell);
+	exit_status = execute_next(exit_status, logical_op, minishell);
 	return (exit_status);
 }

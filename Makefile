@@ -39,7 +39,8 @@ SOURCES :=	main.c \
 			execute_command.c \
 			execute.c \
 			exit_on_error.c \
-			expand.c \
+			expand_cmd.c \
+			expand_dollar.c \
 			init_minishell.c \
 			new_executor.c \
 			resolve_env.c \
