@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_arrow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 21:40:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/14 00:32:34 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/21 16:24:24 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,6 @@ static char	*get_next(const char *str)
 		str++;
 	return ((char *)str);
 }
-
-// int	has_valid_arrow(const char *str)
-// {
-// 	const char	*next;
-
-// 	while (*str != '\0' && *str != '>' && *str != '<')
-// 		str++;
-// 	if (*str == '\0')
-// 		return (0);
-// 	next = get_next(str);
-// 	if (next == NULL)
-// 		return (2);
-// 	return (has_valid_arrow(next));
-// }
 
 int	has_valid_arrow(const char *str)
 {

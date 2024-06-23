@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_ampersand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 13:13:02 by mito              #+#    #+#             */
-/*   Updated: 2024/06/14 13:21:09 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/21 16:23:43 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,16 @@ static const char	*get_next(const char *str)
 	return (str);
 }
 
-// int	has_valid_ampersand(const char *str)
-// {
-// 	const char	*next;
-
-// 	while (*str != '\0' && *str != '&')
-// 		str++;
-// 	if (*str == '\0')
-// 		return (0);
-// 	next = get_next(str);
-// 	if (next == NULL)
-// 		return (2);
-// 	return (has_valid_arrow(next));
-// }
-
 int	has_valid_ampersand(const char *str)
 {
 	const char	*symbol;
 	const char	*next;
 
+	if (ft_starts_with(str, "&&") == true)
+	{
+		ft_fprintf(2, "%s `%s'\n", ERROR_SYNTAX, "&&");
+		return (2);
+	}
 	symbol = find_symbol(str, "&");
 	if (symbol == NULL)
 		return (0);

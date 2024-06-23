@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/22 12:07:22 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/23 14:43:30 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_list		*expand_wildcard(char *str);
 t_list		*parse_cmd_list(const char *str);
 
 int			update_env(const char *key, const char *value, t_list *list);
-int			set_env(t_list *list, const char *key, const char *value);
 int			wait_all(pid_t *pids, int number_of_pids);
 int			dup2_close(int oldfd, int newfd);
 int			print_export_list(t_list *export_list);

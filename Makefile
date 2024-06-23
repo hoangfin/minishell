@@ -67,7 +67,6 @@ SOURCES :=	main.c \
 			is_valid_env_key.c \
 			parse_cmd_list.c \
 			print_export_list.c \
-			set_env.c \
 			ungroup.c \
 			update_env.c \
 			wait_all.c \
@@ -89,6 +88,7 @@ SOURCES :=	main.c \
 			validate_quotes.c \
 			validate_vertical_bar.c \
 			validate_ampersand.c \
+			validate_parentheses.c \
 			\
 			reset_signals.c \
 			set_signal_handler.c \
