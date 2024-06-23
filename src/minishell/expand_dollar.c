@@ -6,12 +6,13 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 22:36:57 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/21 14:12:51 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/22 23:08:48 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
+#include "constants.h"
 
 static int	update_result(char **result, char *substr, char *env_value)
 {
@@ -30,33 +31,33 @@ static int	update_result(char **result, char *substr, char *env_value)
 	return (0);
 }
 
-static char	*resolve(const char **dollar, char quote, t_minishell *mns)
+static char	*resolve(const char **str, char quote, t_minishell *mns)
 {
-	const char	*start = *dollar;
+	const char	*start = *str;
 
-	(*dollar)++;
-	if (**dollar == '?')
+	(*str)++;
+	if (ft_isdigit(**str))
 	{
-		(*dollar)++;
+		(*str)++;
+		return ("");
+	}
+	if (**str == '?')
+	{
+		(*str)++;
 		return (mns->exit_status_str);
 	}
-	if (**dollar == '\0' || ft_isspace(**dollar))
+	if (**str == '\0' || ft_isspace(**str))
 		return ("$");
-	if (**dollar == '\'' || **dollar == '"')
+	if (**str == '\'' || **str == '"')
 	{
 		if (quote == '"')
 			return ("$");
 		else
 			return ("");
 	}
-	while (
-		**dollar != '\0'
-		&& **dollar != '"'
-		&& **dollar != '\''
-		&& !ft_isspace(**dollar)
-	)
-		(*dollar)++;
-	return (resolve_env(start + 1, *dollar - (start + 1), mns));
+	while (**str != '\0' && ft_strchr(KEY_STOP_CHARS, **str) == NULL)
+		(*str)++;
+	return (resolve_env(start + 1, *str - (start + 1), mns));
 }
 
 static void	update_quote(char *quote, int value)

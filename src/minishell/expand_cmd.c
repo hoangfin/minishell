@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 00:34:04 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/22 18:23:07 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/22 21:59:26 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,38 +59,37 @@ static int	expand_io_list(t_list *io_list, t_minishell *minishell)
 	return (0);
 }
 
-static int	process_matches(char *argv, t_list *arg_list)
+static int	process_matches(char *argv, t_list *arg_list, t_list *match_list)
 {
-	t_list	*match_list;
 	char	*temp;
-	void	*(*copy)(void *);
 
-	match_list = expand_wildcard(argv);
-	if (match_list == NULL)
-		return (-1);
+	if (*argv == '\0')
+		return (0);
 	if (match_list->length == 0)
 	{
 		ft_remove_quote_pair(argv);
 		temp = ft_strdup(argv);
 		if (temp == NULL)
-			return (ft_list_clear(&match_list, free), -1);
+			return (-1);
 		if (ft_list_push(arg_list, temp) < 0)
-		{
-			ft_list_clear(&match_list, free);
 			return (free(temp), -1);
-		}
 		return (0);
 	}
-	copy = (void *(*)(void *))ft_strdup;
-	if (ft_list_push_all(arg_list, match_list, copy) < 0)
-		return (ft_list_clear(&match_list, free), -1);
-	ft_list_clear(&match_list, free);
+	if (
+		ft_list_push_all(\
+			arg_list, \
+			match_list, \
+			(void *(*)(void *))ft_strdup \
+		) < 0 \
+	)
+		return (-1);
 	return (0);
 }
 
 static t_list	*expand_argv(char **argv, t_minishell *minishell)
 {
 	t_list	*arg_list;
+	t_list	*match_list;
 
 	arg_list = ft_list(0);
 	if (arg_list == NULL)
@@ -99,16 +98,16 @@ static t_list	*expand_argv(char **argv, t_minishell *minishell)
 	{
 		if (expand_dollar(argv, minishell) < 0)
 			return (ft_list_clear(&arg_list, free), NULL);
-		if (**argv == '\0')
+		match_list = expand_wildcard(*argv);
+		if (match_list == NULL)
+			return (ft_list_clear(&arg_list, free), NULL);
+		if (process_matches(*argv, arg_list, match_list) < 0)
 		{
-			argv++;
-			continue ;
-		}
-		if (process_matches(*argv, arg_list) < 0)
-		{
+			ft_list_clear(&match_list, free);
 			ft_list_clear(&arg_list, free);
 			return (NULL);
 		}
+		ft_list_clear(&match_list, free);
 		argv++;
 	}
 	return (arg_list);

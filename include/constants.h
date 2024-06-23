@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 21:40:31 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/22 13:56:45 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/22 23:08:31 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 # define FILE_NAME_MAX 255
 # define HERE_DOC_TEMP_FILE ".heredoc"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token"
+# define KEY_STOP_CHARS "!@#$%\\/^&*()-+={}[]|:;\"'<>.?~`\f\n\r\t\v "
 
 #endif
