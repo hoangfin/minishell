@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 15:02:39 by mito              #+#    #+#             */
-/*   Updated: 2024/06/20 17:08:41 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/23 18:40:01 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,10 @@ int	ft_cd(t_command *cmd, void *minishell)
 	}
 	if (cmd->argv[1][0] == '\0')
 		return (0);
+	if (cmd->argv[2] != NULL)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
+		return (1);
+	}
 	return (go_to_dir(cmd->argv[1], minishell));
 }
