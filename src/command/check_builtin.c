@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 12:37:52 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/16 13:37:19 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:41:02 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_bool	check_builtin(const char *cmd)
 		"cd", "echo", "env", "exit", "export", "pwd", "unset", NULL
 	};
 
+	if (cmd == NULL)
+		return (false);
 	i = 0;
 	while (cmds[i] != NULL)
 	{

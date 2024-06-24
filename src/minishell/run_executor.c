@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/21 14:28:23 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:53:55 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 
 	if (expand_cmd(cmd, minishell) < 0)
 		return (1);
-	if (cmd->argv[0] == NULL)
-		return (0);
 	if (redirect(cmd->io_list, INT_MIN, INT_MIN, minishell) < 0)
 	{
 		if (errno == EINTR)
 			return (130);
 		return (1);
 	}
+	if (cmd->argv[0] == NULL)
+		return (0);
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		write(STDOUT_FILENO, "exit\n", 5);
 	exit_status = execute_command(cmd, minishell);
@@ -71,14 +71,14 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 	close_pipes(minishell->executor);
 	if (expand_cmd(cmd, minishell) < 0)
 		return (1);
-	if (cmd->argv[0] == NULL)
-		exit(0);
 	if (redirect(cmd->io_list, pipe_rw[0], pipe_rw[1], minishell) < 0)
 	{
 		if (errno == EINTR)
 			exit_on_error(NULL, NULL, minishell, 130);
 		exit_on_error(NULL, NULL, minishell, 1);
 	}
+	if (cmd->argv[0] == NULL)
+		exit(0);
 	exit_status = execute_command(cmd, minishell);
 	delete_minishell(minishell);
 	exit(exit_status);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_underscore_var.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:11:47 by mito              #+#    #+#             */
-/*   Updated: 2024/06/21 14:29:45 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:43:48 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	update_underscore_var(t_minishell *minishell)
 		return (0);
 	}
 	cmd = (t_command *)minishell->executor->cmd_list->head->data;
+	if (cmd == NULL || cmd->argv[0] == NULL)
+		return (0);
 	count = count_str_array(cmd->argv);
 	if (update_env("_", cmd->argv[count - 1], minishell->env_list) < 0)
 		return (-1);
