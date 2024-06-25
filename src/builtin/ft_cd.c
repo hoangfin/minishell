@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 15:02:39 by mito              #+#    #+#             */
-/*   Updated: 2024/06/23 18:40:01 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/24 14:20:44 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	go_to_dir(const char *path, t_minishell *minishell)
 			"getcwd: cannot access parent directories", \
 			strerror(errno) \
 		);
-		return (1);
+		return (0);
 	}
 	ft_strlcpy(minishell->cwd, buffer, PATH_MAX);
 	update_pwd(buffer, minishell->env_list);

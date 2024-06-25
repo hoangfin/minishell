@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:49:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/19 02:06:03 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/25 16:04:32 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ int	heredoc(char *delimiter, t_minishell *minishell)
 	t_bool	should_expand_dollar;
 	int		fd;
 
-	if (set_signal_handler(SIGINT, sigint_handler_heredoc) < 0)
+	if (set_signal_handler(SIGINT, sigint_handler_heredoc) < 0
+		|| set_signal_handler(SIGQUIT, SIG_IGN) < 0)
 		return (-1);
 	should_expand_dollar = true;
 	if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
