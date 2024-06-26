@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   find_redirect_op.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:37:37 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/15 17:34:05 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/26 16:55:11 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "constants.h"
 #include "utils.h"
 
 static char	*get_operator(const char *str)
@@ -49,7 +50,7 @@ void	find_redirect_op(const char *str, char **start, char **end)
 		(*end)++;
 	if (**end == '\0')
 		return ;
-	while (**end != '\0' && !ft_isspace(**end))
+	while (**end != '\0' && ft_strchr(DELIMITER_STOP_CHARS, **end) == NULL)
 	{
 		if (**end == '\'' || **end == '"')
 		{

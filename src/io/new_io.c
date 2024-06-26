@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   new_io.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 11:56:21 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/20 00:19:07 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/26 16:56:45 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "io.h"
 #include "libft.h"
 #include "utils.h"
+#include "constants.h"
 
 static t_redir_type	get_redir_type(const char *str, int redir_symbol)
 {
@@ -52,7 +53,7 @@ static char	*get_token(const char *str)
 	if (*str == '\0')
 		return (NULL);
 	start = str;
-	while (*str != '\0' && !ft_isspace(*str))
+	while (*str != '\0' && ft_strchr(DELIMITER_STOP_CHARS, *str) == NULL)
 	{
 		if (*str == '\'' || *str == '"')
 		{
