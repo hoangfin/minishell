@@ -21,7 +21,7 @@ VPATH :=	src \
 			src/validation
 
 CC := cc
-CFLAG := -Wall -Wextra -Werror -Iinclude -I$(LIBFT_DIR) -I$(READLINE_DIR)
+CFLAG := -g -fsanitize=address -Wall -Wextra -Iinclude -I$(LIBFT_DIR) -I$(READLINE_DIR)
 
 SOURCES :=	main.c \
 			ft_cd.c \
@@ -83,6 +83,7 @@ SOURCES :=	main.c \
 			print_export_list.c \
 			ungroup.c \
 			update_env.c \
+			update_shlvl.c \
 			update_underscore_var.c \
 			wait_all.c \
 			\

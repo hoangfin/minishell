@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 14:36:12 by mito              #+#    #+#             */
-/*   Updated: 2024/06/20 17:11:35 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/26 14:11:50 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	init_env_list(t_minishell *minishell, char **envp)
 		if (pwd == NULL || ft_list_push(minishell->env_list, pwd) < 0)
 			return (free(pwd), -1);
 	}
+	if (update_shlvl(minishell->env_list) < 0)
+		return (-1);
 	return (0);
 }
 
