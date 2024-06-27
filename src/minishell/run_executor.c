@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/24 13:53:55 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/27 00:56:07 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,13 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 
 	if (expand_cmd(cmd, minishell) < 0)
 		return (1);
-	if (redirect(cmd->io_list, INT_MIN, INT_MIN, minishell) < 0)
-	{
-		if (errno == EINTR)
-			return (130);
+	if (redirect(cmd->io_list, INT_MIN, INT_MIN) < 0)
 		return (1);
-	}
 	if (cmd->argv[0] == NULL)
 		return (0);
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		write(STDOUT_FILENO, "exit\n", 5);
 	exit_status = execute_command(cmd, minishell);
-	if (access(HERE_DOC_TEMP_FILE, F_OK) != -1)
-		unlink(HERE_DOC_TEMP_FILE);
 	if (dup2(minishell->stdin, STDIN_FILENO) < 0)
 		return (1);
 	if (dup2(minishell->stdout, STDOUT_FILENO) < 0)
@@ -71,12 +65,8 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 	close_pipes(minishell->executor);
 	if (expand_cmd(cmd, minishell) < 0)
 		return (1);
-	if (redirect(cmd->io_list, pipe_rw[0], pipe_rw[1], minishell) < 0)
-	{
-		if (errno == EINTR)
-			exit_on_error(NULL, NULL, minishell, 130);
+	if (redirect(cmd->io_list, pipe_rw[0], pipe_rw[1]) < 0)
 		exit_on_error(NULL, NULL, minishell, 1);
-	}
 	if (cmd->argv[0] == NULL)
 		exit(0);
 	exit_status = execute_command(cmd, minishell);
@@ -125,7 +115,6 @@ int	run_executor(t_executor *executor, t_minishell *minishell)
 	t_command	*cmd;
 	int			exit_status;
 
-	set_signal_handler(SIGINT, SIG_IGN);
 	cmd = (t_command *)executor->cmd_list->head->data;
 	if (executor->num_of_pids == 0)
 		return (run_on_current_process(cmd, minishell));
@@ -134,7 +123,5 @@ int	run_executor(t_executor *executor, t_minishell *minishell)
 	if (start_workers(executor, minishell) < 0)
 		return (1);
 	exit_status = wait_all(executor->pids, executor->num_of_pids);
-	if (access(HERE_DOC_TEMP_FILE, F_OK) != -1)
-		unlink(HERE_DOC_TEMP_FILE);
 	return (exit_status);
 }

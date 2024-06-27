@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 15:27:14 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/14 16:26:27 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/25 21:03:09 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,14 @@ static int	init_pids(t_executor *executor, t_list *cmd_list)
 	return (0);
 }
 
-t_executor	*new_executor(const char *str)
+t_executor	*new_executor(t_list *cmd_list)
 {
 	t_executor	*executor;
 
 	executor = (t_executor *)ft_calloc(1, sizeof(t_executor));
 	if (executor == NULL)
 		return (NULL);
-	executor->cmd_list = parse_cmd_list(str);
-	if (executor->cmd_list == NULL)
-		return (perror("minishell: malloc"), NULL);
+	executor->cmd_list = cmd_list;
 	if (
 		init_pipes(executor, executor->cmd_list->length - 1) < 0
 		|| init_pids(executor, executor->cmd_list) < 0

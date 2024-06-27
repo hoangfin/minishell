@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:48:58 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/20 22:17:51 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/26 21:43:34 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,16 @@ typedef struct s_minishell
 	int			stdout;
 }	t_minishell;
 
-t_executor	*new_executor(const char *str);
+t_executor	*new_executor(t_list *cmd_list);
 
 int			close_pipes(t_executor *executor);
 int			execute_command(t_command *cmd, t_minishell *minishell);
 int			execute(char *str, t_minishell *minishell);
 int			expand_cmd(t_command *cmd, t_minishell *minishell);
 int			expand_dollar(char **str, t_minishell *minishell);
-int			heredoc(char *delimiter, t_minishell *minishell);
+int			heredoc(t_list *cmd_list, t_minishell *minishell);
 int			init_minishell(t_minishell *minishell, char **envp);
-
-int			redirect(\
-				t_list *io_list, \
-				int pipe_r, \
-				int pipe_w, \
-				t_minishell *minishell \
-			);
-
+int			redirect(t_list *io_list, int pipe_r, int pipe_w);
 int			run_executor(t_executor *executor, t_minishell *minishell);
 int			run_minishell(t_minishell *minishell);
 

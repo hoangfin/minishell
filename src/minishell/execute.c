@@ -6,19 +6,31 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/20 22:43:07 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/26 21:40:53 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <errno.h>
 #include "minishell.h"
 #include "utils.h"
 
 static int	run(const char *str, t_minishell *minishell)
 {
-	int	exit_status;
+	t_list	*cmd_list;
+	int		exit_status;
 
-	minishell->executor = new_executor(str);
+	cmd_list = parse_cmd_list(str);
+	if (cmd_list == NULL)
+		return (1);
+	if (heredoc(cmd_list, minishell) == -1)
+	{
+		ft_list_clear(&cmd_list, delete_cmd);
+		if (errno == EINTR)
+			return (130);
+		return (1);
+	}
+	minishell->executor = new_executor(cmd_list);
 	if (minishell->executor == NULL)
 		return (perror("minishell: malloc"), 1);
 	exit_status = run_executor(minishell->executor, minishell);
