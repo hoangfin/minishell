@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:49:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/27 14:41:27 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/28 01:39:37 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,10 @@ static int	get_heredoc_content(
 			break ;
 		if (ft_strcmp(line, io->token) == 0)
 			return (free(line), 0);
-		if (should_expand)
-		{
-			if (heredoc_expand(&line, minishell) < 0)
-				return (free(line), -1);
-			if (ft_concat(content, 2, line, "\n") < 0)
-				return (free(line), -1);
-		}
+		if (should_expand && heredoc_expand(&line, minishell) < 0)
+			return (free(line), -1);
+		if (ft_concat(content, 2, line, "\n") < 0)
+			return (free(line), -1);
 		free(line);
 	}
 	if (errno)

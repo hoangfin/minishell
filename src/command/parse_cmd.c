@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 20:53:07 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/21 01:28:04 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/28 01:51:06 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,10 @@
 
 static char	*find_quote(char *str)
 {
-	char	prev;
-
-	prev = '\0';
 	while (*str != '\0')
 	{
-		if ((*str == 34 || *str == 39) && prev != '\\')
+		if (*str == 34 || *str == 39)
 			return (str);
-		prev = *str;
 		str++;
 	}
 	return (NULL);
