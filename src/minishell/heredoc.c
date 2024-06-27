@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:49:03 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/27 08:55:30 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/27 14:41:27 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ static int	get_heredoc_content(
 	}
 	if (errno)
 		return (-1);
+	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 
@@ -115,7 +116,9 @@ static int	handle_io(t_node *node, void *minishell, size_t index)
 	if (ft_strchr(io->token, '\'') || ft_strchr(io->token, '"'))
 		should_expand = false;
 	ft_remove_quote_pair(io->token);
-	content = NULL;
+	content = ft_strdup("");
+	if (content == NULL)
+		return (-1);
 	if (get_heredoc_content(&content, io, minishell, should_expand) < 0)
 		return (free(content), -1);
 	if (content == NULL && errno)

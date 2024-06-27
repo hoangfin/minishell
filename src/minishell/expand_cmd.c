@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 00:34:04 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/22 21:59:26 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/27 14:33:17 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ static int	handle_io_expansion(t_io *io, char buf[], t_minishell *minishell)
 
 	if (expand_dollar(&io->token, minishell) < 0)
 		return (-1);
-	if (*io->token == '\0')
+	if (*io->token == '\0' && io->redi_type != REDIR_HEREDOC)
 		return (ft_fprintf(2, "minishell: %s: ambiguous redirect\n", buf), -1);
 	match_list = expand_wildcard(io->token);
 	if (match_list == NULL)
 		return (-1);
-	if (match_list->length > 1)
+	if (match_list->length > 1 && io->redi_type != REDIR_HEREDOC)
 	{
 		ft_list_clear(&match_list, free);
 		ft_fprintf(2, "minishell: %s: ambiguous redirect\n", buf);

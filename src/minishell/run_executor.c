@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/27 00:56:07 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/27 14:47:27 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	run_on_sub_process(int i, t_command *cmd, t_minishell *minishell)
 		exit_on_error("dup", strerror(errno), minishell, 1);
 	close_pipes(minishell->executor);
 	if (expand_cmd(cmd, minishell) < 0)
-		return (1);
+		exit_on_error(NULL, NULL, minishell, 1);
 	if (redirect(cmd->io_list, pipe_rw[0], pipe_rw[1]) < 0)
 		exit_on_error(NULL, NULL, minishell, 1);
 	if (cmd->argv[0] == NULL)
