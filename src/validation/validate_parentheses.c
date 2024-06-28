@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_parentheses.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 19:38:19 by mito              #+#    #+#             */
-/*   Updated: 2024/06/21 16:23:07 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/28 17:27:41 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ int	validate_parentheses(char *str)
 	}
 	if (depth == 0)
 		return (0);
+	ft_fprintf(2, "minishell: syntax error near expected token '('\n");
 	return (2);
 }
