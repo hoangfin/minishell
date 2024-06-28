@@ -6,7 +6,7 @@
 /*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 00:34:04 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/27 14:33:17 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/28 09:46:36 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	handle_io_expansion(t_io *io, char buf[], t_minishell *minishell)
 		free(io->token);
 		io->token = (char *)match_list->head->data;
 	}
-	else
+	else if (io->redi_type != REDIR_HEREDOC)
 		ft_remove_quote_pair(io->token);
 	ft_list_clear(&match_list, NULL);
 	return (0);
