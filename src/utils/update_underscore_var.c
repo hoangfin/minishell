@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:11:47 by mito              #+#    #+#             */
-/*   Updated: 2024/06/24 13:43:48 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/27 17:59:12 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,13 @@
 
 int	update_underscore_var(t_minishell *minishell)
 {
-	t_command	*cmd;
-	size_t		count;
+	t_list *const	cmd_list = minishell->executor->cmd_list;
+	t_command		*cmd;
+	size_t			count;
 
-	if (minishell->executor->num_of_pids > 1)
-	{
-		if (update_env("_", "", minishell->env_list) < 0)
-			return (-1);
+	if (cmd_list == NULL || cmd_list->length > 1)
 		return (0);
-	}
-	cmd = (t_command *)minishell->executor->cmd_list->head->data;
+	cmd = (t_command *)cmd_list->head->data;
 	if (cmd == NULL || cmd->argv[0] == NULL)
 		return (0);
 	count = count_str_array(cmd->argv);

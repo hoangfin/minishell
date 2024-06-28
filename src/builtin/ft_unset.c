@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 10:48:28 by mito              #+#    #+#             */
-/*   Updated: 2024/06/20 17:09:35 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/27 17:29:50 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	ft_unset(t_command *cmd, t_list *env_list, t_list *export_list)
 		}
 		else
 		{
-			ft_list_remove(env_list, cmd->argv[i], is_key_exist, free);
-			ft_list_remove(export_list, cmd->argv[i], is_key_exist, free);
+			ft_list_remove(env_list, cmd->argv[i], is_key_exist_v2, free);
+			ft_list_remove(export_list, cmd->argv[i], is_key_exist_v2, free);
 		}
 		i++;
 	}

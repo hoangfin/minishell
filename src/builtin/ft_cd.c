@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 15:02:39 by mito              #+#    #+#             */
-/*   Updated: 2024/06/24 14:20:44 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/27 17:38:16 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,25 @@
 #include "minishell.h"
 #include "constants.h"
 
-static int	update_pwd(const char *current_path, t_list *list)
+static int	update_path(const char *current_path, t_minishell *minishell)
 {
-	const char	*pwd;
-	const char	*old_pwd;
-	char		*temp;
+	char	*temp;
 
-	pwd = find_env("PWD", list);
-	if (pwd != NULL)
-	{
-		old_pwd = find_env("OLDPWD", list);
-		if (old_pwd == NULL)
-		{
-			temp = ft_join_strings(2, "OLDPWD=", pwd);
-			if (temp == NULL)
-				return (-1);
-			if (ft_list_push(list, temp) < 0)
-				return (free(temp), -1);
-		}
-		update_env("OLDPWD", pwd, list);
-	}
-	update_env("PWD", current_path, list);
+	if (
+		update_env_cd("OLDPWD", minishell->cwd, minishell->env_list) < 0
+		|| update_env_cd("OLDPWD", minishell->cwd, minishell->export_list) < 0
+	)
+		return (-1);
+	temp = ft_strdup(current_path);
+	if (temp == NULL)
+		return (-1);
+	free(minishell->cwd);
+	minishell->cwd = temp;
+	if (
+		update_env_cd("PWD", minishell->cwd, minishell->env_list) < 0
+		|| update_env_cd("PWD", minishell->cwd, minishell->export_list) < 0
+	)
+		return (-1);
 	return (0);
 }
 
@@ -58,9 +56,8 @@ static int	go_home(t_minishell *minishell)
 		);
 		return (-1);
 	}
-	ft_strlcpy(minishell->cwd, home_path, PATH_MAX);
-	update_pwd(home_path, minishell->env_list);
-	update_pwd(home_path, minishell->export_list);
+	if (update_path(home_path, minishell) < 0)
+		return (1);
 	return (0);
 }
 
@@ -84,9 +81,8 @@ static int	go_to_dir(const char *path, t_minishell *minishell)
 		);
 		return (0);
 	}
-	ft_strlcpy(minishell->cwd, buffer, PATH_MAX);
-	update_pwd(buffer, minishell->env_list);
-	update_pwd(buffer, minishell->export_list);
+	if (update_path(buffer, minishell) < 0)
+		return (1);
 	return (0);
 }
 

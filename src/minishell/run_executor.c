@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:26:05 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/27 14:47:27 by hoatran          ###   ########.fr       */
+/*   Updated: 2024/06/27 18:03:25 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static int	run_on_current_process(t_command *cmd, t_minishell *minishell)
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		write(STDOUT_FILENO, "exit\n", 5);
 	exit_status = execute_command(cmd, minishell);
+	if (update_underscore_var(minishell) < 0)
+		return (1);
 	if (dup2(minishell->stdin, STDIN_FILENO) < 0)
 		return (1);
 	if (dup2(minishell->stdout, STDOUT_FILENO) < 0)
@@ -118,10 +120,10 @@ int	run_executor(t_executor *executor, t_minishell *minishell)
 	cmd = (t_command *)executor->cmd_list->head->data;
 	if (executor->num_of_pids == 0)
 		return (run_on_current_process(cmd, minishell));
-	if (update_underscore_var(minishell) < 0)
-		return (1);
 	if (start_workers(executor, minishell) < 0)
 		return (1);
 	exit_status = wait_all(executor->pids, executor->num_of_pids);
+	if (update_underscore_var(minishell) < 0)
+		return (1);
 	return (exit_status);
 }

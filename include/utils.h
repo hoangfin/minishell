@@ -6,7 +6,7 @@
 /*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 23:06:08 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/26 14:09:48 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/27 17:59:26 by mito             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 t_bool		is_delimiter(const char *str, const char *symbol);
 t_bool		is_directory(const char *pathname);
 t_bool		is_key_exist(t_node *node, void *data);
+t_bool		is_key_exist_v2(t_node *node, void *data);
 t_bool		is_valid_env_key(const char *str);
 
 t_list		*clone_env_list(t_list *src_list);
@@ -27,6 +28,7 @@ t_list		*expand_wildcard(char *str);
 t_list		*parse_cmd_list(const char *str);
 
 int			update_env(const char *key, const char *value, t_list *list);
+int			update_env_cd(const char *key, const char *value, t_list *list);
 int			update_shlvl(t_list *list);
 int			wait_all(pid_t *pids, int number_of_pids);
 int			dup2_close(int oldfd, int newfd);

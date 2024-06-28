@@ -21,7 +21,14 @@ VPATH :=	src \
 			src/validation
 
 CC := cc
-CFLAG := -Wall -Wextra -Werror -Iinclude -I$(LIBFT_DIR) -I$(READLINE_DIR)
+CFLAG := -g  -Wall -Wextra -Werror -Iinclude -I$(LIBFT_DIR) -I$(READLINE_DIR) #-fsanitize=address
+# env variables not expanding on time
+# echo """"\"$PWD$PWD"$PWD''
+# (() not giving error, doesnt get parsed ()) (|) (|echo 1	)
+# <<"a" cat (idk what im doing at this point but works withoput quotes)
+# * not being sorted
+# (|)
+
 
 SOURCES :=	main.c \
 			ft_cd.c \
@@ -76,6 +83,7 @@ SOURCES :=	main.c \
 			get_path.c \
 			is_delimiter.c \
 			is_directory.c \
+			is_key_exist_v2.c \
 			is_key_exist.c \
 			is_underscore_var.c \
 			is_valid_env_key.c \
