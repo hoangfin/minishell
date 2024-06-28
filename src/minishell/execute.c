@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mito <mito@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: hoatran <hoatran@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:21:35 by hoatran           #+#    #+#             */
-/*   Updated: 2024/06/27 17:57:55 by mito             ###   ########.fr       */
+/*   Updated: 2024/06/28 17:18:35 by hoatran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	run(const char *str, t_minishell *minishell)
 	cmd_list = parse_cmd_list(str);
 	if (cmd_list == NULL)
 		return (1);
+	if (cmd_list->length == 0)
+		return (ft_list_clear(&cmd_list, delete_cmd), 0);
 	if (heredoc(cmd_list, minishell) == -1)
 	{
 		ft_list_clear(&cmd_list, delete_cmd);
