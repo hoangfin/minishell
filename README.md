@@ -54,7 +54,7 @@ To run Minishell locally:
 
 1. **Clone the Repository:**
    ```bash
-   git clone --recurse-submodules https://github.com/ito-miyuki/minishell.git
+   git clone --recurse-submodules https://github.com/hoangfin/minishell.git
 2. **Navigate to the Project Directory:**
    ```bash
    cd minishell
